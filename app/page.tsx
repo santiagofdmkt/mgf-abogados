@@ -33,6 +33,7 @@ export default function Home() {
           .wa-btn { display: none !important; }
           .hero-img-desktop { display: none !important; }
           .hero-img-mobile { display: block !important; }
+          .stats-bar-wrap { position: static !important; margin-top: 2rem; border-top: none !important; }
           .stats-bar { gap: 1.2rem !important; padding: 1rem 1.2rem !important; display: grid !important; grid-template-columns: 1fr 1fr !important; }
           .areas-grid { grid-template-columns: 1fr !important; }
           .porque-grid { grid-template-columns: 1fr !important; max-width: 100% !important; }
@@ -42,7 +43,7 @@ export default function Home() {
           .footer-inner { flex-direction: column !important; align-items: flex-start !important; gap: 1.5rem !important; }
           .footer-links { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 0.6rem 1.5rem !important; }
           .section-pad { padding: 3rem 1.2rem !important; }
-          .hero-section { padding: 5rem 1.2rem 5rem !important; min-height: auto !important; }
+          .hero-section { padding: 5rem 1.2rem 2rem !important; min-height: auto !important; }
         }
         @media (min-width: 769px) {
           .hamburger { display: none !important; }
@@ -220,7 +221,7 @@ export default function Home() {
         </div>
 
         {/* Stats bar */}
-        <div style={{
+        <div className="stats-bar-wrap" style={{
           position: 'absolute', bottom: 0, left: 0, right: 0,
           background: 'rgba(255,255,255,0.07)',
           borderTop: '1px solid rgba(255,255,255,0.1)',
