@@ -187,8 +187,8 @@ export default function Home() {
               color: '#FFFFFF', marginBottom: '1.2rem',
             }}>
               Más de 50 años<br />
-              <em style={{ color: '#7EB3FF', fontStyle: 'italic' }}>resolviendo</em>{' '}
-              lo que<br />a otros no les sale.
+              <em style={{ color: '#7EB3FF', fontStyle: 'italic' }}>brindando soluciones</em>{' '}
+              legales de<br />alta calidad.
             </h1>
             <p className="anim d3" style={{
               fontSize: '1rem', lineHeight: 1.75,
