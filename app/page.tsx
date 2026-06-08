@@ -77,7 +77,7 @@ export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false)
 
   // Mini-formulario de contacto: ahora controlado. Lleva los datos al wizard /consulta por query params.
-  const [form, setForm] = useState({ nombre: '', telefono: '', email: '', area: '' })
+  const [form, setForm] = useState({ nombre: '', telefono: '', email: '', area: '', mensaje: '' })
 
   const consultaHref = () => {
     const p = new URLSearchParams()
@@ -85,6 +85,7 @@ export default function Home() {
     if (form.telefono) p.set('telefono', form.telefono)
     if (form.email) p.set('email', form.email)
     if (form.area) p.set('area', form.area)
+    if (form.mensaje) p.set('mensaje', form.mensaje)
     const qs = p.toString()
     return qs ? `/consulta?${qs}` : '/consulta'
   }
@@ -625,7 +626,25 @@ export default function Home() {
                 >
                   <option value="">Seleccioná un área</option>
                   {areas.map(a => <option key={a.slug} value={a.slug}>{a.title}</option>)}
+                  <option value="otro">Otro / no estoy seguro</option>
                 </select>
+              </div>
+              <div>
+                <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--text-soft)', marginBottom: '4px' }}>
+                  Contanos brevemente tu caso <span style={{ textTransform: 'none', fontWeight: 400, color: 'var(--text-muted)' }}>(opcional)</span>
+                </label>
+                <textarea
+                  value={form.mensaje}
+                  onChange={e => setForm({ ...form, mensaje: e.target.value })}
+                  placeholder="Escribí acá un breve resumen de tu situación..."
+                  rows={4}
+                  style={{
+                    width: '100%', border: '1px solid var(--border)', borderRadius: '8px',
+                    padding: '11px 12px', fontSize: '0.9rem', outline: 'none',
+                    fontFamily: "'Inter', sans-serif", color: 'var(--text)', background: 'var(--gray-50)',
+                    resize: 'vertical', minHeight: '90px',
+                  }}
+                />
               </div>
               <Link href={consultaHref()} className="btn-zoom" style={{
                 background: 'var(--blue)', color: '#fff', padding: '13px',
