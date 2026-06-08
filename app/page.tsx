@@ -221,7 +221,7 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Stats bar — solo desktop, position absolute */}
+        {/* Stats bar — solo desktop */}
         <div className="stats-bar-wrap" style={{
           position: 'absolute', bottom: 0, left: 0, right: 0,
           background: 'rgba(255,255,255,0.07)',
@@ -269,32 +269,6 @@ export default function Home() {
           ))}
         </div>
       </div>
-
-        {/* Stats bar */}
-        <div className="stats-bar-wrap" style={{
-          position: 'absolute', bottom: 0, left: 0, right: 0,
-          background: 'rgba(255,255,255,0.07)',
-          borderTop: '1px solid rgba(255,255,255,0.1)',
-          backdropFilter: 'blur(4px)',
-        }}>
-          <div className="stats-bar" style={{
-            maxWidth: '1200px', margin: '0 auto', padding: '1rem 2rem',
-            display: 'flex', gap: '2.5rem', flexWrap: 'wrap', justifyContent: 'center',
-          }}>
-            {[
-              { num: '+50 años', label: 'de trayectoria' },
-              { num: '5 abogados', label: 'especializados por área' },
-              { num: '2 oficinas', label: 'Cap. Federal y La Plata' },
-              { num: 'Sin cargo', label: 'primera consulta' },
-            ].map(s => (
-              <div key={s.label}>
-                <div style={{ fontSize: '0.95rem', fontWeight: 700, color: '#fff', fontFamily: "'Inter', sans-serif" }}>{s.num}</div>
-                <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.55)', letterSpacing: '0.04em' }}>{s.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* ÁREAS */}
       <section id="areas" className="section-pad" style={{ padding: '4rem 2rem', background: 'var(--gray-50)' }}>
