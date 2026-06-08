@@ -19,6 +19,13 @@ const equipo = [
   { nombre: 'Dra. Verónica N. Carrizo', especialidad: 'Derecho a la Salud — UBA',                      foto: '/equipo/5vero.png' },
 ]
 
+const contactos = [
+  { icon: 'pin',   title: 'Capital Federal', info: 'Lavalle 1546, Piso 8° «F»' },
+  { icon: 'pin',   title: 'La Plata',        info: 'Calle 8 N° 790, Piso 3° «E»' },
+  { icon: 'phone', title: 'Teléfono',        info: '(011) 4374-1166 / 9177' },
+  { icon: 'mail',  title: 'Email',           info: 'estudio@mgfabogados.com.ar' },
+]
+
 // Wrapper SVG reutilizable
 function Svg({ children, size = 22 }: { children: ReactNode; size?: number }) {
   return (
@@ -49,12 +56,16 @@ function Icon({ name, size }: { name: string; size?: number }) {
       return <Svg size={size}><circle cx="12" cy="8" r="4" /><path d="M5 21a7 7 0 0 1 14 0" /></Svg>
     case 'honorarios':
       return <Svg size={size}><line x1="19" y1="5" x2="5" y2="19" /><circle cx="7" cy="7" r="2.2" /><circle cx="17" cy="17" r="2.2" /></Svg>
+    case 'consulta':
+      return <Svg size={size}><path d="M21 15a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z" /><path d="M8 9h8M8 13h5" /></Svg>
     case 'pin':
       return <Svg size={size}><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z" /><circle cx="12" cy="10" r="2.5" /></Svg>
     case 'phone':
       return <Svg size={size}><path d="M5 4h3l2 5-2.5 1.5a11 11 0 0 0 5 5L16 14l3 1v3a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z" /></Svg>
     case 'mail':
       return <Svg size={size}><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3 7l9 6 9-6" /></Svg>
+    case 'whatsapp':
+      return <Svg size={size}><path d="M12 3a9 9 0 0 0-7.7 13.7L3 21l4.5-1.2A9 9 0 1 0 12 3z" /><path d="M8.5 8.7c0 .8.3 1.9 1.3 3.1 1.1 1.4 2.4 2.2 3.3 2.5.8.3 1.5.1 1.9-.4l.3-.5-1.8-1-.7.7c-.9-.4-1.9-1.4-2.3-2.3l.7-.7-1-1.8-.5.3c-.3.2-.5.5-.5 1z" /></Svg>
     default:
       return null
   }
@@ -228,8 +239,8 @@ export default function Home() {
               color: '#FFFFFF', marginBottom: '1.2rem',
             }}>
               Más de 50 años<br />
-              <em style={{ color: '#7EB3FF', fontStyle: 'italic' }}>brindando soluciones</em>{' '}
-              legales de<br />alta calidad.
+              <em style={{ color: '#7EB3FF', fontStyle: 'italic' }}>resolviendo</em>{' '}
+              lo que<br />a otros no les sale.
             </h1>
             <p className="anim d3" style={{
               fontSize: '1rem', lineHeight: 1.75,
@@ -417,7 +428,7 @@ export default function Home() {
             {[
               { icon: 'experiencia', title: 'Más de 50 años de experiencia', desc: 'Uno de los estudios con mayor trayectoria en derecho civil y laboral del AMBA. No aprendemos con sus casos.' },
               { icon: 'especialista', title: 'Abogado especializado en su área', desc: 'Cada caso lo atiende el profesional con experiencia específica. Sin rotar archivos entre juniors.' },
-              { icon: 'honorarios', title: 'Honorarios a resultado', desc: 'En la mayoría de los casos trabajamos a porcentaje del resultado obtenido. Si no ganamos, usted no paga.' },
+              { icon: 'consulta', title: 'Primera consulta gratis', desc: 'Nuestro sistema de gestión nos permite conocer tu caso y darte una devolución online rápida, para recomendarte la mejor opción según tu situación.' },
             ].map(item => (
               <div key={item.title} style={{
                 background: 'var(--blue-pale2)', borderRadius: '12px',
@@ -479,41 +490,63 @@ export default function Home() {
 
       {/* CONTACTO */}
       <section id="contacto" className="section-pad" style={{ padding: '4rem 2rem', background: 'var(--white)' }}>
-        <div className="contacto-inner" style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', gap: '3rem', flexWrap: 'wrap', alignItems: 'flex-start' }}>
-          <div style={{ flex: '1', minWidth: '240px' }}>
-            <div className="label" style={{ marginBottom: '0.4rem' }}>Consulta rápida</div>
-            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.8rem', color: 'var(--navy)', fontWeight: 600, marginBottom: '1.2rem' }}>
-              Escribinos ahora
+        <div className="contacto-inner" style={{ maxWidth: '1100px', margin: '0 auto', display: 'flex', gap: '3rem', flexWrap: 'wrap', alignItems: 'stretch' }}>
+
+          {/* Columna info */}
+          <div style={{ flex: '1', minWidth: '260px', display: 'flex', flexDirection: 'column' }}>
+            <div className="label" style={{ marginBottom: '0.4rem' }}>Contacto</div>
+            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.9rem', color: 'var(--navy)', fontWeight: 600, marginBottom: '0.6rem' }}>
+              Estamos para ayudarte
             </h2>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              {[
-                { icon: 'pin',   title: 'Capital Federal', info: 'Lavalle 1546, Piso 8° «F»' },
-                { icon: 'pin',   title: 'La Plata',        info: 'Calle 8 N° 790, Piso 3° «E»' },
-                { icon: 'phone', title: 'Teléfono',        info: '(011) 4374-1166 / 9177' },
-                { icon: 'mail',  title: 'Email',           info: 'estudio@mgfabogados.com.ar' },
-              ].map(c => (
-                <div key={c.title} style={{ display: 'flex', gap: '0.7rem', alignItems: 'flex-start' }}>
-                  <span style={{ color: 'var(--blue)', marginTop: '1px', display: 'flex' }}>
+            <p style={{ fontSize: '0.9rem', lineHeight: 1.7, color: 'var(--text-soft)', marginBottom: '1.6rem', maxWidth: '420px' }}>
+              Escribinos por el medio que prefieras. La primera consulta es sin cargo y te respondemos a la brevedad.
+            </p>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+              {contactos.map(c => (
+                <div key={c.title} style={{
+                  display: 'flex', gap: '0.9rem', alignItems: 'center',
+                  background: 'var(--gray-50)', border: '1px solid var(--border)',
+                  borderRadius: '10px', padding: '0.9rem 1rem',
+                }}>
+                  <span style={{
+                    width: '38px', height: '38px', borderRadius: '9px',
+                    background: 'var(--blue-pale)', color: 'var(--blue)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+                  }}>
                     <Icon name={c.icon} size={18} />
                   </span>
                   <div>
-                    <div style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--navy)', letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: '1px' }}>{c.title}</div>
-                    <div style={{ fontSize: '0.83rem', color: 'var(--text-soft)' }}>{c.info}</div>
+                    <div style={{ fontSize: '0.68rem', fontWeight: 600, color: 'var(--text-muted)', letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: '2px' }}>{c.title}</div>
+                    <div style={{ fontSize: '0.88rem', color: 'var(--navy)', fontWeight: 500 }}>{c.info}</div>
                   </div>
                 </div>
               ))}
             </div>
+
+            <a href="https://api.whatsapp.com/send?phone=5491140362772" target="_blank" rel="noopener noreferrer" style={{
+              marginTop: '1.2rem', background: '#25D366', color: '#fff',
+              padding: '13px 22px', borderRadius: '8px',
+              fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.04em', textDecoration: 'none',
+              display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '0.6rem', alignSelf: 'flex-start',
+            }}>
+              <Icon name="whatsapp" size={18} /> Escribinos por WhatsApp
+            </a>
           </div>
 
+          {/* Columna formulario */}
           <div style={{
             flex: '1', minWidth: '280px', maxWidth: '480px',
             background: 'var(--white)', border: '1px solid var(--border)',
-            borderRadius: '12px', padding: '2rem',
+            borderRadius: '14px', padding: '2rem',
             boxShadow: 'var(--shadow-md)',
           }}>
-            <div style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--navy)', marginBottom: '1.2rem', fontFamily: "'Playfair Display', serif" }}>
+            <div style={{ fontSize: '1.05rem', fontWeight: 600, color: 'var(--navy)', marginBottom: '0.3rem', fontFamily: "'Playfair Display', serif" }}>
               Dejanos tu consulta
             </div>
+            <p style={{ fontSize: '0.8rem', color: 'var(--text-soft)', marginBottom: '1.4rem' }}>
+              Completá tus datos y te contactamos.
+            </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.9rem' }}>
               {[
                 { label: 'Nombre completo', type: 'text', placeholder: 'Juan García' },
@@ -525,8 +558,8 @@ export default function Home() {
                     {f.label}
                   </label>
                   <input type={f.type} placeholder={f.placeholder} style={{
-                    width: '100%', border: '1px solid var(--border)', borderRadius: '6px',
-                    padding: '10px 12px', fontSize: '0.9rem', outline: 'none',
+                    width: '100%', border: '1px solid var(--border)', borderRadius: '8px',
+                    padding: '11px 12px', fontSize: '0.9rem', outline: 'none',
                     fontFamily: "'Inter', sans-serif", color: 'var(--text)', background: 'var(--gray-50)',
                   }} />
                 </div>
@@ -536,8 +569,8 @@ export default function Home() {
                   Tipo de consulta
                 </label>
                 <select style={{
-                  width: '100%', border: '1px solid var(--border)', borderRadius: '6px',
-                  padding: '10px 12px', fontSize: '0.9rem', outline: 'none',
+                  width: '100%', border: '1px solid var(--border)', borderRadius: '8px',
+                  padding: '11px 12px', fontSize: '0.9rem', outline: 'none',
                   fontFamily: "'Inter', sans-serif", color: 'var(--text)', background: 'var(--gray-50)',
                 }}>
                   <option value="">Seleccioná un área</option>
@@ -548,7 +581,7 @@ export default function Home() {
                 background: 'var(--blue)', color: '#fff', padding: '13px',
                 textAlign: 'center', textDecoration: 'none', fontSize: '0.82rem',
                 letterSpacing: '0.08em', textTransform: 'uppercase', fontWeight: 600,
-                marginTop: '0.3rem', display: 'block', borderRadius: '6px',
+                marginTop: '0.3rem', display: 'block', borderRadius: '8px',
               }}>
                 Enviar consulta →
               </Link>
