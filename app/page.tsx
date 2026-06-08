@@ -1,14 +1,14 @@
 'use client'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, type ReactNode } from 'react'
 
 const areas = [
-  { slug: 'accidentes-trabajo',   title: 'Accidentes de Trabajo',        desc: 'Gestionamos su reclamo ante ART y empleadores. Trabajamos a porcentaje del resultado.',       icon: '🦺' },
-  { slug: 'accidentes-transito',  title: 'Accidentes de Tránsito',       desc: 'Reclamamos indemnizaciones por lesiones y daños materiales ante aseguradoras y responsables.', icon: '🚗' },
-  { slug: 'despidos',             title: 'Despidos e Indemnizaciones',    desc: 'Asesoramos en despidos sin causa, liquidaciones finales, acoso laboral y trabajo en negro.',   icon: '📄' },
-  { slug: 'propiedad-horizontal', title: 'Propiedad Horizontal',          desc: 'Representamos consorcios, administradores y propietarios en conflictos y cobros de expensas.', icon: '🏢' },
-  { slug: 'derecho-salud',        title: 'Derecho a la Salud',            desc: 'Amparos contra obras sociales y prepagas para garantizar coberturas, tratamientos y medicamentos.', icon: '⚕️' },
-  { slug: 'sucesiones',           title: 'Derecho Sucesorio',             desc: 'Tramitamos sucesiones, testamentos y particiones hereditarias con rapidez y precisión.',       icon: '📜' },
+  { slug: 'accidentes-trabajo',   title: 'Accidentes de Trabajo',        desc: 'Gestionamos su reclamo ante ART y empleadores. Trabajamos a porcentaje del resultado.',       icon: 'trabajo' },
+  { slug: 'accidentes-transito',  title: 'Accidentes de Tránsito',       desc: 'Reclamamos indemnizaciones por lesiones y daños materiales ante aseguradoras y responsables.', icon: 'transito' },
+  { slug: 'despidos',             title: 'Despidos e Indemnizaciones',    desc: 'Asesoramos en despidos sin causa, liquidaciones finales, acoso laboral y trabajo en negro.',   icon: 'despidos' },
+  { slug: 'propiedad-horizontal', title: 'Propiedad Horizontal',          desc: 'Representamos consorcios, administradores y propietarios en conflictos y cobros de expensas.', icon: 'propiedad' },
+  { slug: 'derecho-salud',        title: 'Derecho a la Salud',            desc: 'Amparos contra obras sociales y prepagas para garantizar coberturas, tratamientos y medicamentos.', icon: 'salud' },
+  { slug: 'sucesiones',           title: 'Derecho Sucesorio',             desc: 'Tramitamos sucesiones, testamentos y particiones hereditarias con rapidez y precisión.',       icon: 'sucesiones' },
 ]
 
 const equipo = [
@@ -18,6 +18,47 @@ const equipo = [
   { nombre: 'Dr. Federico Chiesa',      especialidad: 'Propiedad Horizontal y Conjuntos Inmobiliarios', foto: '/equipo/4chiesa.jpg' },
   { nombre: 'Dra. Verónica N. Carrizo', especialidad: 'Derecho a la Salud — UBA',                      foto: '/equipo/5vero.png' },
 ]
+
+// Wrapper SVG reutilizable
+function Svg({ children, size = 22 }: { children: ReactNode; size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+      {children}
+    </svg>
+  )
+}
+
+// Set de iconos del sitio (línea fina, hereda el color del contenedor)
+function Icon({ name, size }: { name: string; size?: number }) {
+  switch (name) {
+    case 'trabajo':
+      return <Svg size={size}><path d="M2 18h20" /><path d="M20 18v-2a8 8 0 0 0-16 0v2" /><path d="M9 7.5V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2.5" /></Svg>
+    case 'transito':
+      return <Svg size={size}><path d="M5 11l1.5-4A2 2 0 0 1 8.4 6h7.2a2 2 0 0 1 1.9 1l1.5 4" /><path d="M3 11h18v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z" /><circle cx="7.5" cy="16" r="1.6" /><circle cx="16.5" cy="16" r="1.6" /></Svg>
+    case 'despidos':
+      return <Svg size={size}><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" /><path d="M14 3v5h5" /><path d="M9 13h6" /><path d="M9 17h4" /></Svg>
+    case 'propiedad':
+      return <Svg size={size}><path d="M3 21h18" /><path d="M5 21V6a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v15" /><path d="M13 21V10a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v11" /><path d="M8 9h2M8 12.5h2M8 16h2M16 13h1.5M16 16.5h1.5" /></Svg>
+    case 'salud':
+      return <Svg size={size}><path d="M10 3h4v7h7v4h-7v7h-4v-7H3v-4h7z" /></Svg>
+    case 'sucesiones':
+      return <Svg size={size}><path d="M12 4v16" /><path d="M8 20h8" /><path d="M5 7h14" /><path d="M5 7l-2.5 5a2.8 2.8 0 0 0 5 0z" /><path d="M19 7l-2.5 5a2.8 2.8 0 0 0 5 0z" /></Svg>
+    case 'experiencia':
+      return <Svg size={size}><circle cx="12" cy="8" r="5" /><path d="M9 12.5 8 21l4-2.2L16 21l-1-8.5" /></Svg>
+    case 'especialista':
+      return <Svg size={size}><circle cx="12" cy="8" r="4" /><path d="M5 21a7 7 0 0 1 14 0" /></Svg>
+    case 'honorarios':
+      return <Svg size={size}><line x1="19" y1="5" x2="5" y2="19" /><circle cx="7" cy="7" r="2.2" /><circle cx="17" cy="17" r="2.2" /></Svg>
+    case 'pin':
+      return <Svg size={size}><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z" /><circle cx="12" cy="10" r="2.5" /></Svg>
+    case 'phone':
+      return <Svg size={size}><path d="M5 4h3l2 5-2.5 1.5a11 11 0 0 0 5 5L16 14l3 1v3a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z" /></Svg>
+    case 'mail':
+      return <Svg size={size}><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3 7l9 6 9-6" /></Svg>
+    default:
+      return null
+  }
+}
 
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -65,7 +106,7 @@ export default function Home() {
           maxWidth: '1200px', margin: '0 auto', padding: '0 1.5rem',
           height: '64px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', cursor: 'pointer' }}>
             <div style={{ width: '4px', height: '36px', background: 'var(--blue)', borderRadius: '3px' }} />
             <div>
               <div style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.1rem', fontWeight: 600, color: 'var(--navy)', letterSpacing: '0.03em' }}>
@@ -75,7 +116,7 @@ export default function Home() {
                 Desde 1972
               </div>
             </div>
-          </div>
+          </Link>
 
           <div className="nav-links" style={{ display: 'flex', alignItems: 'center', gap: '1.8rem' }}>
             {[{ label: 'Áreas', href: '#areas' }, { label: 'Equipo', href: '#equipo' }, { label: 'Contacto', href: '#contacto' }].map(item => (
@@ -314,11 +355,11 @@ export default function Home() {
                 }}
               >
                 <div style={{
-                  width: '40px', height: '40px', borderRadius: '8px',
+                  width: '44px', height: '44px', borderRadius: '10px',
                   background: 'var(--blue-pale)', display: 'flex', alignItems: 'center',
-                  justifyContent: 'center', fontSize: '1.2rem', marginBottom: '0.8rem',
+                  justifyContent: 'center', color: 'var(--blue)', marginBottom: '0.9rem',
                 }}>
-                  {area.icon}
+                  <Icon name={area.icon} size={22} />
                 </div>
                 <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.1rem', fontWeight: 600, color: 'var(--navy)', marginBottom: '0.4rem' }}>
                   {area.title}
@@ -374,15 +415,17 @@ export default function Home() {
             gap: '1.2rem', maxWidth: '900px', margin: '0 auto',
           }}>
             {[
-              { icon: '🏆', title: 'Más de 50 años de experiencia', desc: 'Uno de los estudios con mayor trayectoria en derecho civil y laboral del AMBA. No aprendemos con sus casos.' },
-              { icon: '👤', title: 'Abogado especializado en su área', desc: 'Cada caso lo atiende el profesional con experiencia específica. Sin rotar archivos entre juniors.' },
-              { icon: '💼', title: 'Honorarios a resultado', desc: 'En la mayoría de los casos trabajamos a porcentaje del resultado obtenido. Si no ganamos, usted no paga.' },
+              { icon: 'experiencia', title: 'Más de 50 años de experiencia', desc: 'Uno de los estudios con mayor trayectoria en derecho civil y laboral del AMBA. No aprendemos con sus casos.' },
+              { icon: 'especialista', title: 'Abogado especializado en su área', desc: 'Cada caso lo atiende el profesional con experiencia específica. Sin rotar archivos entre juniors.' },
+              { icon: 'honorarios', title: 'Honorarios a resultado', desc: 'En la mayoría de los casos trabajamos a porcentaje del resultado obtenido. Si no ganamos, usted no paga.' },
             ].map(item => (
               <div key={item.title} style={{
                 background: 'var(--blue-pale2)', borderRadius: '12px',
                 padding: '1.5rem', border: '1px solid var(--blue-pale)', textAlign: 'center',
               }}>
-                <div style={{ fontSize: '1.8rem', marginBottom: '0.8rem' }}>{item.icon}</div>
+                <div style={{ color: 'var(--blue)', marginBottom: '0.8rem', display: 'flex', justifyContent: 'center' }}>
+                  <Icon name={item.icon} size={30} />
+                </div>
                 <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.05rem', fontWeight: 600, color: 'var(--navy)', marginBottom: '0.5rem' }}>
                   {item.title}
                 </h3>
@@ -444,13 +487,15 @@ export default function Home() {
             </h2>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               {[
-                { icon: '📍', title: 'Capital Federal', info: 'Lavalle 1546, Piso 8° «F»' },
-                { icon: '📍', title: 'La Plata', info: 'Calle 8 N° 790, Piso 3° «E»' },
-                { icon: '📞', title: 'Teléfono', info: '(011) 4374-1166 / 9177' },
-                { icon: '✉️', title: 'Email', info: 'estudio@mgfabogados.com.ar' },
+                { icon: 'pin',   title: 'Capital Federal', info: 'Lavalle 1546, Piso 8° «F»' },
+                { icon: 'pin',   title: 'La Plata',        info: 'Calle 8 N° 790, Piso 3° «E»' },
+                { icon: 'phone', title: 'Teléfono',        info: '(011) 4374-1166 / 9177' },
+                { icon: 'mail',  title: 'Email',           info: 'estudio@mgfabogados.com.ar' },
               ].map(c => (
                 <div key={c.title} style={{ display: 'flex', gap: '0.7rem', alignItems: 'flex-start' }}>
-                  <span style={{ fontSize: '1rem', marginTop: '1px' }}>{c.icon}</span>
+                  <span style={{ color: 'var(--blue)', marginTop: '1px', display: 'flex' }}>
+                    <Icon name={c.icon} size={18} />
+                  </span>
                   <div>
                     <div style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--navy)', letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: '1px' }}>{c.title}</div>
                     <div style={{ fontSize: '0.83rem', color: 'var(--text-soft)' }}>{c.info}</div>
@@ -521,10 +566,19 @@ export default function Home() {
               <div style={{ fontSize: '0.62rem', color: 'rgba(255,255,255,0.4)', letterSpacing: '0.12em', textTransform: 'uppercase', marginTop: '3px', marginBottom: '1rem' }}>
                 Martín – Grisi – Franco · Desde 1972
               </div>
-              <div style={{ fontSize: '0.78rem', color: 'rgba(255,255,255,0.5)', lineHeight: 1.6 }}>
-                <div>📍 Lavalle 1546, Piso 8° «F» — CABA</div>
-                <div>📍 Calle 8 N° 790, Piso 3° «E» — La Plata</div>
-                <div>📞 (011) 4374-1166 / 9177</div>
+              <div style={{ fontSize: '0.78rem', color: 'rgba(255,255,255,0.5)', lineHeight: 1.6, display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
+                <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                  <span style={{ color: 'var(--blue-electric)', display: 'flex', flexShrink: 0 }}><Icon name="pin" size={15} /></span>
+                  Lavalle 1546, Piso 8° «F» — CABA
+                </div>
+                <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                  <span style={{ color: 'var(--blue-electric)', display: 'flex', flexShrink: 0 }}><Icon name="pin" size={15} /></span>
+                  Calle 8 N° 790, Piso 3° «E» — La Plata
+                </div>
+                <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                  <span style={{ color: 'var(--blue-electric)', display: 'flex', flexShrink: 0 }}><Icon name="phone" size={15} /></span>
+                  (011) 4374-1166 / 9177
+                </div>
               </div>
             </div>
 
