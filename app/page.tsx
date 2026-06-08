@@ -25,13 +25,14 @@ export default function Home() {
   return (
     <main style={{ background: 'var(--white)' }}>
 
-      {/* ── ESTILOS RESPONSIVE ── */}
       <style>{`
         @media (max-width: 768px) {
           .nav-links { display: none !important; }
           .hamburger { display: flex !important; }
-          .hero-btns a, .hero-btns a { display: block !important; text-align: center; }
+          .hero-btns a { display: block !important; text-align: center; }
           .wa-btn { display: none !important; }
+          .hero-img-desktop { display: none !important; }
+          .hero-img-mobile { display: block !important; }
           .stats-bar { gap: 1.2rem !important; padding: 1rem 1.2rem !important; display: grid !important; grid-template-columns: 1fr 1fr !important; }
           .areas-grid { grid-template-columns: 1fr !important; }
           .porque-grid { grid-template-columns: 1fr !important; max-width: 100% !important; }
@@ -46,10 +47,12 @@ export default function Home() {
         @media (min-width: 769px) {
           .hamburger { display: none !important; }
           .mobile-menu { display: none !important; }
+          .hero-img-desktop { display: block !important; }
+          .hero-img-mobile { display: none !important; }
         }
       `}</style>
 
-      {/* ── NAV ── */}
+      {/* NAV */}
       <nav style={{
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
         background: 'rgba(255,255,255,0.97)',
@@ -60,7 +63,6 @@ export default function Home() {
           maxWidth: '1200px', margin: '0 auto', padding: '0 1.5rem',
           height: '64px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         }}>
-          {/* Logo */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <div style={{ width: '4px', height: '36px', background: 'var(--blue)', borderRadius: '3px' }} />
             <div>
@@ -73,7 +75,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Desktop links */}
           <div className="nav-links" style={{ display: 'flex', alignItems: 'center', gap: '1.8rem' }}>
             {[{ label: 'Áreas', href: '#areas' }, { label: 'Equipo', href: '#equipo' }, { label: 'Contacto', href: '#contacto' }].map(item => (
               <a key={item.href} href={item.href} style={{
@@ -95,7 +96,6 @@ export default function Home() {
             </Link>
           </div>
 
-          {/* Hamburger */}
           <button
             className="hamburger"
             onClick={() => setMenuOpen(!menuOpen)}
@@ -110,7 +110,6 @@ export default function Home() {
           </button>
         </div>
 
-        {/* Mobile menu */}
         {menuOpen && (
           <div className="mobile-menu" style={{
             background: '#fff', borderTop: '1px solid var(--border)',
@@ -138,7 +137,7 @@ export default function Home() {
         )}
       </nav>
 
-      {/* ── HERO ── */}
+      {/* HERO */}
       <section className="hero-section" style={{
         minHeight: '100vh',
         background: 'linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 60%, var(--blue) 100%)',
@@ -146,11 +145,36 @@ export default function Home() {
         padding: '6rem 2rem 5rem',
         position: 'relative', overflow: 'hidden',
       }}>
-        <div style={{ position: 'absolute', right: '-120px', top: '50%', transform: 'translateY(-50%)', width: '600px', height: '600px', borderRadius: '50%', background: 'rgba(41,121,255,0.12)', pointerEvents: 'none' }} />
-        <div style={{ position: 'absolute', right: '60px', top: '50%', transform: 'translateY(-50%)', width: '320px', height: '320px', borderRadius: '50%', background: 'rgba(41,121,255,0.08)', pointerEvents: 'none' }} />
 
-        <div style={{ maxWidth: '1200px', margin: '0 auto', width: '100%' }}>
-          <div style={{ maxWidth: '680px' }}>
+        {/* Imagen desktop derecha */}
+        <div className="hero-img-desktop" style={{
+          position: 'absolute', right: 0, top: 0, bottom: 0,
+          width: '45%', overflow: 'hidden', pointerEvents: 'none',
+        }}>
+          <img
+            src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=900&auto=format&fit=crop&q=80"
+            alt="Estudio jurídico"
+            style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', opacity: 0.28 }}
+          />
+          <div style={{
+            position: 'absolute', inset: 0,
+            background: 'linear-gradient(to right, var(--navy) 0%, transparent 45%)',
+          }} />
+        </div>
+
+        {/* Imagen mobile fondo traslúcido */}
+        <div className="hero-img-mobile" style={{
+          position: 'absolute', inset: 0, pointerEvents: 'none', display: 'none',
+        }}>
+          <img
+            src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=900&auto=format&fit=crop&q=80"
+            alt="Estudio jurídico"
+            style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', opacity: 0.07 }}
+          />
+        </div>
+
+        <div style={{ maxWidth: '1200px', margin: '0 auto', width: '100%', position: 'relative', zIndex: 1 }}>
+          <div style={{ maxWidth: '580px' }}>
             <div className="label anim d1" style={{ color: '#7EB3FF', marginBottom: '1.2rem' }}>
               Estudio Jurídico · Buenos Aires · Desde 1972
             </div>
@@ -166,7 +190,7 @@ export default function Home() {
             </h1>
             <p className="anim d3" style={{
               fontSize: '1rem', lineHeight: 1.75,
-              color: 'rgba(255,255,255,0.72)', maxWidth: '520px', marginBottom: '2rem',
+              color: 'rgba(255,255,255,0.72)', maxWidth: '480px', marginBottom: '2rem',
             }}>
               Accidentes de trabajo, despidos, sucesiones, propiedad horizontal y derecho a la salud.
               Atendemos en Capital Federal y La Plata.{' '}
@@ -201,11 +225,10 @@ export default function Home() {
           background: 'rgba(255,255,255,0.07)',
           borderTop: '1px solid rgba(255,255,255,0.1)',
           backdropFilter: 'blur(4px)',
-          display: 'none',
-        }} className="stats-desktop">
+        }}>
           <div className="stats-bar" style={{
             maxWidth: '1200px', margin: '0 auto', padding: '1rem 2rem',
-           display: 'flex', gap: '2.5rem', flexWrap: 'wrap', justifyContent: 'center',
+            display: 'flex', gap: '2.5rem', flexWrap: 'wrap', justifyContent: 'center',
           }}>
             {[
               { num: '+50 años', label: 'de trayectoria' },
@@ -222,7 +245,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── ÁREAS ── */}
+      {/* ÁREAS */}
       <section id="areas" className="section-pad" style={{ padding: '4rem 2rem', background: 'var(--gray-50)' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
           <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '1rem' }}>
@@ -287,7 +310,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── CTA BANNER (movido arriba) ── */}
+      {/* CTA BANNER */}
       <section style={{
         background: 'linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%)',
         padding: '3.5rem 1.5rem', textAlign: 'center',
@@ -312,7 +335,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── POR QUÉ ── */}
+      {/* POR QUÉ */}
       <section className="section-pad" style={{ padding: '4rem 2rem', background: 'var(--white)' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
@@ -347,7 +370,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── EQUIPO ── */}
+      {/* EQUIPO */}
       <section id="equipo" className="section-pad" style={{ padding: '4rem 2rem', background: 'var(--gray-50)' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
           <div style={{ marginBottom: '2rem' }}>
@@ -356,7 +379,6 @@ export default function Home() {
               Nuestro equipo
             </h2>
           </div>
-
           <div className="equipo-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(190px, 1fr))', gap: '1.2rem' }}>
             {equipo.map(ab => (
               <div key={ab.nombre} style={{
@@ -387,7 +409,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── CONTACTO + FORM ── */}
+      {/* CONTACTO */}
       <section id="contacto" className="section-pad" style={{ padding: '4rem 2rem', background: 'var(--white)' }}>
         <div className="contacto-inner" style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', gap: '3rem', flexWrap: 'wrap', alignItems: 'flex-start' }}>
           <div style={{ flex: '1', minWidth: '240px' }}>
@@ -465,13 +487,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── FOOTER ── */}
+      {/* FOOTER */}
       <footer style={{ background: 'var(--navy)', padding: '2.5rem 1.5rem' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-
-          {/* Top row */}
           <div className="footer-inner" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '2rem', marginBottom: '1.5rem' }}>
-            {/* Brand */}
             <div style={{ minWidth: '180px' }}>
               <div style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.1rem', color: '#fff', fontWeight: 600 }}>MGF ABOGADOS</div>
               <div style={{ fontSize: '0.62rem', color: 'rgba(255,255,255,0.4)', letterSpacing: '0.12em', textTransform: 'uppercase', marginTop: '3px', marginBottom: '1rem' }}>
@@ -484,7 +503,6 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Links */}
             <div>
               <div style={{ fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', marginBottom: '0.8rem' }}>
                 Servicios
@@ -498,7 +516,6 @@ export default function Home() {
               </div>
             </div>
 
-            {/* CTA */}
             <div>
               <div style={{ fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', marginBottom: '0.8rem' }}>
                 Consultas
@@ -519,7 +536,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Bottom */}
           <div style={{ paddingTop: '1.2rem', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
             <p style={{ fontSize: '0.68rem', color: 'rgba(255,255,255,0.28)' }}>
               © {new Date().getFullYear()} MGF Abogados. Todos los derechos reservados.
