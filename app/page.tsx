@@ -66,6 +66,8 @@ function Icon({ name, size }: { name: string; size?: number }) {
       return <Svg size={size}><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3 7l9 6 9-6" /></Svg>
     case 'whatsapp':
       return <Svg size={size}><path d="M12 3a9 9 0 0 0-7.7 13.7L3 21l4.5-1.2A9 9 0 1 0 12 3z" /><path d="M8.5 8.7c0 .8.3 1.9 1.3 3.1 1.1 1.4 2.4 2.2 3.3 2.5.8.3 1.5.1 1.9-.4l.3-.5-1.8-1-.7.7c-.9-.4-1.9-1.4-2.3-2.3l.7-.7-1-1.8-.5.3c-.3.2-.5.5-.5 1z" /></Svg>
+    case 'arrow-up':
+      return <Svg size={size}><line x1="12" y1="19" x2="12" y2="5" /><polyline points="5 12 12 5 19 12" /></Svg>
     default:
       return null
   }
@@ -85,6 +87,10 @@ export default function Home() {
     if (form.area) p.set('area', form.area)
     const qs = p.toString()
     return qs ? `/consulta?${qs}` : '/consulta'
+  }
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   const inputs: { label: string; type: string; placeholder: string; name: 'nombre' | 'telefono' | 'email' }[] = [
@@ -124,6 +130,22 @@ export default function Home() {
           .hero-img-mobile { display: none !important; }
           .stats-mobile-section { display: none !important; }
         }
+        .scroll-top-btn {
+          width: 42px; height: 42px; border-radius: 50%;
+          background: rgba(255,255,255,0.08);
+          border: 1px solid rgba(255,255,255,0.18);
+          color: rgba(255,255,255,0.7);
+          display: flex; align-items: center; justify-content: center;
+          cursor: pointer; flex-shrink: 0;
+          transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+        }
+        .scroll-top-btn:hover {
+          background: var(--blue-electric);
+          border-color: var(--blue-electric);
+          color: #fff;
+        }
+        .scroll-top-btn:hover svg { transform: translateY(-2px); }
+        .scroll-top-btn svg { transition: transform 0.2s ease; }
       `}</style>
 
       {/* NAV */}
@@ -674,10 +696,13 @@ export default function Home() {
             </div>
           </div>
 
-          <div style={{ paddingTop: '1.2rem', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
-            <p style={{ fontSize: '0.68rem', color: 'rgba(255,255,255,0.28)' }}>
+          <div style={{ paddingTop: '1.2rem', borderTop: '1px solid rgba(255,255,255,0.08)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+            <p style={{ fontSize: '0.68rem', color: 'rgba(255,255,255,0.28)', margin: 0 }}>
               © {new Date().getFullYear()} MGF Abogados. Todos los derechos reservados.
             </p>
+            <button type="button" onClick={scrollToTop} className="scroll-top-btn" aria-label="Volver arriba" title="Volver arriba" style={{ marginRight: '25%' }}>
+              <Icon name="arrow-up" size={20} />
+            </button>
           </div>
         </div>
       </footer>
