@@ -97,6 +97,7 @@ export default function Home() {
     <main style={{ background: 'var(--white)' }}>
 
       <style>{`
+        .hero-title { text-wrap: balance; }
         @media (max-width: 768px) {
           .nav-links { display: none !important; }
           .hamburger { display: flex !important; }
@@ -247,19 +248,19 @@ export default function Home() {
         </div>
 
         <div style={{ maxWidth: '1200px', margin: '0 auto', width: '100%', position: 'relative', zIndex: 1 }}>
-          <div style={{ maxWidth: '580px' }}>
+          <div style={{ maxWidth: '620px' }}>
             <div className="label anim d1" style={{ color: '#7EB3FF', marginBottom: '1.2rem' }}>
               Estudio Jurídico · Buenos Aires · Desde 1972
             </div>
-            <h1 className="anim d2" style={{
+            <h1 className="anim d2 hero-title" style={{
               fontFamily: "'Playfair Display', serif",
-              fontSize: 'clamp(2.2rem, 6vw, 5rem)',
-              fontWeight: 600, lineHeight: 1.1,
+              fontSize: 'clamp(1.9rem, 4.4vw, 3.7rem)',
+              fontWeight: 600, lineHeight: 1.15,
               color: '#FFFFFF', marginBottom: '1.2rem',
             }}>
-              Más de 50 años<br />
-              <em style={{ color: '#7EB3FF', fontStyle: 'italic' }}>resolviendo</em>{' '}
-              lo que<br />a otros no les sale.
+              Más de 50 años brindando{' '}
+              <em style={{ color: '#7EB3FF', fontStyle: 'italic' }}>soluciones legales</em>{' '}
+              de alta calidad
             </h1>
             <p className="anim d3" style={{
               fontSize: '1rem', lineHeight: 1.75,
