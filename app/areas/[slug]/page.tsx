@@ -1,9 +1,39 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
+import type { ReactNode } from 'react'
 import { areas } from '@/lib/areas'
 
 const WHATSAPP = 'https://api.whatsapp.com/send?phone=5491140362772'
+
+// Wrapper SVG reutilizable (mismo set que la home)
+function Svg({ children, size = 22 }: { children: ReactNode; size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+      {children}
+    </svg>
+  )
+}
+
+// Íconos de línea fina (idénticos a la home), mapeados por slug
+function AreaIcon({ slug, size }: { slug: string; size?: number }) {
+  switch (slug) {
+    case 'accidentes-trabajo':
+      return <Svg size={size}><path d="M2 18h20" /><path d="M20 18v-2a8 8 0 0 0-16 0v2" /><path d="M9 7.5V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2.5" /></Svg>
+    case 'accidentes-transito':
+      return <Svg size={size}><path d="M5 11l1.5-4A2 2 0 0 1 8.4 6h7.2a2 2 0 0 1 1.9 1l1.5 4" /><path d="M3 11h18v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z" /><circle cx="7.5" cy="16" r="1.6" /><circle cx="16.5" cy="16" r="1.6" /></Svg>
+    case 'despidos':
+      return <Svg size={size}><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" /><path d="M14 3v5h5" /><path d="M9 13h6" /><path d="M9 17h4" /></Svg>
+    case 'propiedad-horizontal':
+      return <Svg size={size}><path d="M3 21h18" /><path d="M5 21V6a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v15" /><path d="M13 21V10a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v11" /><path d="M8 9h2M8 12.5h2M8 16h2M16 13h1.5M16 16.5h1.5" /></Svg>
+    case 'derecho-salud':
+      return <Svg size={size}><path d="M10 3h4v7h7v4h-7v7h-4v-7H3v-4h7z" /></Svg>
+    case 'sucesiones':
+      return <Svg size={size}><path d="M12 4v16" /><path d="M8 20h8" /><path d="M5 7h14" /><path d="M5 7l-2.5 5a2.8 2.8 0 0 0 5 0z" /><path d="M19 7l-2.5 5a2.8 2.8 0 0 0 5 0z" /></Svg>
+    default:
+      return <Svg size={size}><circle cx="12" cy="12" r="9" /><path d="M9.5 9a2.5 2.5 0 0 1 4.9.7c0 1.7-2.4 2.3-2.4 2.3" /><path d="M12 16h.01" /></Svg>
+  }
+}
 
 export function generateStaticParams() {
   return areas.map((a) => ({ slug: a.slug }))
@@ -103,9 +133,9 @@ export default async function AreaPage(
           <div style={{
             width: '52px', height: '52px', borderRadius: '12px',
             background: 'rgba(255,255,255,0.14)', display: 'flex', alignItems: 'center',
-            justifyContent: 'center', fontSize: '1.6rem', marginBottom: '1.2rem',
+            justifyContent: 'center', color: '#fff', marginBottom: '1.2rem',
           }}>
-            {area.icon}
+            <AreaIcon slug={area.slug} size={26} />
           </div>
 
           <div className="label" style={{ color: '#7EB3FF', marginBottom: '0.8rem' }}>{area.heroLabel}</div>
@@ -200,46 +230,38 @@ export default async function AreaPage(
         </div>
       </section>
 
-      {/* OTRAS ÁREAS */}
+      {/* OTRAS ÁREAS — cards como la home, sin descripción */}
       <section className="area-section-pad" style={{ padding: '4rem 2rem', background: 'var(--gray-50)' }}>
         <style>{`
           .otra-card { transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease; }
-          .otra-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--blue) !important; }
-          .otra-card:hover .otra-arrow { transform: translateX(3px); }
-          .otra-arrow { transition: transform 0.2s ease; }
+          .otra-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); border-color: var(--blue) !important; }
         `}</style>
         <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', marginBottom: '1.8rem' }}>
-            <div style={{ width: '3px', height: '22px', background: 'var(--blue)', borderRadius: '2px' }} />
-            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.4rem', fontWeight: 600, color: 'var(--navy)' }}>
+          <div style={{ marginBottom: '1.8rem' }}>
+            <div className="label" style={{ marginBottom: '0.4rem' }}>Más especialidades</div>
+            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 600, color: 'var(--navy)' }}>
               Otras áreas de práctica
             </h2>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '1rem' }}>
             {otras.map((o) => (
               <Link key={o.slug} href={`/areas/${o.slug}`} className="otra-card" style={{
-                display: 'flex', flexDirection: 'column', gap: '0.7rem',
-                background: 'var(--white)', borderRadius: '12px', padding: '1.4rem',
+                display: 'flex', alignItems: 'center', gap: '0.9rem',
+                background: 'var(--white)', borderRadius: '10px', padding: '1.1rem 1.2rem',
                 border: '1px solid var(--border)', boxShadow: 'var(--shadow-sm)',
-                textDecoration: 'none', height: '100%',
+                textDecoration: 'none',
               }}>
                 <div style={{
                   width: '42px', height: '42px', borderRadius: '10px',
                   background: 'var(--blue-pale)', display: 'flex', alignItems: 'center',
-                  justifyContent: 'center', fontSize: '1.3rem',
+                  justifyContent: 'center', color: 'var(--blue)', flexShrink: 0,
                 }}>
-                  {o.icon}
+                  <AreaIcon slug={o.slug} size={21} />
                 </div>
-                <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.05rem', fontWeight: 600, color: 'var(--navy)' }}>
+                <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: '1rem', fontWeight: 600, color: 'var(--navy)', lineHeight: 1.25 }}>
                   {o.title}
                 </h3>
-                <p style={{ fontSize: '0.83rem', lineHeight: 1.55, color: 'var(--text-soft)', flex: 1 }}>
-                  {o.heroDescription}
-                </p>
-                <span style={{ fontSize: '0.74rem', fontWeight: 600, color: 'var(--blue-electric)', letterSpacing: '0.06em', textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                  Ver área <span className="otra-arrow">→</span>
-                </span>
               </Link>
             ))}
           </div>

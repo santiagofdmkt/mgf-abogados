@@ -382,9 +382,7 @@ function ConsultaInner() {
   const paramArea = sp.get('area');
   const initialArea = paramArea && areas[paramArea] ? paramArea : null;
 
-  const [step, setStep] = useState<number>(
-    initialArea === null ? 1 : initialArea === 'otro' ? 3 : 2
-  );
+  const [step, setStep] = useState<number>(initialArea === null ? 1 : 2);
   const [area, setArea] = useState<string | null>(initialArea);
   const [answers, setAnswers] = useState<Record<string, string | string[]>>({});
   const [detalle, setDetalle] = useState('');
@@ -399,6 +397,12 @@ function ConsultaInner() {
     return c;
   });
   const [shake, setShake] = useState(false);
+
+  // Paso 1: elegir un área marca la opción y avanza directo al Paso 2 (también "Otro")
+  const selectArea = (k: string) => {
+    setArea(k);
+    setStep(2);
+  };
 
   const selectRadio = (id: string, value: string) => {
     setAnswers((prev) => ({ ...prev, [id]: value }));
@@ -447,16 +451,11 @@ function ConsultaInner() {
       window.open('https://api.whatsapp.com/send?phone=' + WA + '&text=' + buildMsg(), '_blank');
       return;
     }
-    if (step === 1 && area === 'otro') {
-      setStep(3);
-      return;
-    }
     setStep(step + 1);
   };
 
   const goBack = () => {
-    if (step === 3 && area === 'otro') setStep(1);
-    else if (step > 1) setStep(step - 1);
+    if (step > 1) setStep(step - 1);
   };
 
   const RadioRow = ({
@@ -532,7 +531,7 @@ function ConsultaInner() {
                   {order.map((k) => {
                     const a = areas[k];
                     return (
-                      <button key={k} type="button" onClick={() => setArea(k)} className="mgf-area" data-on={area === k ? 'true' : 'false'}>
+                      <button key={k} type="button" onClick={() => selectArea(k)} className="mgf-area" data-on={area === k ? 'true' : 'false'}>
                         <span className="mgf-ico">
                           <Icon name={a.icon} size={19} />
                         </span>
@@ -624,28 +623,30 @@ function ConsultaInner() {
             )}
           </div>
 
-          {/* Footer */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', gap: 10, padding: '18px 26px', borderTop: '1px solid var(--border)', background: 'var(--gray-50)' }}>
-            <button type="button" onClick={goBack} className="mgf-back" style={{ visibility: step === 1 ? 'hidden' : 'visible' }}>
-              Atrás
-            </button>
-            <button
-              type="button"
-              onClick={goNext}
-              className={shake ? 'mgf-next mgf-shake' : 'mgf-next'}
-              style={{ background: step === 4 ? '#25D366' : 'var(--navy)' }}
-            >
-              {step === 4 ? (
-                <>
-                  <Icon name="whatsapp" size={18} /> Enviar por WhatsApp
-                </>
-              ) : (
-                <>
-                  Continuar <Icon name="arrow" size={16} />
-                </>
-              )}
-            </button>
-          </div>
+          {/* Footer — oculto en el Paso 1 (la selección ya avanza sola) */}
+          {step !== 1 && (
+            <div style={{ display: 'flex', justifyContent: 'space-between', gap: 10, padding: '18px 26px', borderTop: '1px solid var(--border)', background: 'var(--gray-50)' }}>
+              <button type="button" onClick={goBack} className="mgf-back">
+                Atrás
+              </button>
+              <button
+                type="button"
+                onClick={goNext}
+                className={shake ? 'mgf-next mgf-shake' : 'mgf-next'}
+                style={{ background: step === 4 ? '#25D366' : 'var(--navy)' }}
+              >
+                {step === 4 ? (
+                  <>
+                    <Icon name="whatsapp" size={18} /> Enviar por WhatsApp
+                  </>
+                ) : (
+                  <>
+                    Continuar <Icon name="arrow" size={16} />
+                  </>
+                )}
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </main>

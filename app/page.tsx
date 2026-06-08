@@ -366,7 +366,7 @@ export default function Home() {
             {areas.map(area => (
               <Link key={area.slug} href={`/areas/${area.slug}`}
                 style={{
-                  background: 'var(--white)', padding: '1.5rem',
+                  background: 'rgba(148, 163, 184, 0.08)', padding: '1.5rem',
                   borderRadius: '10px', textDecoration: 'none',
                   border: '1px solid var(--border)',
                   display: 'block', transition: 'all 0.2s ease',
@@ -470,9 +470,9 @@ export default function Home() {
       </section>
 
       {/* EQUIPO */}
-      <section id="equipo" className="section-pad" style={{ padding: '4rem 2rem', background: 'var(--gray-50)' }}>
+      <section id="equipo" className="section-pad" style={{ padding: '2.75rem 2rem', background: '#f1f5f9' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-          <div style={{ marginBottom: '2rem' }}>
+          <div style={{ marginBottom: '1.5rem' }}>
             <div className="label" style={{ marginBottom: '0.4rem' }}>El estudio</div>
             <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.6rem, 3.5vw, 2.4rem)', color: 'var(--navy)', fontWeight: 600 }}>
               Nuestro equipo
