@@ -31,6 +31,7 @@ export default function Home() {
           .nav-links { display: none !important; }
           .hamburger { display: flex !important; }
           .hero-btns a, .hero-btns a { display: block !important; text-align: center; }
+          .wa-btn { display: none !important; }
           .stats-bar { gap: 1.2rem !important; padding: 1rem 1.2rem !important; display: grid !important; grid-template-columns: 1fr 1fr !important; }
           .areas-grid { grid-template-columns: 1fr !important; }
           .porque-grid { grid-template-columns: 1fr !important; max-width: 100% !important; }
@@ -180,7 +181,7 @@ export default function Home() {
               }}>
                 Iniciar consulta gratuita →
               </Link>
-              <a href="https://api.whatsapp.com/send?phone=5491140362772" target="_blank" rel="noopener noreferrer"
+              <a className="wa-btn" href="https://api.whatsapp.com/send?phone=5491140362772" target="_blank" rel="noopener noreferrer"
                 style={{
                   background: 'rgba(255,255,255,0.12)', color: '#fff',
                   padding: '14px 32px', borderRadius: '6px',
@@ -200,7 +201,8 @@ export default function Home() {
           background: 'rgba(255,255,255,0.07)',
           borderTop: '1px solid rgba(255,255,255,0.1)',
           backdropFilter: 'blur(4px)',
-        }}>
+          display: 'none',
+        }} className="stats-desktop">
           <div className="stats-bar" style={{
             maxWidth: '1200px', margin: '0 auto', padding: '1rem 2rem',
            display: 'flex', gap: '2.5rem', flexWrap: 'wrap', justifyContent: 'center',
