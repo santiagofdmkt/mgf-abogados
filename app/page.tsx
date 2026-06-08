@@ -33,8 +33,8 @@ export default function Home() {
           .wa-btn { display: none !important; }
           .hero-img-desktop { display: none !important; }
           .hero-img-mobile { display: block !important; }
-          .stats-bar-wrap { position: static !important; margin-top: 2rem; border-top: none !important; }
-          .stats-bar { gap: 1.2rem !important; padding: 1rem 1.2rem !important; display: grid !important; grid-template-columns: 1fr 1fr !important; }
+          .stats-bar-wrap { display: none !important; }
+          .stats-mobile-section { display: block !important; }
           .areas-grid { grid-template-columns: 1fr !important; }
           .porque-grid { grid-template-columns: 1fr !important; max-width: 100% !important; }
           .equipo-grid { grid-template-columns: repeat(2, 1fr) !important; }
@@ -50,6 +50,7 @@ export default function Home() {
           .mobile-menu { display: none !important; }
           .hero-img-desktop { display: block !important; }
           .hero-img-mobile { display: none !important; }
+          .stats-mobile-section { display: none !important; }
         }
       `}</style>
 
@@ -143,7 +144,7 @@ export default function Home() {
         minHeight: '100vh',
         background: 'linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 60%, var(--blue) 100%)',
         display: 'flex', alignItems: 'center',
-        padding: '6rem 2rem 5rem',
+        padding: '6rem 2rem 6rem',
         position: 'relative', overflow: 'hidden',
       }}>
 
@@ -219,6 +220,55 @@ export default function Home() {
             </div>
           </div>
         </div>
+
+        {/* Stats bar — solo desktop, position absolute */}
+        <div className="stats-bar-wrap" style={{
+          position: 'absolute', bottom: 0, left: 0, right: 0,
+          background: 'rgba(255,255,255,0.07)',
+          borderTop: '1px solid rgba(255,255,255,0.1)',
+          backdropFilter: 'blur(4px)',
+        }}>
+          <div style={{
+            maxWidth: '1200px', margin: '0 auto', padding: '1rem 2rem',
+            display: 'flex', gap: '2.5rem', flexWrap: 'wrap', justifyContent: 'center',
+          }}>
+            {[
+              { num: '+50 años', label: 'de trayectoria' },
+              { num: '5 abogados', label: 'especializados por área' },
+              { num: '2 oficinas', label: 'Cap. Federal y La Plata' },
+              { num: 'Sin cargo', label: 'primera consulta' },
+            ].map(s => (
+              <div key={s.label}>
+                <div style={{ fontSize: '0.95rem', fontWeight: 700, color: '#fff', fontFamily: "'Inter', sans-serif" }}>{s.num}</div>
+                <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.55)', letterSpacing: '0.04em' }}>{s.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Stats mobile — fuera del hero, sección separada */}
+      <div className="stats-mobile-section" style={{
+        display: 'none',
+        background: 'var(--navy)',
+        padding: '1.2rem 1.5rem',
+      }}>
+        <div style={{
+          display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem',
+        }}>
+          {[
+            { num: '+50 años', label: 'de trayectoria' },
+            { num: '5 abogados', label: 'especializados por área' },
+            { num: '2 oficinas', label: 'Cap. Federal y La Plata' },
+            { num: 'Sin cargo', label: 'primera consulta' },
+          ].map(s => (
+            <div key={s.label}>
+              <div style={{ fontSize: '0.95rem', fontWeight: 700, color: '#fff', fontFamily: "'Inter', sans-serif" }}>{s.num}</div>
+              <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.55)', letterSpacing: '0.04em' }}>{s.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
 
         {/* Stats bar */}
         <div className="stats-bar-wrap" style={{
