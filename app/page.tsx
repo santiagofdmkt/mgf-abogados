@@ -104,6 +104,8 @@ export default function Home() {
 
       <style>{`
         .hero-title { text-wrap: balance; }
+        .btn-zoom { transition: transform 0.2s ease, filter 0.2s ease, box-shadow 0.2s ease; }
+        .btn-zoom:hover { transform: scale(1.04); }
         @media (max-width: 768px) {
           .nav-links { display: none !important; }
           .hamburger { display: flex !important; }
@@ -183,7 +185,7 @@ export default function Home() {
                 {item.label}
               </a>
             ))}
-            <Link href="/consulta" style={{
+            <Link href="/consulta" className="btn-zoom" style={{
               background: 'var(--blue)', color: '#fff', padding: '10px 22px',
               borderRadius: '6px', fontSize: '0.8rem', fontWeight: 600,
               letterSpacing: '0.06em', textTransform: 'uppercase', textDecoration: 'none',
@@ -293,7 +295,7 @@ export default function Home() {
               <strong style={{ color: '#fff' }}>Primera consulta sin cargo.</strong>
             </p>
             <div className="anim d4 hero-btns" style={{ display: 'flex', gap: '0.8rem', flexWrap: 'wrap' }}>
-              <Link href="/consulta" style={{
+              <Link href="/consulta" className="btn-zoom" style={{
                 background: 'var(--blue-electric)', color: '#fff',
                 padding: '14px 32px', borderRadius: '6px',
                 fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.06em',
@@ -301,7 +303,7 @@ export default function Home() {
               }}>
                 Iniciar consulta gratuita →
               </Link>
-              <a className="wa-btn" href="https://api.whatsapp.com/send?phone=5491140362772" target="_blank" rel="noopener noreferrer"
+              <a className="wa-btn btn-zoom" href="https://api.whatsapp.com/send?phone=5491140362772" target="_blank" rel="noopener noreferrer"
                 style={{
                   background: 'rgba(255,255,255,0.12)', color: '#fff',
                   padding: '14px 32px', borderRadius: '6px',
@@ -374,7 +376,7 @@ export default function Home() {
                 Áreas de práctica
               </h2>
             </div>
-            <Link href="/consulta" style={{
+            <Link href="/consulta" className="btn-zoom" style={{
               background: 'transparent', color: 'var(--navy)', padding: '9px 20px',
               borderRadius: '6px', fontSize: '0.75rem', fontWeight: 600,
               letterSpacing: '0.06em', textTransform: 'uppercase', textDecoration: 'none',
@@ -443,7 +445,7 @@ export default function Home() {
           <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.7)', marginBottom: '1.5rem', lineHeight: 1.6 }}>
             Completá el formulario guiado y un abogado especializado te contactará a la brevedad.
           </p>
-          <Link href="/consulta" style={{
+          <Link href="/consulta" className="btn-zoom" style={{
             background: 'var(--blue-electric)', color: '#fff',
             padding: '14px 40px', borderRadius: '8px',
             fontSize: '0.88rem', fontWeight: 700, letterSpacing: '0.06em',
@@ -566,7 +568,7 @@ export default function Home() {
               ))}
             </div>
 
-            <a href="https://api.whatsapp.com/send?phone=5491140362772" target="_blank" rel="noopener noreferrer" style={{
+            <a href="https://api.whatsapp.com/send?phone=5491140362772" target="_blank" rel="noopener noreferrer" className="btn-zoom" style={{
               marginTop: '1.2rem', background: '#25D366', color: '#fff',
               padding: '13px 22px', borderRadius: '8px',
               fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.04em', textDecoration: 'none',
@@ -625,7 +627,7 @@ export default function Home() {
                   {areas.map(a => <option key={a.slug} value={a.slug}>{a.title}</option>)}
                 </select>
               </div>
-              <Link href={consultaHref()} style={{
+              <Link href={consultaHref()} className="btn-zoom" style={{
                 background: 'var(--blue)', color: '#fff', padding: '13px',
                 textAlign: 'center', textDecoration: 'none', fontSize: '0.82rem',
                 letterSpacing: '0.08em', textTransform: 'uppercase', fontWeight: 600,
@@ -680,7 +682,7 @@ export default function Home() {
               <div style={{ fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', marginBottom: '0.8rem' }}>
                 Consultas
               </div>
-              <Link href="/consulta" style={{
+              <Link href="/consulta" className="btn-zoom" style={{
                 background: 'var(--blue-electric)', color: '#fff',
                 padding: '11px 22px', borderRadius: '6px',
                 fontSize: '0.78rem', fontWeight: 600, letterSpacing: '0.06em',

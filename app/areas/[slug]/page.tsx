@@ -58,8 +58,9 @@ export default async function AreaPage(
   const otras = areas.filter((a) => a.slug !== area.slug)
 
   return (
-    <main style={{ background: 'var(--white)' }}>
+    <main id="top" style={{ background: 'var(--white)', scrollBehavior: 'smooth' }}>
       <style>{`
+        html { scroll-behavior: smooth; }
         @media (max-width: 768px) {
           .area-nav-cta-full { display: none !important; }
           .area-section-pad { padding: 3rem 1.2rem !important; }
@@ -70,6 +71,22 @@ export default async function AreaPage(
           .area-nav-cta-short { display: none !important; }
         }
         details.area-faq summary::-webkit-details-marker { display: none; }
+        .scroll-top-btn {
+          width: 42px; height: 42px; border-radius: 50%;
+          background: rgba(255,255,255,0.08);
+          border: 1px solid rgba(255,255,255,0.18);
+          color: rgba(255,255,255,0.7);
+          display: flex; align-items: center; justify-content: center;
+          cursor: pointer; flex-shrink: 0; text-decoration: none;
+          transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+        }
+        .scroll-top-btn:hover {
+          background: var(--blue-electric);
+          border-color: var(--blue-electric);
+          color: #fff;
+        }
+        .scroll-top-btn:hover svg { transform: translateY(-2px); }
+        .scroll-top-btn svg { transition: transform 0.2s ease; }
       `}</style>
 
       {/* NAV */}
@@ -302,15 +319,23 @@ export default async function AreaPage(
               <Link href="/consulta" style={{
                 background: 'var(--blue-electric)', color: '#fff', padding: '11px 22px', borderRadius: '6px',
                 fontSize: '0.78rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', textDecoration: 'none', display: 'inline-block',
+                marginBottom: '0.8rem',
               }}>
                 Consulta gratuita →
               </Link>
+              <div style={{ display: 'flex', gap: '1rem', marginTop: '0.5rem' }}>
+                <a href="https://instagram.com/mgfabogados" target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.45)', textDecoration: 'none' }}>Instagram</a>
+                <a href="https://facebook.com/61553341857581" target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.45)', textDecoration: 'none' }}>Facebook</a>
+              </div>
             </div>
           </div>
-          <div style={{ paddingTop: '1.2rem', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
-            <p style={{ fontSize: '0.68rem', color: 'rgba(255,255,255,0.28)' }}>
+          <div style={{ paddingTop: '1.2rem', borderTop: '1px solid rgba(255,255,255,0.08)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+            <p style={{ fontSize: '0.68rem', color: 'rgba(255,255,255,0.28)', margin: 0 }}>
               © {new Date().getFullYear()} MGF Abogados. Todos los derechos reservados.
             </p>
+            <a href="#top" className="scroll-top-btn" aria-label="Volver arriba" title="Volver arriba" style={{ marginRight: '25%' }}>
+              <Svg size={20}><line x1="12" y1="19" x2="12" y2="5" /><polyline points="5 12 12 5 19 12" /></Svg>
+            </a>
           </div>
         </div>
       </footer>
