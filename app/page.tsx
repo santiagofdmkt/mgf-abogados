@@ -74,6 +74,25 @@ function Icon({ name, size }: { name: string; size?: number }) {
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false)
 
+  // Mini-formulario de contacto: ahora controlado. Lleva los datos al wizard /consulta por query params.
+  const [form, setForm] = useState({ nombre: '', telefono: '', email: '', area: '' })
+
+  const consultaHref = () => {
+    const p = new URLSearchParams()
+    if (form.nombre) p.set('nombre', form.nombre)
+    if (form.telefono) p.set('telefono', form.telefono)
+    if (form.email) p.set('email', form.email)
+    if (form.area) p.set('area', form.area)
+    const qs = p.toString()
+    return qs ? `/consulta?${qs}` : '/consulta'
+  }
+
+  const inputs: { label: string; type: string; placeholder: string; name: 'nombre' | 'telefono' | 'email' }[] = [
+    { label: 'Nombre completo', type: 'text', placeholder: 'Juan García', name: 'nombre' },
+    { label: 'Teléfono / WhatsApp', type: 'tel', placeholder: '+54 11 ...', name: 'telefono' },
+    { label: 'Email', type: 'email', placeholder: 'juan@email.com', name: 'email' },
+  ]
+
   return (
     <main style={{ background: 'var(--white)' }}>
 
@@ -545,45 +564,51 @@ export default function Home() {
               Dejanos tu consulta
             </div>
             <p style={{ fontSize: '0.8rem', color: 'var(--text-soft)', marginBottom: '1.4rem' }}>
-              Completá tus datos y te contactamos.
+              Completá tus datos y seguí con el formulario guiado.
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.9rem' }}>
-              {[
-                { label: 'Nombre completo', type: 'text', placeholder: 'Juan García' },
-                { label: 'Teléfono / WhatsApp', type: 'tel', placeholder: '+54 11 ...' },
-                { label: 'Email', type: 'email', placeholder: 'juan@email.com' },
-              ].map(f => (
-                <div key={f.label}>
+              {inputs.map(f => (
+                <div key={f.name}>
                   <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--text-soft)', marginBottom: '4px' }}>
                     {f.label}
                   </label>
-                  <input type={f.type} placeholder={f.placeholder} style={{
-                    width: '100%', border: '1px solid var(--border)', borderRadius: '8px',
-                    padding: '11px 12px', fontSize: '0.9rem', outline: 'none',
-                    fontFamily: "'Inter', sans-serif", color: 'var(--text)', background: 'var(--gray-50)',
-                  }} />
+                  <input
+                    type={f.type}
+                    placeholder={f.placeholder}
+                    value={form[f.name]}
+                    onChange={e => setForm({ ...form, [f.name]: e.target.value })}
+                    style={{
+                      width: '100%', border: '1px solid var(--border)', borderRadius: '8px',
+                      padding: '11px 12px', fontSize: '0.9rem', outline: 'none',
+                      fontFamily: "'Inter', sans-serif", color: 'var(--text)', background: 'var(--gray-50)',
+                    }}
+                  />
                 </div>
               ))}
               <div>
                 <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--text-soft)', marginBottom: '4px' }}>
                   Tipo de consulta
                 </label>
-                <select style={{
-                  width: '100%', border: '1px solid var(--border)', borderRadius: '8px',
-                  padding: '11px 12px', fontSize: '0.9rem', outline: 'none',
-                  fontFamily: "'Inter', sans-serif", color: 'var(--text)', background: 'var(--gray-50)',
-                }}>
+                <select
+                  value={form.area}
+                  onChange={e => setForm({ ...form, area: e.target.value })}
+                  style={{
+                    width: '100%', border: '1px solid var(--border)', borderRadius: '8px',
+                    padding: '11px 12px', fontSize: '0.9rem', outline: 'none',
+                    fontFamily: "'Inter', sans-serif", color: 'var(--text)', background: 'var(--gray-50)',
+                  }}
+                >
                   <option value="">Seleccioná un área</option>
                   {areas.map(a => <option key={a.slug} value={a.slug}>{a.title}</option>)}
                 </select>
               </div>
-              <Link href="/consulta" style={{
+              <Link href={consultaHref()} style={{
                 background: 'var(--blue)', color: '#fff', padding: '13px',
                 textAlign: 'center', textDecoration: 'none', fontSize: '0.82rem',
                 letterSpacing: '0.08em', textTransform: 'uppercase', fontWeight: 600,
                 marginTop: '0.3rem', display: 'block', borderRadius: '8px',
               }}>
-                Enviar consulta →
+                Continuar consulta →
               </Link>
             </div>
           </div>
