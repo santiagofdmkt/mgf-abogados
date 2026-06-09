@@ -65,6 +65,8 @@ export default function PanelClient({ consultas }: { consultas: Consulta[] }) {
   const [ordenInterno, setOrdenInterno] = useState<'reciente' | 'antiguo' | 'prioridad'>('reciente');
 
   const [sel, setSel] = useState<Consulta | null>(null);
+  // Columna activa en la vista mobile (pestañas)
+  const [colActiva, setColActiva] = useState<string>('nuevo');
   // Estado local de las tarjetas para que el arrastre se vea instantáneo
   const [items, setItems] = useState<Consulta[]>(consultas);
 
@@ -156,6 +158,8 @@ export default function PanelClient({ consultas }: { consultas: Consulta[] }) {
     setSel(null);
   };
 
+  const colActivaInfo = COLUMNAS.find((c) => c.id === colActiva) || COLUMNAS[0];
+
   return (
     <main style={{ minHeight: '100vh', background: '#f1f5f9', fontFamily: 'Inter, sans-serif', overflowX: 'hidden' }}>
       <div
@@ -215,112 +219,171 @@ export default function PanelClient({ consultas }: { consultas: Consulta[] }) {
           </div>
         </div>
 
-        {/* Kanban */}
-        <DragDropContext onDragEnd={onDragEnd}>
-          <div
-            style={
-              isMobile
-                ? {
-                    display: 'flex',
-                    gap: 12,
-                    alignItems: 'flex-start',
-                    overflowX: 'auto',
-                    overflowY: 'hidden',
-                    WebkitOverflowScrolling: 'touch',
-                    scrollSnapType: 'x proximity',
-                    paddingBottom: 10,
-                  }
-                : {
-                    display: 'grid',
-                    gridTemplateColumns: `repeat(${COLUMNAS.length}, 1fr)`,
-                    gap: 14,
-                    alignItems: 'start',
-                  }
-            }
-          >
-            {COLUMNAS.map((col) => (
-              <Droppable droppableId={col.id} key={col.id}>
-                {(provided, snapshot) => (
-                  <div
-                    ref={provided.innerRef}
-                    {...provided.droppableProps}
+        {/* Kanban: en desktop tablero con drag & drop, en mobile pestañas + lista */}
+        {!isMobile ? (
+          <DragDropContext onDragEnd={onDragEnd}>
+            <div style={{ display: 'grid', gridTemplateColumns: `repeat(${COLUMNAS.length}, 1fr)`, gap: 14, alignItems: 'start' }}>
+              {COLUMNAS.map((col) => (
+                <Droppable droppableId={col.id} key={col.id}>
+                  {(provided, snapshot) => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.droppableProps}
+                      style={{
+                        background: snapshot.isDraggingOver ? '#eef2ff' : '#eef1f5',
+                        borderRadius: 12,
+                        padding: 10,
+                        minHeight: 200,
+                        border: '1px solid #e2e8f0',
+                        transition: 'background .15s ease',
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '4px 6px 12px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                          <span style={{ width: 9, height: 9, borderRadius: '50%', background: col.color }} />
+                          <span style={{ fontSize: 13.5, fontWeight: 700, color: '#0f2747' }}>{col.label}</span>
+                        </div>
+                        <span style={{ fontSize: 12, color: '#94a3b8', background: '#fff', borderRadius: 99, padding: '1px 9px', border: '1px solid #e2e8f0' }}>
+                          {porColumna[col.id].length}
+                        </span>
+                      </div>
+
+                      {porColumna[col.id].map((c, index) => (
+                        <Draggable draggableId={c.id} index={index} key={c.id}>
+                          {(prov, snap) => (
+                            <div
+                              ref={prov.innerRef}
+                              {...prov.draggableProps}
+                              {...prov.dragHandleProps}
+                              onClick={() => setSel(c)}
+                              style={{
+                                background: '#fff',
+                                borderRadius: 10,
+                                border: '1px solid #e2e8f0',
+                                padding: 12,
+                                marginBottom: 9,
+                                boxShadow: snap.isDragging ? '0 8px 24px rgba(15,39,71,0.18)' : '0 1px 2px rgba(0,0,0,0.04)',
+                                cursor: 'grab',
+                                ...prov.draggableProps.style,
+                              }}
+                            >
+                              <CardCuerpo c={c} />
+                            </div>
+                          )}
+                        </Draggable>
+                      ))}
+                      {provided.placeholder}
+
+                      {porColumna[col.id].length === 0 && (
+                        <div style={{ fontSize: 12, color: '#b6bfca', textAlign: 'center', padding: '16px 0' }}>
+                          Sin consultas
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </Droppable>
+              ))}
+            </div>
+          </DragDropContext>
+        ) : (
+          <div>
+            {/* Pestañas de estado */}
+            <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+              {COLUMNAS.map((col) => {
+                const activo = col.id === colActiva;
+                return (
+                  <button
+                    key={col.id}
+                    onClick={() => setColActiva(col.id)}
                     style={{
-                      background: snapshot.isDraggingOver ? '#eef2ff' : '#eef1f5',
-                      borderRadius: 12,
-                      padding: 10,
-                      minHeight: 200,
-                      border: '1px solid #e2e8f0',
-                      transition: 'background .15s ease',
-                      ...(isMobile
-                        ? { flex: '0 0 82%', maxWidth: 320, scrollSnapAlign: 'start' }
-                        : {}),
+                      flex: 1,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      gap: 4,
+                      background: activo ? col.color : '#fff',
+                      color: activo ? '#fff' : '#0f2747',
+                      border: `1px solid ${activo ? col.color : '#e2e8f0'}`,
+                      borderRadius: 10,
+                      padding: '9px 4px',
+                      fontSize: 11.5,
+                      fontWeight: 700,
+                      lineHeight: 1.15,
+                      textAlign: 'center',
+                      cursor: 'pointer',
                     }}
                   >
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '4px 6px 12px' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                        <span style={{ width: 9, height: 9, borderRadius: '50%', background: col.color }} />
-                        <span style={{ fontSize: 13.5, fontWeight: 700, color: '#0f2747' }}>{col.label}</span>
-                      </div>
-                      <span style={{ fontSize: 12, color: '#94a3b8', background: '#fff', borderRadius: 99, padding: '1px 9px', border: '1px solid #e2e8f0' }}>
-                        {porColumna[col.id].length}
-                      </span>
-                    </div>
+                    <span>{col.label}</span>
+                    <span
+                      style={{
+                        fontSize: 11,
+                        fontWeight: 700,
+                        background: activo ? 'rgba(255,255,255,0.25)' : '#f1f5f9',
+                        color: activo ? '#fff' : '#64748b',
+                        borderRadius: 99,
+                        padding: '0 8px',
+                        minWidth: 20,
+                      }}
+                    >
+                      {porColumna[col.id].length}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
 
-                    {porColumna[col.id].map((c, index) => (
-                      <Draggable draggableId={c.id} index={index} key={c.id}>
-                        {(prov, snap) => (
-                          <div
-                            ref={prov.innerRef}
-                            {...prov.draggableProps}
-                            {...prov.dragHandleProps}
-                            onClick={() => setSel(c)}
-                            style={{
-                              background: '#fff',
-                              borderRadius: 10,
-                              border: '1px solid #e2e8f0',
-                              padding: 12,
-                              marginBottom: 9,
-                              boxShadow: snap.isDragging ? '0 8px 24px rgba(15,39,71,0.18)' : '0 1px 2px rgba(0,0,0,0.04)',
-                              cursor: 'grab',
-                              ...prov.draggableProps.style,
-                            }}
-                          >
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8, marginBottom: 6, minWidth: 0 }}>
-                              <strong style={{ color: '#0f2747', fontSize: 13.5, minWidth: 0, overflowWrap: 'anywhere' }}>{c.nombre}</strong>
-                              <PrioridadBadge prioridad={c.prioridad} />
-                            </div>
-                            <div style={{ fontSize: 12, color: '#64748b', marginBottom: 4, overflowWrap: 'anywhere' }}>
-                              {c.area ? (AREAS[c.area] || c.area) : 'Sin área'}
-                            </div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 6, flexWrap: 'wrap', fontSize: 11.5, color: '#94a3b8' }}>
-                              <span style={{ overflowWrap: 'anywhere' }}>{c.telefono || '—'}</span>
-                              <span>{fechaCorta(c.creado_en)}</span>
-                            </div>
-                          </div>
-                        )}
-                      </Draggable>
-                    ))}
-                    {provided.placeholder}
-
-                    {porColumna[col.id].length === 0 && (
-                      <div style={{ fontSize: 12, color: '#b6bfca', textAlign: 'center', padding: '16px 0' }}>
-                        Sin consultas
-                      </div>
-                    )}
-                  </div>
-                )}
-              </Droppable>
-            ))}
+            {/* Lista de la columna activa */}
+            {porColumna[colActiva].length === 0 ? (
+              <div style={{ background: '#eef1f5', border: '1px solid #e2e8f0', borderRadius: 12, padding: '30px 0', textAlign: 'center', fontSize: 13, color: '#94a3b8' }}>
+                No hay consultas en «{colActivaInfo.label}».
+              </div>
+            ) : (
+              porColumna[colActiva].map((c) => (
+                <div
+                  key={c.id}
+                  onClick={() => setSel(c)}
+                  style={{
+                    background: '#fff',
+                    borderRadius: 12,
+                    border: '1px solid #e2e8f0',
+                    padding: 14,
+                    marginBottom: 10,
+                    boxShadow: '0 1px 2px rgba(0,0,0,0.04)',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <CardCuerpo c={c} />
+                </div>
+              ))
+            )}
           </div>
-        </DragDropContext>
+        )}
 
         <div style={{ marginTop: 14, fontSize: 12.5, color: '#94a3b8' }}>
-          Mostrando {totalVisible} de {items.length} consultas. {isMobile ? 'Deslizá para ver las columnas y arrastrá una tarjeta para cambiar su estado.' : 'Arrastrá una tarjeta entre columnas para cambiar su estado.'}
+          Mostrando {totalVisible} de {items.length} consultas. {isMobile ? 'Tocá una consulta para ver el detalle y cambiar su estado.' : 'Arrastrá una tarjeta entre columnas para cambiar su estado.'}
         </div>
       </div>
 
       {sel && <ModalDetalle consulta={sel} onClose={() => setSel(null)} onSaved={onGuardadoModal} />}
     </main>
+  );
+}
+
+function CardCuerpo({ c }: { c: Consulta }) {
+  return (
+    <>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8, marginBottom: 6, minWidth: 0 }}>
+        <strong style={{ color: '#0f2747', fontSize: 13.5, minWidth: 0, overflowWrap: 'anywhere' }}>{c.nombre}</strong>
+        <PrioridadBadge prioridad={c.prioridad} />
+      </div>
+      <div style={{ fontSize: 12, color: '#64748b', marginBottom: 4, overflowWrap: 'anywhere' }}>
+        {c.area ? (AREAS[c.area] || c.area) : 'Sin área'}
+      </div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 6, flexWrap: 'wrap', fontSize: 11.5, color: '#94a3b8' }}>
+        <span style={{ overflowWrap: 'anywhere' }}>{c.telefono || '—'}</span>
+        <span>{fechaCorta(c.creado_en)}</span>
+      </div>
+    </>
   );
 }
 
