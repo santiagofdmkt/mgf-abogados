@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { DragDropContext, Droppable, Draggable, type DropResult } from '@hello-pangea/dnd';
 import type { Consulta } from './page';
@@ -40,8 +40,24 @@ function soloDigitos(s: string | null) {
   return (s || '').replace(/\D/g, '');
 }
 
+// Detecta viewport mobile. Arranca en false (desktop) para que el render del
+// servidor y el primer render del cliente coincidan (sin warnings de hidratación),
+// y se ajusta apenas monta + en cada resize.
+function useIsMobile(breakpoint = 768) {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia(`(max-width: ${breakpoint}px)`);
+    const update = () => setIsMobile(mq.matches);
+    update();
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
+  }, [breakpoint]);
+  return isMobile;
+}
+
 export default function PanelClient({ consultas }: { consultas: Consulta[] }) {
   const router = useRouter();
+  const isMobile = useIsMobile();
 
   const [desde, setDesde] = useState<string>('');
   const [hasta, setHasta] = useState<string>('');
@@ -141,18 +157,28 @@ export default function PanelClient({ consultas }: { consultas: Consulta[] }) {
   };
 
   return (
-    <main style={{ minHeight: '100vh', background: '#f1f5f9', fontFamily: 'Inter, sans-serif' }}>
-      <div style={{ background: '#0f2747', padding: '16px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <div style={{ color: '#fff', fontFamily: '"Playfair Display", serif', fontSize: 20, fontWeight: 600 }}>
+    <main style={{ minHeight: '100vh', background: '#f1f5f9', fontFamily: 'Inter, sans-serif', overflowX: 'hidden' }}>
+      <div
+        style={{
+          background: '#0f2747',
+          padding: isMobile ? '14px 16px' : '16px 24px',
+          display: 'flex',
+          flexDirection: isMobile ? 'column' : 'row',
+          gap: isMobile ? 12 : 0,
+          justifyContent: 'space-between',
+          alignItems: isMobile ? 'stretch' : 'center',
+        }}
+      >
+        <div style={{ color: '#fff', fontFamily: '"Playfair Display", serif', fontSize: isMobile ? 17 : 20, fontWeight: 600 }}>
           MGF Abogados — Panel
         </div>
-        <div style={{ display: 'flex', gap: 10 }}>
-          <button onClick={() => window.location.reload()} style={btnGhost}>↻ Actualizar</button>
-          <button onClick={cerrarSesion} style={btnGhost}>Cerrar sesión</button>
+        <div style={{ display: 'flex', gap: 10, flexShrink: 0 }}>
+          <button onClick={() => window.location.reload()} style={{ ...btnGhost, flex: isMobile ? 1 : undefined }}>↻ Actualizar</button>
+          <button onClick={cerrarSesion} style={{ ...btnGhost, flex: isMobile ? 1 : undefined }}>Cerrar sesión</button>
         </div>
       </div>
 
-      <div style={{ maxWidth: 1400, margin: '0 auto', padding: '24px 20px 60px' }}>
+      <div style={{ maxWidth: 1400, margin: '0 auto', padding: isMobile ? '16px 14px 48px' : '24px 20px 60px' }}>
         {/* Tarjetas */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 12, marginBottom: 20 }}>
           <Tarjeta label="Total" valor={totales.total} color="#0f2747" />
@@ -168,30 +194,50 @@ export default function PanelClient({ consultas }: { consultas: Consulta[] }) {
               <Lbl>Buscar</Lbl>
               <input placeholder="Nombre, teléfono o email…" value={busqueda} onChange={(e) => setBusqueda(e.target.value)} style={inputStyle} />
             </div>
-            
-            <div>
+
+            <div style={{ flex: isMobile ? '1 1 45%' : undefined }}>
               <Lbl>Desde</Lbl>
-              <input type="date" value={desde} onChange={(e) => setDesde(e.target.value)} style={selectStyle} />
+              <input type="date" value={desde} onChange={(e) => setDesde(e.target.value)} style={{ ...selectStyle, width: isMobile ? '100%' : undefined, boxSizing: 'border-box' }} />
             </div>
-            <div>
+            <div style={{ flex: isMobile ? '1 1 45%' : undefined }}>
               <Lbl>Hasta</Lbl>
-              <input type="date" value={hasta} onChange={(e) => setHasta(e.target.value)} style={selectStyle} />
+              <input type="date" value={hasta} onChange={(e) => setHasta(e.target.value)} style={{ ...selectStyle, width: isMobile ? '100%' : undefined, boxSizing: 'border-box' }} />
             </div>
-            <div>
+            <div style={{ flex: isMobile ? '1 1 100%' : undefined }}>
               <Lbl>Ordenar por</Lbl>
-              <select value={ordenInterno} onChange={(e) => setOrdenInterno(e.target.value as 'reciente' | 'antiguo' | 'prioridad')} style={selectStyle}>
+              <select value={ordenInterno} onChange={(e) => setOrdenInterno(e.target.value as 'reciente' | 'antiguo' | 'prioridad')} style={{ ...selectStyle, width: isMobile ? '100%' : undefined, boxSizing: 'border-box' }}>
                 <option value="reciente">Más recientes</option>
                 <option value="antiguo">Más antiguas</option>
                 <option value="prioridad">Prioridad (alta primero)</option>
               </select>
             </div>
-            <button onClick={limpiarFiltros} style={{ ...btnGhost, color: '#64748b', border: '1px solid #cbd5e1', background: '#fff' }}>Limpiar</button>
+            <button onClick={limpiarFiltros} style={{ ...btnGhost, color: '#64748b', border: '1px solid #cbd5e1', background: '#fff', flex: isMobile ? '1 1 100%' : undefined }}>Limpiar</button>
           </div>
         </div>
 
         {/* Kanban */}
         <DragDropContext onDragEnd={onDragEnd}>
-          <div style={{ display: 'grid', gridTemplateColumns: `repeat(${COLUMNAS.length}, 1fr)`, gap: 14, alignItems: 'start' }}>
+          <div
+            style={
+              isMobile
+                ? {
+                    display: 'flex',
+                    gap: 12,
+                    alignItems: 'flex-start',
+                    overflowX: 'auto',
+                    overflowY: 'hidden',
+                    WebkitOverflowScrolling: 'touch',
+                    scrollSnapType: 'x proximity',
+                    paddingBottom: 10,
+                  }
+                : {
+                    display: 'grid',
+                    gridTemplateColumns: `repeat(${COLUMNAS.length}, 1fr)`,
+                    gap: 14,
+                    alignItems: 'start',
+                  }
+            }
+          >
             {COLUMNAS.map((col) => (
               <Droppable droppableId={col.id} key={col.id}>
                 {(provided, snapshot) => (
@@ -205,6 +251,9 @@ export default function PanelClient({ consultas }: { consultas: Consulta[] }) {
                       minHeight: 200,
                       border: '1px solid #e2e8f0',
                       transition: 'background .15s ease',
+                      ...(isMobile
+                        ? { flex: '0 0 82%', maxWidth: 320, scrollSnapAlign: 'start' }
+                        : {}),
                     }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '4px 6px 12px' }}>
@@ -236,15 +285,15 @@ export default function PanelClient({ consultas }: { consultas: Consulta[] }) {
                               ...prov.draggableProps.style,
                             }}
                           >
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8, marginBottom: 6 }}>
-                              <strong style={{ color: '#0f2747', fontSize: 13.5 }}>{c.nombre}</strong>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8, marginBottom: 6, minWidth: 0 }}>
+                              <strong style={{ color: '#0f2747', fontSize: 13.5, minWidth: 0, overflowWrap: 'anywhere' }}>{c.nombre}</strong>
                               <PrioridadBadge prioridad={c.prioridad} />
                             </div>
-                            <div style={{ fontSize: 12, color: '#64748b', marginBottom: 4 }}>
+                            <div style={{ fontSize: 12, color: '#64748b', marginBottom: 4, overflowWrap: 'anywhere' }}>
                               {c.area ? (AREAS[c.area] || c.area) : 'Sin área'}
                             </div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 11.5, color: '#94a3b8' }}>
-                              <span>{c.telefono || '—'}</span>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 6, flexWrap: 'wrap', fontSize: 11.5, color: '#94a3b8' }}>
+                              <span style={{ overflowWrap: 'anywhere' }}>{c.telefono || '—'}</span>
                               <span>{fechaCorta(c.creado_en)}</span>
                             </div>
                           </div>
@@ -266,7 +315,7 @@ export default function PanelClient({ consultas }: { consultas: Consulta[] }) {
         </DragDropContext>
 
         <div style={{ marginTop: 14, fontSize: 12.5, color: '#94a3b8' }}>
-          Mostrando {totalVisible} de {items.length} consultas. Arrastrá una tarjeta entre columnas para cambiar su estado.
+          Mostrando {totalVisible} de {items.length} consultas. {isMobile ? 'Deslizá para ver las columnas y arrastrá una tarjeta para cambiar su estado.' : 'Arrastrá una tarjeta entre columnas para cambiar su estado.'}
         </div>
       </div>
 
@@ -334,13 +383,13 @@ function ModalDetalle({ consulta, onClose, onSaved }: { consulta: Consulta; onCl
             <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 14 }}>
               <div style={{ flex: 1, minWidth: 160 }}>
                 <Lbl>Estado</Lbl>
-                <select value={estado} onChange={(e) => setEstado(e.target.value)} style={{ ...selectStyle, width: '100%' }}>
+                <select value={estado} onChange={(e) => setEstado(e.target.value)} style={{ ...selectStyle, width: '100%', boxSizing: 'border-box' }}>
                   {COLUMNAS.map((col) => <option key={col.id} value={col.id}>{col.label}</option>)}
                 </select>
               </div>
               <div style={{ flex: 1, minWidth: 160 }}>
                 <Lbl>Prioridad</Lbl>
-                <select value={prioridad} onChange={(e) => setPrioridad(e.target.value)} style={{ ...selectStyle, width: '100%' }}>
+                <select value={prioridad} onChange={(e) => setPrioridad(e.target.value)} style={{ ...selectStyle, width: '100%', boxSizing: 'border-box' }}>
                   <option value="alta">Alta</option>
                   <option value="media">Media</option>
                   <option value="baja">Baja</option>
@@ -400,9 +449,9 @@ function Seccion({ titulo, children }: { titulo: string; children: React.ReactNo
 
 function Dato({ label, valor }: { label: string; valor: string }) {
   return (
-    <div style={{ display: 'flex', justifyContent: 'space-between', padding: '7px 0', borderBottom: '1px solid #f1f5f9', fontSize: 13.5 }}>
-      <span style={{ color: '#64748b' }}>{label}</span>
-      <span style={{ color: '#0f2747', fontWeight: 500 }}>{valor}</span>
+    <div style={{ display: 'flex', justifyContent: 'space-between', padding: '7px 0', borderBottom: '1px solid #f1f5f9', fontSize: 13.5, gap: 12 }}>
+      <span style={{ color: '#64748b', flexShrink: 0 }}>{label}</span>
+      <span style={{ color: '#0f2747', fontWeight: 500, overflowWrap: 'anywhere', textAlign: 'right' }}>{valor}</span>
     </div>
   );
 }
