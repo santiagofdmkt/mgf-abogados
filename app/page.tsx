@@ -66,6 +66,10 @@ function Icon({ name, size }: { name: string; size?: number }) {
       return <Svg size={size}><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3 7l9 6 9-6" /></Svg>
     case 'whatsapp':
       return <Svg size={size}><path d="M12 3a9 9 0 0 0-7.7 13.7L3 21l4.5-1.2A9 9 0 1 0 12 3z" /><path d="M8.5 8.7c0 .8.3 1.9 1.3 3.1 1.1 1.4 2.4 2.2 3.3 2.5.8.3 1.5.1 1.9-.4l.3-.5-1.8-1-.7.7c-.9-.4-1.9-1.4-2.3-2.3l.7-.7-1-1.8-.5.3c-.3.2-.5.5-.5 1z" /></Svg>
+    case 'instagram':
+      return <Svg size={size}><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="3.5" /><circle cx="17" cy="7" r="1" /></Svg>
+    case 'facebook':
+      return <Svg size={size}><path d="M14 8.5h2.5V5.5H14c-2 0-3 1.2-3 3.2V11H9v3h2v6h3v-6h2.3l.4-3H14V9c0-.4.2-.5.6-.5z" /></Svg>
     case 'arrow-up':
       return <Svg size={size}><line x1="12" y1="19" x2="12" y2="5" /><polyline points="5 12 12 5 19 12" /></Svg>
     default:
@@ -105,8 +109,16 @@ export default function Home() {
 
       <style>{`
         .hero-title { text-wrap: balance; }
-        .btn-zoom { transition: transform 0.2s ease, filter 0.2s ease, box-shadow 0.2s ease; }
-        .btn-zoom:hover { transform: scale(1.04); }
+        .btn-zoom { transition: filter 0.2s ease, box-shadow 0.2s ease, background 0.2s ease; }
+        .btn-zoom:hover { filter: brightness(0.9); box-shadow: var(--shadow-md); }
+        .footer-social {
+          display: inline-flex; align-items: center; gap: 0.45rem;
+          color: rgba(255,255,255,0.55) !important;
+          transition: color 0.2s ease;
+        }
+        .footer-social:hover { color: var(--blue-electric) !important; }
+        .footer-social svg { transition: transform 0.2s ease; }
+        .footer-social:hover svg { transform: translateY(-1px); }
         @media (max-width: 768px) {
           .nav-links { display: none !important; }
           .hamburger { display: flex !important; }
@@ -119,6 +131,7 @@ export default function Home() {
           .areas-grid { grid-template-columns: 1fr !important; }
           .porque-grid { grid-template-columns: 1fr !important; max-width: 100% !important; }
           .equipo-grid { grid-template-columns: repeat(2, 1fr) !important; }
+          .equipo-center { grid-column: 1 / -1 !important; max-width: 50% !important; margin: 0 auto !important; }
           .equipo-img { aspect-ratio: 1/1 !important; }
           .contacto-inner { flex-direction: column !important; gap: 2rem !important; }
           .footer-inner { flex-direction: column !important; align-items: flex-start !important; gap: 1.5rem !important; }
@@ -162,7 +175,7 @@ export default function Home() {
           maxWidth: '1200px', margin: '0 auto', padding: '0 1.5rem',
           height: '64px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         }}>
-          <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', cursor: 'pointer' }}>
+          <Link href="/" onClick={scrollToTop} style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', cursor: 'pointer' }}>
             <div style={{ width: '4px', height: '36px', background: 'var(--blue)', borderRadius: '3px' }} />
             <div>
               <div style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.1rem', fontWeight: 600, color: 'var(--navy)', letterSpacing: '0.03em' }}>
@@ -504,8 +517,8 @@ export default function Home() {
             </h2>
           </div>
           <div className="equipo-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(190px, 1fr))', gap: '1.2rem' }}>
-            {equipo.map(ab => (
-              <div key={ab.nombre} style={{
+            {equipo.map((ab, i) => (
+              <div key={ab.nombre} className={i === 2 ? 'equipo-card equipo-center' : 'equipo-card'} style={{
                 background: 'var(--white)', borderRadius: '12px',
                 overflow: 'hidden', border: '1px solid var(--border)',
                 boxShadow: 'var(--shadow-sm)',
@@ -544,7 +557,7 @@ export default function Home() {
               Estamos para ayudarte
             </h2>
             <p style={{ fontSize: '0.9rem', lineHeight: 1.7, color: 'var(--text-soft)', marginBottom: '1.6rem', maxWidth: '420px' }}>
-              Escribinos por el medio que prefieras. La primera consulta es sin cargo y te respondemos a la brevedad.
+              Escribinos por el medio que prefieras. La primera consulta es sin cargo y te respondemos en el día.
             </p>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
@@ -706,13 +719,18 @@ export default function Home() {
                 padding: '11px 22px', borderRadius: '6px',
                 fontSize: '0.78rem', fontWeight: 600, letterSpacing: '0.06em',
                 textTransform: 'uppercase', textDecoration: 'none', display: 'inline-block',
-                marginBottom: '0.8rem',
+                marginBottom: '1.2rem',
               }}>
                 Consulta gratuita →
               </Link>
-              <div style={{ display: 'flex', gap: '1rem', marginTop: '0.5rem' }}>
-                <a href="https://instagram.com/mgfabogados" target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.45)', textDecoration: 'none' }}>Instagram</a>
-                <a href="https://facebook.com/61553341857581" target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.45)', textDecoration: 'none' }}>Facebook</a>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1.1rem', marginTop: '0.2rem' }}>
+                <a href="https://instagram.com/mgfabogados" target="_blank" rel="noopener noreferrer" className="footer-social" style={{ fontSize: '0.8rem', textDecoration: 'none' }}>
+                  <Icon name="instagram" size={16} /> Instagram
+                </a>
+                <span style={{ width: '1px', height: '14px', background: 'rgba(255,255,255,0.2)' }} />
+                <a href="https://facebook.com/61553341857581" target="_blank" rel="noopener noreferrer" className="footer-social" style={{ fontSize: '0.8rem', textDecoration: 'none' }}>
+                  <Icon name="facebook" size={16} /> Facebook
+                </a>
               </div>
             </div>
           </div>
