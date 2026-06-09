@@ -43,7 +43,6 @@ function soloDigitos(s: string | null) {
 export default function PanelClient({ consultas }: { consultas: Consulta[] }) {
   const router = useRouter();
 
-  const [filtroPrioridad, setFiltroPrioridad] = useState<string>('todos');
   const [desde, setDesde] = useState<string>('');
   const [hasta, setHasta] = useState<string>('');
   const [busqueda, setBusqueda] = useState('');
@@ -68,7 +67,6 @@ export default function PanelClient({ consultas }: { consultas: Consulta[] }) {
 
   // Aplica filtros (no el estado, porque el estado define la columna)
   const pasaFiltros = (c: Consulta) => {
-    if (filtroPrioridad !== 'todos' && c.prioridad !== filtroPrioridad) return false;
     if (desde && new Date(c.creado_en) < new Date(desde)) return false;
     if (hasta) {
       const h = new Date(hasta);
@@ -102,7 +100,7 @@ export default function PanelClient({ consultas }: { consultas: Consulta[] }) {
     });
     return map;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [items, filtroPrioridad, desde, hasta, busqueda, ordenInterno]);
+  }, [items, desde, hasta, busqueda, ordenInterno]);
 
   const totalVisible = Object.values(porColumna).reduce((acc, arr) => acc + arr.length, 0);
 
@@ -132,7 +130,6 @@ export default function PanelClient({ consultas }: { consultas: Consulta[] }) {
   };
 
   const limpiarFiltros = () => {
-    setFiltroPrioridad('todos');
     setDesde('');
     setHasta('');
     setBusqueda('');
@@ -172,15 +169,7 @@ export default function PanelClient({ consultas }: { consultas: Consulta[] }) {
               <Lbl>Buscar</Lbl>
               <input placeholder="Nombre, teléfono o email…" value={busqueda} onChange={(e) => setBusqueda(e.target.value)} style={inputStyle} />
             </div>
-            <div>
-              <Lbl>Prioridad</Lbl>
-              <select value={filtroPrioridad} onChange={(e) => setFiltroPrioridad(e.target.value)} style={selectStyle}>
-                <option value="todos">Todas</option>
-                <option value="alta">Alta</option>
-                <option value="media">Media</option>
-                <option value="baja">Baja</option>
-              </select>
-            </div>
+            
             <div>
               <Lbl>Desde</Lbl>
               <input type="date" value={desde} onChange={(e) => setDesde(e.target.value)} style={selectStyle} />
