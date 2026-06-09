@@ -1,21 +1,19 @@
 import { NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabaseAdmin'
 
-// Áreas que consideramos de alta prioridad (más rentables / urgentes)
+// Áreas que entran con prioridad alta (más urgentes / rentables)
 const ALTA_PRIORIDAD = ['accidentes-trabajo', 'despidos', 'accidentes-transito']
 
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-
     const { nombre, telefono, email, area, mensaje } = body
 
-    // Validación mínima
     if (!nombre || typeof nombre !== 'string') {
       return NextResponse.json({ error: 'El nombre es obligatorio' }, { status: 400 })
     }
 
-    const prioridad = area && ALTA_PRIORIDAD.includes(area) ? 'alta' : 'normal'
+    const prioridad = area && ALTA_PRIORIDAD.includes(area) ? 'alta' : 'media'
 
     const { error } = await supabaseAdmin.from('consultas').insert({
       nombre,
