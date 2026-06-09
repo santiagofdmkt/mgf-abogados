@@ -1,6 +1,7 @@
 'use client'
 import Link from 'next/link'
 import { useState, type ReactNode } from 'react'
+import CtaCotizador from '@/components/CtaCotizador'
 
 const areas = [
   { slug: 'accidentes-trabajo',   title: 'Accidentes de Trabajo',        desc: 'Gestionamos su reclamo ante ART y empleadores. Trabajamos a porcentaje del resultado.',       icon: 'trabajo' },
@@ -445,6 +446,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <CtaCotizador />
 
       {/* CTA BANNER */}
       <section style={{
