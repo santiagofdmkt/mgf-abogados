@@ -138,6 +138,7 @@ export default function Home() {
           .footer-links { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 0.6rem 1.5rem !important; }
           .section-pad { padding: 3rem 1.2rem !important; }
           .hero-section { padding: 5rem 1.2rem 2rem !important; min-height: auto !important; }
+          .scroll-top-btn { margin-right: 0 !important; }
         }
         @media (min-width: 769px) {
           .hamburger { display: none !important; }
