@@ -4,8 +4,6 @@ import { useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 
-const WA = '5491140362772';
-
 type Question = {
   id: string;
   t: string;
@@ -103,14 +101,14 @@ const order = [
 type ContactField = {
   id: string;
   t: string;
-  type: 'text' | 'radio';
+  type: 'text' | 'tel' | 'radio';
   ph?: string;
   o?: string[];
 };
 
 const contactFields: ContactField[] = [
   { id: 'nombre', t: 'Nombre y apellido', type: 'text', ph: 'Ej: Juan Pérez' },
-  { id: 'telefono', t: 'Teléfono / WhatsApp', type: 'text', ph: 'Ej: 11 2345-6789' },
+  { id: 'telefono', t: 'Teléfono / WhatsApp', type: 'tel', ph: 'Ej: 1123456789' },
   { id: 'email', t: 'Email', type: 'text', ph: 'tu@email.com' },
   { id: 'localidad', t: 'Localidad', type: 'text', ph: 'Ej: CABA, La Plata…' },
   { id: 'horario', t: '¿Cuándo preferís que te contactemos?', type: 'radio', o: ['Mañana', 'Tarde', 'Indistinto'] },
@@ -196,12 +194,6 @@ function Icon({ name, size = 24 }: { name: string; size?: number }) {
       return (
         <svg {...common}>
           <polyline points="9 18 15 12 9 6" />
-        </svg>
-      );
-    case 'whatsapp':
-      return (
-        <svg {...common}>
-          <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z" />
         </svg>
       );
     case 'arrow':
@@ -331,6 +323,7 @@ const styles = `
   .mgf-input:hover { border-color: #cbd5e1; }
   .mgf-input:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-pale); }
   .mgf-textarea { resize: vertical; }
+  .mgf-hint { font-size: 12px; color: #94a3b8; margin-top: 5px; }
 
   /* Botones de navegación */
   .mgf-back {
@@ -359,7 +352,8 @@ const styles = `
   }
   .mgf-next:hover { filter: brightness(1.08); box-shadow: 0 6px 16px rgba(15, 39, 71, 0.22); }
   .mgf-next:active { transform: scale(.98); }
-  .mgf-shake { outline: 2px solid #25D366; outline-offset: 2px; }
+  .mgf-next:disabled { opacity: 0.7; cursor: default; }
+  .mgf-shake { outline: 2px solid var(--blue); outline-offset: 2px; }
 
   .mgf-chip {
     display: inline-flex;
@@ -373,12 +367,20 @@ const styles = `
     margin-bottom: 18px;
     font-weight: 500;
   }
+
+  .mgf-success-ico {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    background: #dcfce7;
+    color: #16a34a;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 18px;
+  }
 `;
 
 function ConsultaInner() {
   const sp = useSearchParams();
 
-  // Prefijado desde la home (?area=...&nombre=...&telefono=...&email=...)
   const paramArea = sp.get('area');
   const initialArea = paramArea && areas[paramArea] ? paramArea : null;
 
@@ -397,8 +399,10 @@ function ConsultaInner() {
     return c;
   });
   const [shake, setShake] = useState(false);
+  const [enviando, setEnviando] = useState(false);
+  const [enviado, setEnviado] = useState(false); // NUEVO: éxito → muestra pantalla de confirmación
+  const [errorEnvio, setErrorEnvio] = useState(false); // NUEVO: si el guardado falló
 
-  // Paso 1: elegir un área marca la opción y avanza directo al Paso 2 (también "Otro")
   const selectArea = (k: string) => {
     setArea(k);
     setStep(2);
@@ -418,37 +422,71 @@ function ConsultaInner() {
     });
   };
 
+  // NUEVO: validación del teléfono — exactamente 10 dígitos
+  const telefonoValido = () => {
+    const t = (contact.telefono || '').replace(/\D/g, '');
+    return t.length === 10;
+  };
+
   const isValid = () => {
     if (step === 1) return !!area;
-    if (step === 3) return !!contact.nombre && !!contact.telefono;
+    if (step === 3) return !!contact.nombre && telefonoValido();
     return true;
   };
 
-  const buildMsg = () => {
-    const L: string[] = ['*Nueva consulta — MGF Abogados*'];
+  // Resumen en texto plano para guardar en la columna "mensaje"
+  const buildResumen = () => {
+    const L: string[] = [];
     L.push('Tema: ' + (area && areas[area] ? areas[area].label : '-'));
     if (area && areas[area]) {
       areas[area].q.forEach((q) => {
         let v = answers[q.id];
         if (Array.isArray(v)) v = v.join(', ');
-        if (v) L.push('• ' + q.t + ' ' + v);
+        if (v) L.push(q.t + ' ' + v);
       });
     }
     if (detalle) L.push('Detalle: ' + detalle);
     contactFields.forEach((f) => {
+      if (f.id === 'nombre' || f.id === 'telefono' || f.id === 'email') return;
       if (contact[f.id]) L.push(f.t + ': ' + contact[f.id]);
     });
-    return encodeURIComponent(L.join('\n'));
+    return L.join('\n');
   };
 
-  const goNext = () => {
+  // MODIFICADO: ahora solo guarda en Supabase. Ya NO abre WhatsApp.
+  const enviarConsulta = async () => {
+    setEnviando(true);
+    setErrorEnvio(false);
+    try {
+      const res = await fetch('/api/consulta', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nombre: contact.nombre || '',
+          telefono: contact.telefono || '',
+          email: contact.email || '',
+          area: area || '',
+          mensaje: buildResumen(),
+        }),
+      });
+      if (!res.ok) throw new Error('Respuesta no OK del servidor');
+      setEnviado(true); // éxito → pantalla de confirmación
+    } catch (err) {
+      console.error('No se pudo guardar la consulta:', err);
+      setErrorEnvio(true); // muestra mensaje de error, deja reintentar
+    } finally {
+      setEnviando(false);
+    }
+  };
+
+  const goNext = async () => {
     if (!isValid()) {
       setShake(true);
       setTimeout(() => setShake(false), 600);
       return;
     }
     if (step === 4) {
-      window.open('https://api.whatsapp.com/send?phone=' + WA + '&text=' + buildMsg(), '_blank');
+      await enviarConsulta();
       return;
     }
     setStep(step + 1);
@@ -477,6 +515,12 @@ function ConsultaInner() {
     </button>
   );
 
+  // NUEVO: handler del teléfono — solo números, máximo 10
+  const onTelefonoChange = (value: string) => {
+    const soloDigitos = value.replace(/\D/g, '').slice(0, 10);
+    setContact((prev) => ({ ...prev, telefono: soloDigitos }));
+  };
+
   return (
     <main style={{ background: 'var(--gray-50)', minHeight: '100vh', fontFamily: 'var(--font-inter, Inter, sans-serif)' }}>
       <style>{styles}</style>
@@ -491,161 +535,198 @@ function ConsultaInner() {
 
       <div style={{ maxWidth: 640, margin: '0 auto', padding: '32px 16px 64px' }}>
         <div className="mgf-card">
-          {/* Header */}
-          <div style={{ background: 'linear-gradient(135deg, var(--navy) 0%, var(--navy-light, #16345f) 100%)', padding: '26px 26px 22px', color: '#fff' }}>
-            <div style={{ fontFamily: 'var(--font-playfair, "Playfair Display", serif)', fontSize: 24, fontWeight: 500, lineHeight: 1.2 }}>
-              Iniciá tu consulta
-            </div>
-            <div style={{ fontSize: 13.5, color: '#aac3e6', marginTop: 5 }}>
-              Contanos tu caso. Es confidencial y la primera consulta es gratis.
-            </div>
-            <div style={{ marginTop: 18 }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#aac3e6', marginBottom: 8, letterSpacing: '0.02em' }}>
-                <span>Paso {step} de 4</span>
-                <span style={{ fontWeight: 500 }}>{steps[step - 1]}</span>
-              </div>
-              <div style={{ display: 'flex', gap: 6 }}>
-                {steps.map((s, i) => (
-                  <div
-                    key={s}
-                    style={{
-                      flex: 1,
-                      height: 5,
-                      borderRadius: 99,
-                      background: i < step ? 'var(--blue-electric)' : 'rgba(255,255,255,0.16)',
-                      transition: 'background .3s ease',
-                    }}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
 
-          {/* Body */}
-          <div style={{ padding: '26px', minHeight: 250 }}>
-            {step === 1 && (
-              <>
-                <div style={{ fontSize: 15.5, fontWeight: 500, marginBottom: 4, color: 'var(--ink, #1e293b)' }}>¿Con qué necesitás ayuda?</div>
-                <div style={{ fontSize: 13, color: '#64748b', marginBottom: 18 }}>Elegí el tema más cercano a tu situación.</div>
-                <div className="mgf-grid">
-                  {order.map((k) => {
-                    const a = areas[k];
-                    return (
-                      <button key={k} type="button" onClick={() => selectArea(k)} className="mgf-area" data-on={area === k ? 'true' : 'false'}>
-                        <span className="mgf-ico">
-                          <Icon name={a.icon} size={19} />
-                        </span>
-                        <span className="mgf-label">{a.label}</span>
-                        <span className="mgf-chev">
-                          <Icon name="chevron" size={17} />
-                        </span>
-                      </button>
-                    );
-                  })}
+          {/* PANTALLA DE ÉXITO */}
+          {enviado ? (
+            <div style={{ padding: '48px 30px', textAlign: 'center' }}>
+              <div className="mgf-success-ico">
+                <Icon name="check" size={32} />
+              </div>
+              <div style={{ fontFamily: 'var(--font-playfair, "Playfair Display", serif)', fontSize: 24, fontWeight: 500, color: 'var(--navy)', marginBottom: 10 }}>
+                ¡Consulta enviada!
+              </div>
+              <div style={{ fontSize: 14, color: '#64748b', lineHeight: 1.6, maxWidth: 380, margin: '0 auto 26px' }}>
+                Recibimos tu consulta. Un abogado del estudio va a revisarla y te va a contactar a la brevedad por el medio que elegiste. La primera consulta es sin cargo.
+              </div>
+              <Link href="/" className="mgf-next" style={{ background: 'var(--navy)', textDecoration: 'none', display: 'inline-flex' }}>
+                Volver al inicio
+              </Link>
+            </div>
+          ) : (
+            <>
+              {/* Header */}
+              <div style={{ background: 'linear-gradient(135deg, var(--navy) 0%, var(--navy-light, #16345f) 100%)', padding: '26px 26px 22px', color: '#fff' }}>
+                <div style={{ fontFamily: 'var(--font-playfair, "Playfair Display", serif)', fontSize: 24, fontWeight: 500, lineHeight: 1.2 }}>
+                  Iniciá tu consulta
                 </div>
-              </>
-            )}
-
-            {step === 2 && area && (
-              <>
-                <div className="mgf-chip">
-                  <Icon name={areas[area].icon} size={14} />
-                  {areas[area].label}
+                <div style={{ fontSize: 13.5, color: '#aac3e6', marginTop: 5 }}>
+                  Contanos tu caso. Es confidencial y la primera consulta es gratis.
                 </div>
-                {areas[area].q.map((q) => (
-                  <div key={q.id} style={{ marginBottom: 20 }}>
-                    <div style={{ fontSize: 14, fontWeight: 500, marginBottom: 10, color: 'var(--ink, #1e293b)' }}>{q.t}</div>
-                    {q.o.map((o) => (
-                      <RadioRow
-                        key={o}
-                        opt={o}
-                        multi={q.type === 'multi'}
-                        selected={q.type === 'multi' ? Array.isArray(answers[q.id]) && (answers[q.id] as string[]).indexOf(o) > -1 : answers[q.id] === o}
-                        onClick={() => (q.type === 'multi' ? toggleMulti(q.id, o) : selectRadio(q.id, o))}
+                <div style={{ marginTop: 18 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#aac3e6', marginBottom: 8, letterSpacing: '0.02em' }}>
+                    <span>Paso {step} de 4</span>
+                    <span style={{ fontWeight: 500 }}>{steps[step - 1]}</span>
+                  </div>
+                  <div style={{ display: 'flex', gap: 6 }}>
+                    {steps.map((s, i) => (
+                      <div
+                        key={s}
+                        style={{
+                          flex: 1,
+                          height: 5,
+                          borderRadius: 99,
+                          background: i < step ? 'var(--blue-electric)' : 'rgba(255,255,255,0.16)',
+                          transition: 'background .3s ease',
+                        }}
                       />
                     ))}
                   </div>
-                ))}
-                <div>
-                  <div style={{ fontSize: 14, fontWeight: 500, marginBottom: 10, color: 'var(--ink, #1e293b)' }}>
-                    Contanos en tus palabras qué pasó <span style={{ color: '#64748b', fontWeight: 400 }}>(opcional)</span>
-                  </div>
-                  <textarea
-                    className="mgf-input mgf-textarea"
-                    rows={3}
-                    value={detalle}
-                    onChange={(e) => setDetalle(e.target.value)}
-                    placeholder="Cuanto más detalle, mejor podemos ayudarte."
-                  />
                 </div>
-              </>
-            )}
+              </div>
 
-            {step === 3 && (
-              <>
-                <div style={{ fontSize: 15.5, fontWeight: 500, marginBottom: 18, color: 'var(--ink, #1e293b)' }}>¿Cómo te contactamos?</div>
-                {contactFields.map((f) => (
-                  <div key={f.id} style={{ marginBottom: 18 }}>
-                    <div style={{ fontSize: 13.5, fontWeight: 500, marginBottom: 9, color: 'var(--ink, #1e293b)' }}>{f.t}</div>
-                    {f.type === 'text' ? (
-                      <input
-                        className="mgf-input"
-                        value={contact[f.id] || ''}
-                        onChange={(e) => setContact((prev) => ({ ...prev, [f.id]: e.target.value }))}
-                        placeholder={f.ph}
-                      />
-                    ) : (
-                      f.o!.map((o) => (
-                        <RadioRow key={o} opt={o} selected={contact[f.id] === o} onClick={() => setContact((prev) => ({ ...prev, [f.id]: o }))} />
-                      ))
-                    )}
-                  </div>
-                ))}
-              </>
-            )}
-
-            {step === 4 && (
-              <>
-                <div style={{ fontSize: 15.5, fontWeight: 500, marginBottom: 6, color: 'var(--ink, #1e293b)' }}>Revisá tu consulta</div>
-                <div style={{ fontSize: 13, color: '#64748b', marginBottom: 18 }}>Si está todo bien, la enviamos directo al estudio por WhatsApp.</div>
-                <div style={{ background: 'var(--gray-50)', border: '1px solid var(--border)', borderRadius: 12, padding: '8px 16px' }}>
-                  <SummaryRow label="Tema" value={area && areas[area] ? areas[area].label : '-'} strong />
-                  {area &&
-                    areas[area].q.map((q) => {
-                      let v = answers[q.id];
-                      if (Array.isArray(v)) v = v.join(', ');
-                      return v ? <SummaryRow key={q.id} label={q.t} value={v as string} /> : null;
-                    })}
-                  {detalle ? <SummaryRow label="Detalle" value={detalle} /> : null}
-                  {contactFields.map((f) => (contact[f.id] ? <SummaryRow key={f.id} label={f.t} value={contact[f.id]} strong /> : null))}
-                </div>
-              </>
-            )}
-          </div>
-
-          {/* Footer — oculto en el Paso 1 (la selección ya avanza sola) */}
-          {step !== 1 && (
-            <div style={{ display: 'flex', justifyContent: 'space-between', gap: 10, padding: '18px 26px', borderTop: '1px solid var(--border)', background: 'var(--gray-50)' }}>
-              <button type="button" onClick={goBack} className="mgf-back">
-                Atrás
-              </button>
-              <button
-                type="button"
-                onClick={goNext}
-                className={shake ? 'mgf-next mgf-shake' : 'mgf-next'}
-                style={{ background: step === 4 ? '#25D366' : 'var(--navy)' }}
-              >
-                {step === 4 ? (
+              {/* Body */}
+              <div style={{ padding: '26px', minHeight: 250 }}>
+                {step === 1 && (
                   <>
-                    <Icon name="whatsapp" size={18} /> Enviar por WhatsApp
-                  </>
-                ) : (
-                  <>
-                    Continuar <Icon name="arrow" size={16} />
+                    <div style={{ fontSize: 15.5, fontWeight: 500, marginBottom: 4, color: 'var(--ink, #1e293b)' }}>¿Con qué necesitás ayuda?</div>
+                    <div style={{ fontSize: 13, color: '#64748b', marginBottom: 18 }}>Elegí el tema más cercano a tu situación.</div>
+                    <div className="mgf-grid">
+                      {order.map((k) => {
+                        const a = areas[k];
+                        return (
+                          <button key={k} type="button" onClick={() => selectArea(k)} className="mgf-area" data-on={area === k ? 'true' : 'false'}>
+                            <span className="mgf-ico">
+                              <Icon name={a.icon} size={19} />
+                            </span>
+                            <span className="mgf-label">{a.label}</span>
+                            <span className="mgf-chev">
+                              <Icon name="chevron" size={17} />
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
                   </>
                 )}
-              </button>
-            </div>
+
+                {step === 2 && area && (
+                  <>
+                    <div className="mgf-chip">
+                      <Icon name={areas[area].icon} size={14} />
+                      {areas[area].label}
+                    </div>
+                    {areas[area].q.map((q) => (
+                      <div key={q.id} style={{ marginBottom: 20 }}>
+                        <div style={{ fontSize: 14, fontWeight: 500, marginBottom: 10, color: 'var(--ink, #1e293b)' }}>{q.t}</div>
+                        {q.o.map((o) => (
+                          <RadioRow
+                            key={o}
+                            opt={o}
+                            multi={q.type === 'multi'}
+                            selected={q.type === 'multi' ? Array.isArray(answers[q.id]) && (answers[q.id] as string[]).indexOf(o) > -1 : answers[q.id] === o}
+                            onClick={() => (q.type === 'multi' ? toggleMulti(q.id, o) : selectRadio(q.id, o))}
+                          />
+                        ))}
+                      </div>
+                    ))}
+                    <div>
+                      <div style={{ fontSize: 14, fontWeight: 500, marginBottom: 10, color: 'var(--ink, #1e293b)' }}>
+                        Contanos en tus palabras qué pasó <span style={{ color: '#64748b', fontWeight: 400 }}>(opcional)</span>
+                      </div>
+                      <textarea
+                        className="mgf-input mgf-textarea"
+                        rows={3}
+                        value={detalle}
+                        onChange={(e) => setDetalle(e.target.value)}
+                        placeholder="Cuanto más detalle, mejor podemos ayudarte."
+                      />
+                    </div>
+                  </>
+                )}
+
+                {step === 3 && (
+                  <>
+                    <div style={{ fontSize: 15.5, fontWeight: 500, marginBottom: 18, color: 'var(--ink, #1e293b)' }}>¿Cómo te contactamos?</div>
+                    {contactFields.map((f) => (
+                      <div key={f.id} style={{ marginBottom: 18 }}>
+                        <div style={{ fontSize: 13.5, fontWeight: 500, marginBottom: 9, color: 'var(--ink, #1e293b)' }}>{f.t}</div>
+                        {f.type === 'tel' ? (
+                          <>
+                            <input
+                              className="mgf-input"
+                              type="tel"
+                              inputMode="numeric"
+                              value={contact[f.id] || ''}
+                              onChange={(e) => onTelefonoChange(e.target.value)}
+                              placeholder={f.ph}
+                            />
+                            <div className="mgf-hint">
+                              {(contact.telefono || '').length}/10 dígitos — código de área + número, sin 0 ni 15 (ej: 1123456789)
+                            </div>
+                          </>
+                        ) : f.type === 'text' ? (
+                          <input
+                            className="mgf-input"
+                            value={contact[f.id] || ''}
+                            onChange={(e) => setContact((prev) => ({ ...prev, [f.id]: e.target.value }))}
+                            placeholder={f.ph}
+                          />
+                        ) : (
+                          f.o!.map((o) => (
+                            <RadioRow key={o} opt={o} selected={contact[f.id] === o} onClick={() => setContact((prev) => ({ ...prev, [f.id]: o }))} />
+                          ))
+                        )}
+                      </div>
+                    ))}
+                  </>
+                )}
+
+                {step === 4 && (
+                  <>
+                    <div style={{ fontSize: 15.5, fontWeight: 500, marginBottom: 6, color: 'var(--ink, #1e293b)' }}>Revisá tu consulta</div>
+                    <div style={{ fontSize: 13, color: '#64748b', marginBottom: 18 }}>Si está todo bien, enviá la consulta y el estudio te contactará.</div>
+                    <div style={{ background: 'var(--gray-50)', border: '1px solid var(--border)', borderRadius: 12, padding: '8px 16px' }}>
+                      <SummaryRow label="Tema" value={area && areas[area] ? areas[area].label : '-'} strong />
+                      {area &&
+                        areas[area].q.map((q) => {
+                          let v = answers[q.id];
+                          if (Array.isArray(v)) v = v.join(', ');
+                          return v ? <SummaryRow key={q.id} label={q.t} value={v as string} /> : null;
+                        })}
+                      {detalle ? <SummaryRow label="Detalle" value={detalle} /> : null}
+                      {contactFields.map((f) => (contact[f.id] ? <SummaryRow key={f.id} label={f.t} value={contact[f.id]} strong /> : null))}
+                    </div>
+                    {errorEnvio && (
+                      <div style={{ marginTop: 14, padding: '11px 14px', background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 10, fontSize: 13, color: '#b91c1c' }}>
+                        Hubo un problema al enviar la consulta. Revisá tu conexión y volvé a intentar.
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
+
+              {/* Footer */}
+              {step !== 1 && (
+                <div style={{ display: 'flex', justifyContent: 'space-between', gap: 10, padding: '18px 26px', borderTop: '1px solid var(--border)', background: 'var(--gray-50)' }}>
+                  <button type="button" onClick={goBack} className="mgf-back" disabled={enviando}>
+                    Atrás
+                  </button>
+                  <button
+                    type="button"
+                    onClick={goNext}
+                    disabled={enviando}
+                    className={shake ? 'mgf-next mgf-shake' : 'mgf-next'}
+                    style={{ background: 'var(--navy)' }}
+                  >
+                    {step === 4 ? (
+                      enviando ? 'Enviando…' : <>Enviar consulta <Icon name="arrow" size={16} /></>
+                    ) : (
+                      <>Continuar <Icon name="arrow" size={16} /></>
+                    )}
+                  </button>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>
