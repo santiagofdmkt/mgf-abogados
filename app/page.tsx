@@ -486,8 +486,8 @@ export default function Home() {
           }}>
             {[
               { icon: 'experiencia', title: 'Más de 50 años de experiencia', desc: 'Uno de los estudios con mayor trayectoria en derecho civil y laboral del AMBA. No aprendemos con sus casos.' },
-              { icon: 'especialista', title: 'Abogado especializado en su área', desc: 'Cada caso lo atiende el profesional con experiencia específica. Sin rotar archivos entre juniors.' },
-              { icon: 'consulta', title: 'Primera consulta gratis', desc: 'Nuestro sistema de gestión nos permite conocer tu caso y darte una devolución online rápida, para recomendarte la mejor opción según tu situación.' },
+              { icon: 'especialista', title: 'Abogado especializado en su área', desc: 'Cada caso lo atiende el profesional con experiencia específica. Sin rotar archivos, con foco en la resolución.' },
+              { icon: 'consulta', title: 'Primera consulta gratis', desc: 'Nuestro sistema de gestión nos permite conocer tu caso y darte una primer devolución online y rápida, brindándote la mejor opción según tu situación.' },
             ].map(item => (
               <div key={item.title} style={{
                 background: 'var(--blue-pale2)', borderRadius: '12px',
