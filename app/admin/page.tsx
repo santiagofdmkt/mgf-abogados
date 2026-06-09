@@ -1,7 +1,7 @@
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
 import PanelClient from './PanelClient';
 
-export const dynamic = 'force-dynamic'; // siempre datos frescos, no cachear
+export const dynamic = 'force-dynamic';
 
 export type Consulta = {
   id: string;
@@ -13,6 +13,7 @@ export type Consulta = {
   mensaje: string | null;
   estado: string;
   prioridad: string;
+  nota: string | null;
 };
 
 export default async function AdminPage() {
