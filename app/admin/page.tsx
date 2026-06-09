@@ -1,13 +1,34 @@
-export default function AdminPage() {
-  return (
-    <main style={{ padding: 40, fontFamily: 'Inter, sans-serif' }}>
-      <h1 style={{ fontSize: 24, color: '#0f2747' }}>Panel admin — prueba</h1>
-      <p style={{ color: '#64748b' }}>Si ves esto, la protección funcionó: estás logueado. ✅</p>
-      <form action="/api/admin/logout" method="post" style={{ marginTop: 20 }}>
-        <button type="submit" style={{ padding: '10px 18px', background: '#0f2747', color: '#fff', border: 'none', borderRadius: 8, cursor: 'pointer' }}>
-          Cerrar sesión
-        </button>
-      </form>
-    </main>
-  );
+import { supabaseAdmin } from '@/lib/supabaseAdmin';
+import PanelClient from './PanelClient';
+
+export const dynamic = 'force-dynamic'; // siempre datos frescos, no cachear
+
+export type Consulta = {
+  id: string;
+  creado_en: string;
+  nombre: string;
+  telefono: string | null;
+  email: string | null;
+  area: string | null;
+  mensaje: string | null;
+  estado: string;
+  prioridad: string;
+};
+
+export default async function AdminPage() {
+  const { data, error } = await supabaseAdmin
+    .from('consultas')
+    .select('*')
+    .order('creado_en', { ascending: false });
+
+  if (error) {
+    return (
+      <main style={{ padding: 40, fontFamily: 'Inter, sans-serif' }}>
+        <h1 style={{ color: '#b91c1c' }}>Error al cargar las consultas</h1>
+        <p style={{ color: '#64748b' }}>{error.message}</p>
+      </main>
+    );
+  }
+
+  return <PanelClient consultas={(data as Consulta[]) || []} />;
 }
