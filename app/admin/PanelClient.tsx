@@ -147,7 +147,7 @@ export default function PanelClient({ consultas }: { consultas: Consulta[] }) {
           MGF Abogados — Panel
         </div>
         <div style={{ display: 'flex', gap: 10 }}>
-          <button onClick={() => router.refresh()} style={btnGhost}>↻ Actualizar</button>
+          <button onClick={() => window.location.reload()} style={btnGhost}>↻ Actualizar</button>
           <button onClick={cerrarSesion} style={btnGhost}>Cerrar sesión</button>
         </div>
       </div>
@@ -159,7 +159,6 @@ export default function PanelClient({ consultas }: { consultas: Consulta[] }) {
           <Tarjeta label="Nuevas" valor={totales.nuevo} color="#1e40af" />
           <Tarjeta label="En gestión" valor={totales.enJuego} color="#3730a3" />
           <Tarjeta label="Derivadas" valor={totales.derivado} color="#475569" />
-          <Tarjeta label="Prioridad alta" valor={totales.alta} color="#b91c1c" />
         </div>
 
         {/* Filtros */}
