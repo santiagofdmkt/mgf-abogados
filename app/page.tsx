@@ -31,52 +31,52 @@ const contactos = [
 // Imagen del hero (se usa en desktop y mobile). Cambiala acá una sola vez.
 const HERO_IMG = 'https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=1200&auto=format&fit=crop&q=80'
 
-// Wrapper SVG reutilizable
-function Svg({ children, size = 22 }: { children: ReactNode; size?: number }) {
+// Wrapper SVG reutilizable. strokeWidth opcional: 1.8 por defecto, más fino donde se pida.
+function Svg({ children, size = 22, strokeWidth = 1.8 }: { children: ReactNode; size?: number; strokeWidth?: number }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
       {children}
     </svg>
   )
 }
 
 // Set de iconos del sitio (línea fina, hereda el color del contenedor)
-function Icon({ name, size }: { name: string; size?: number }) {
+function Icon({ name, size, strokeWidth }: { name: string; size?: number; strokeWidth?: number }) {
   switch (name) {
     case 'trabajo':
-      return <Svg size={size}><path d="M2 18h20" /><path d="M20 18v-2a8 8 0 0 0-16 0v2" /><path d="M9 7.5V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2.5" /></Svg>
+      return <Svg size={size} strokeWidth={strokeWidth}><path d="M2 18h20" /><path d="M20 18v-2a8 8 0 0 0-16 0v2" /><path d="M9 7.5V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2.5" /></Svg>
     case 'transito':
-      return <Svg size={size}><path d="M5 11l1.5-4A2 2 0 0 1 8.4 6h7.2a2 2 0 0 1 1.9 1l1.5 4" /><path d="M3 11h18v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z" /><circle cx="7.5" cy="16" r="1.6" /><circle cx="16.5" cy="16" r="1.6" /></Svg>
+      return <Svg size={size} strokeWidth={strokeWidth}><path d="M5 11l1.5-4A2 2 0 0 1 8.4 6h7.2a2 2 0 0 1 1.9 1l1.5 4" /><path d="M3 11h18v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z" /><circle cx="7.5" cy="16" r="1.6" /><circle cx="16.5" cy="16" r="1.6" /></Svg>
     case 'despidos':
-      return <Svg size={size}><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" /><path d="M14 3v5h5" /><path d="M9 13h6" /><path d="M9 17h4" /></Svg>
+      return <Svg size={size} strokeWidth={strokeWidth}><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" /><path d="M14 3v5h5" /><path d="M9 13h6" /><path d="M9 17h4" /></Svg>
     case 'propiedad':
-      return <Svg size={size}><path d="M3 21h18" /><path d="M5 21V6a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v15" /><path d="M13 21V10a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v11" /><path d="M8 9h2M8 12.5h2M8 16h2M16 13h1.5M16 16.5h1.5" /></Svg>
+      return <Svg size={size} strokeWidth={strokeWidth}><path d="M3 21h18" /><path d="M5 21V6a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v15" /><path d="M13 21V10a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v11" /><path d="M8 9h2M8 12.5h2M8 16h2M16 13h1.5M16 16.5h1.5" /></Svg>
     case 'salud':
-      return <Svg size={size}><path d="M10 3h4v7h7v4h-7v7h-4v-7H3v-4h7z" /></Svg>
+      return <Svg size={size} strokeWidth={strokeWidth}><path d="M10 3h4v7h7v4h-7v7h-4v-7H3v-4h7z" /></Svg>
     case 'sucesiones':
-      return <Svg size={size}><path d="M12 4v16" /><path d="M8 20h8" /><path d="M5 7h14" /><path d="M5 7l-2.5 5a2.8 2.8 0 0 0 5 0z" /><path d="M19 7l-2.5 5a2.8 2.8 0 0 0 5 0z" /></Svg>
+      return <Svg size={size} strokeWidth={strokeWidth}><path d="M12 4v16" /><path d="M8 20h8" /><path d="M5 7h14" /><path d="M5 7l-2.5 5a2.8 2.8 0 0 0 5 0z" /><path d="M19 7l-2.5 5a2.8 2.8 0 0 0 5 0z" /></Svg>
     case 'experiencia':
-      return <Svg size={size}><circle cx="12" cy="8" r="5" /><path d="M9 12.5 8 21l4-2.2L16 21l-1-8.5" /></Svg>
+      return <Svg size={size} strokeWidth={strokeWidth}><circle cx="12" cy="8" r="5" /><path d="M9 12.5 8 21l4-2.2L16 21l-1-8.5" /></Svg>
     case 'especialista':
-      return <Svg size={size}><circle cx="12" cy="8" r="4" /><path d="M5 21a7 7 0 0 1 14 0" /></Svg>
+      return <Svg size={size} strokeWidth={strokeWidth}><circle cx="12" cy="8" r="4" /><path d="M5 21a7 7 0 0 1 14 0" /></Svg>
     case 'honorarios':
-      return <Svg size={size}><line x1="19" y1="5" x2="5" y2="19" /><circle cx="7" cy="7" r="2.2" /><circle cx="17" cy="17" r="2.2" /></Svg>
+      return <Svg size={size} strokeWidth={strokeWidth}><line x1="19" y1="5" x2="5" y2="19" /><circle cx="7" cy="7" r="2.2" /><circle cx="17" cy="17" r="2.2" /></Svg>
     case 'consulta':
-      return <Svg size={size}><path d="M21 15a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z" /><path d="M8 9h8M8 13h5" /></Svg>
+      return <Svg size={size} strokeWidth={strokeWidth}><path d="M21 15a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z" /><path d="M8 9h8M8 13h5" /></Svg>
     case 'pin':
-      return <Svg size={size}><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z" /><circle cx="12" cy="10" r="2.5" /></Svg>
+      return <Svg size={size} strokeWidth={strokeWidth}><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z" /><circle cx="12" cy="10" r="2.5" /></Svg>
     case 'phone':
-      return <Svg size={size}><path d="M5 4h3l2 5-2.5 1.5a11 11 0 0 0 5 5L16 14l3 1v3a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z" /></Svg>
+      return <Svg size={size} strokeWidth={strokeWidth}><path d="M5 4h3l2 5-2.5 1.5a11 11 0 0 0 5 5L16 14l3 1v3a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z" /></Svg>
     case 'mail':
-      return <Svg size={size}><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3 7l9 6 9-6" /></Svg>
+      return <Svg size={size} strokeWidth={strokeWidth}><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3 7l9 6 9-6" /></Svg>
     case 'whatsapp':
-      return <Svg size={size}><path d="M12 3a9 9 0 0 0-7.7 13.7L3 21l4.5-1.2A9 9 0 1 0 12 3z" /><path d="M8.5 8.7c0 .8.3 1.9 1.3 3.1 1.1 1.4 2.4 2.2 3.3 2.5.8.3 1.5.1 1.9-.4l.3-.5-1.8-1-.7.7c-.9-.4-1.9-1.4-2.3-2.3l.7-.7-1-1.8-.5.3c-.3.2-.5.5-.5 1z" /></Svg>
+      return <Svg size={size} strokeWidth={strokeWidth}><path d="M12 3a9 9 0 0 0-7.7 13.7L3 21l4.5-1.2A9 9 0 1 0 12 3z" /><path d="M8.5 8.7c0 .8.3 1.9 1.3 3.1 1.1 1.4 2.4 2.2 3.3 2.5.8.3 1.5.1 1.9-.4l.3-.5-1.8-1-.7.7c-.9-.4-1.9-1.4-2.3-2.3l.7-.7-1-1.8-.5.3c-.3.2-.5.5-.5 1z" /></Svg>
     case 'instagram':
-      return <Svg size={size}><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="3.5" /><circle cx="17" cy="7" r="1" /></Svg>
+      return <Svg size={size} strokeWidth={strokeWidth}><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="3.5" /><circle cx="17" cy="7" r="1" /></Svg>
     case 'facebook':
-      return <Svg size={size}><path d="M14 8.5h2.5V5.5H14c-2 0-3 1.2-3 3.2V11H9v3h2v6h3v-6h2.3l.4-3H14V9c0-.4.2-.5.6-.5z" /></Svg>
+      return <Svg size={size} strokeWidth={strokeWidth}><path d="M14 8.5h2.5V5.5H14c-2 0-3 1.2-3 3.2V11H9v3h2v6h3v-6h2.3l.4-3H14V9c0-.4.2-.5.6-.5z" /></Svg>
     case 'arrow-up':
-      return <Svg size={size}><line x1="12" y1="19" x2="12" y2="5" /><polyline points="5 12 12 5 19 12" /></Svg>
+      return <Svg size={size} strokeWidth={strokeWidth}><line x1="12" y1="19" x2="12" y2="5" /><polyline points="5 12 12 5 19 12" /></Svg>
     default:
       return null
   }
@@ -131,6 +131,39 @@ export default function Home() {
           background: linear-gradient(180deg, rgba(255,255,255,0.40) 0%, rgba(255,255,255,0.62) 100%);
         }
         .area-card-content { position: relative; z-index: 1; }
+
+        /* Link "Consultar" editorial: Playfair italic, sin mayúsculas, con flecha que se separa al hover */
+        .area-consultar {
+          font-family: 'Playfair Display', serif;
+          font-style: italic;
+          font-size: 0.95rem;
+          font-weight: 500;
+          color: var(--blue);
+          display: inline-flex;
+          align-items: center;
+          gap: 0.35rem;
+          transition: gap 0.25s ease, color 0.25s ease;
+        }
+        .area-card:hover .area-consultar {
+          gap: 0.6rem;
+          color: var(--blue-electric);
+        }
+
+        /* Cards "¿Por qué elegirnos?": fondo blanco, borde sutil, hover con borde azul */
+        .porque-card {
+          background: var(--white);
+          border: 1px solid var(--border);
+          border-radius: 12px;
+          padding: 1.5rem;
+          text-align: center;
+          box-shadow: var(--shadow-sm);
+          transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+        }
+        .porque-card:hover {
+          border-color: var(--blue);
+          box-shadow: var(--shadow-md);
+          transform: translateY(-2px);
+        }
 
         .footer-social {
           display: inline-flex; align-items: center; gap: 0.45rem;
@@ -337,7 +370,7 @@ export default function Home() {
                 fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.06em',
                 textTransform: 'uppercase', textDecoration: 'none', display: 'inline-block',
               }}>
-                Iniciar consulta gratuita →
+                Iniciar primer consulta →
               </Link>
               <a className="wa-btn btn-zoom" href="https://api.whatsapp.com/send?phone=5491140362772" target="_blank" rel="noopener noreferrer"
                 style={{
@@ -403,7 +436,7 @@ export default function Home() {
       </div>
 
       {/* ÁREAS */}
-      <section id="areas" className="section-pad" style={{ padding: '4rem 2rem', background: 'var(--gray-50)' }}>
+      <section id="areas" className="section-pad" style={{ padding: '3.5rem 2rem', background: 'var(--gray-50)' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
           <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '1rem' }}>
             <div>
@@ -459,17 +492,15 @@ export default function Home() {
                       background: 'var(--blue-pale)', display: 'flex', alignItems: 'center',
                       justifyContent: 'center', color: 'var(--blue)', marginBottom: '0.9rem',
                     }}>
-                      <Icon name={area.icon} size={22} />
+                      <Icon name={area.icon} size={22} strokeWidth={1.3} />
                     </div>
                     <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.1rem', fontWeight: 600, color: 'var(--navy)', marginBottom: '0.4rem' }}>
                       {area.title}
                     </h3>
-                    <p style={{ fontSize: '0.82rem', lineHeight: 1.6, color: 'var(--text-soft)', marginBottom: '0.8rem' }}>
+                    <p style={{ fontSize: '0.82rem', lineHeight: 1.7, color: 'var(--text-soft)', marginBottom: '0.8rem' }}>
                       {area.desc}
                     </p>
-                    <span style={{ fontSize: '0.73rem', fontWeight: 600, color: 'var(--blue-electric)', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
-                      Consultar →
-                    </span>
+                    <span className="area-consultar">Consultar <span aria-hidden="true">→</span></span>
                   </div>
                 </Link>
               )
@@ -480,33 +511,8 @@ export default function Home() {
 
       <CtaCotizador />
 
-      {/* CTA BANNER */}
-      <section style={{
-        background: 'linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%)',
-        padding: '3.5rem 1.5rem', textAlign: 'center',
-      }}>
-        <div style={{ maxWidth: '600px', margin: '0 auto' }}>
-          <div className="label" style={{ color: '#7EB3FF', marginBottom: '0.8rem' }}>Primera consulta sin cargo</div>
-          <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.6rem, 4vw, 2.6rem)', color: '#fff', fontWeight: 600, marginBottom: '0.8rem', lineHeight: 1.2 }}>
-            Contanos tu caso.<br />
-            <em style={{ color: '#7EB3FF' }}>Te respondemos hoy.</em>
-          </h2>
-          <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.7)', marginBottom: '1.5rem', lineHeight: 1.6 }}>
-            Completá el formulario guiado y un abogado especializado te contactará a la brevedad.
-          </p>
-          <Link href="/consulta" className="btn-zoom" style={{
-            background: 'var(--blue-electric)', color: '#fff',
-            padding: '14px 40px', borderRadius: '8px',
-            fontSize: '0.88rem', fontWeight: 700, letterSpacing: '0.06em',
-            textTransform: 'uppercase', textDecoration: 'none', display: 'inline-block',
-          }}>
-            Iniciar consulta gratuita →
-          </Link>
-        </div>
-      </section>
-
       {/* POR QUÉ */}
-      <section className="section-pad" style={{ padding: '4rem 2rem', background: 'var(--white)' }}>
+      <section className="section-pad" style={{ padding: '3.5rem 2rem', background: 'var(--gray-50)' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
             <div className="label" style={{ marginBottom: '0.4rem' }}>Nuestra diferencia</div>
@@ -523,17 +529,14 @@ export default function Home() {
               { icon: 'especialista', title: 'Abogado especializado en su área', desc: 'Cada caso lo atiende el profesional con experiencia específica. Sin rotar archivos, con foco en la resolución.' },
               { icon: 'consulta', title: 'Primera consulta gratis', desc: 'Nuestro sistema de gestión nos permite conocer tu caso y darte una primer devolución online y rápida, brindándote la mejor opción según tu situación.' },
             ].map(item => (
-              <div key={item.title} style={{
-                background: 'var(--blue-pale2)', borderRadius: '12px',
-                padding: '1.5rem', border: '1px solid var(--blue-pale)', textAlign: 'center',
-              }}>
+              <div key={item.title} className="porque-card">
                 <div style={{ color: 'var(--blue)', marginBottom: '0.8rem', display: 'flex', justifyContent: 'center' }}>
-                  <Icon name={item.icon} size={30} />
+                  <Icon name={item.icon} size={30} strokeWidth={1.3} />
                 </div>
                 <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.05rem', fontWeight: 600, color: 'var(--navy)', marginBottom: '0.5rem' }}>
                   {item.title}
                 </h3>
-                <p style={{ fontSize: '0.81rem', lineHeight: 1.65, color: 'var(--text-soft)' }}>
+                <p style={{ fontSize: '0.81rem', lineHeight: 1.7, color: 'var(--text-soft)' }}>
                   {item.desc}
                 </p>
               </div>
@@ -581,12 +584,41 @@ export default function Home() {
         </div>
       </section>
 
+      {/* CTA BANNER — reubicado: después de Equipo, antes de Contacto */}
+      <section style={{
+        background: 'linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%)',
+        padding: '3.5rem 1.5rem', textAlign: 'center',
+      }}>
+        <div style={{ maxWidth: '600px', margin: '0 auto' }}>
+          <div className="label" style={{ color: '#7EB3FF', marginBottom: '0.8rem' }}>Primera consulta sin cargo</div>
+          <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.6rem, 4vw, 2.6rem)', color: '#fff', fontWeight: 600, marginBottom: '0.8rem', lineHeight: 1.2 }}>
+            Contanos tu caso.<br />
+            <em style={{ color: '#7EB3FF' }}>Te respondemos hoy.</em>
+          </h2>
+          <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.7)', marginBottom: '1.5rem', lineHeight: 1.6 }}>
+            Completá el formulario guiado y un abogado especializado te contactará a la brevedad.
+          </p>
+          <Link href="/consulta" className="btn-zoom" style={{
+            background: 'var(--blue-electric)', color: '#fff',
+            padding: '14px 40px', borderRadius: '8px',
+            fontSize: '0.88rem', fontWeight: 700, letterSpacing: '0.06em',
+            textTransform: 'uppercase', textDecoration: 'none', display: 'inline-block',
+          }}>
+            Iniciar primer consulta →
+          </Link>
+        </div>
+      </section>
+
       {/* CONTACTO */}
-      <section id="contacto" className="section-pad" style={{ padding: '4rem 2rem', background: 'var(--white)' }}>
+      <section id="contacto" className="section-pad" style={{ padding: '3.5rem 2rem', background: 'var(--gray-50)' }}>
         <div className="contacto-inner" style={{ maxWidth: '1100px', margin: '0 auto', display: 'flex', gap: '3rem', flexWrap: 'wrap', alignItems: 'stretch' }}>
 
-          {/* Columna info */}
-          <div style={{ flex: '1', minWidth: '260px', display: 'flex', flexDirection: 'column' }}>
+          {/* Columna info — ahora en tarjeta blanca para resaltar sobre el fondo gris */}
+          <div style={{
+            flex: '1', minWidth: '260px', display: 'flex', flexDirection: 'column',
+            background: 'var(--white)', border: '1px solid var(--border)',
+            borderRadius: '14px', padding: '2rem', boxShadow: 'var(--shadow-md)',
+          }}>
             <div className="label" style={{ marginBottom: '0.4rem' }}>Contacto</div>
             <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.9rem', color: 'var(--navy)', fontWeight: 600, marginBottom: '0.6rem' }}>
               Estamos para ayudarte
@@ -607,7 +639,7 @@ export default function Home() {
                     background: 'var(--blue-pale)', color: 'var(--blue)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
                   }}>
-                    <Icon name={c.icon} size={18} />
+                    <Icon name={c.icon} size={18} strokeWidth={1.3} />
                   </span>
                   <div>
                     <div style={{ fontSize: '0.68rem', fontWeight: 600, color: 'var(--text-muted)', letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: '2px' }}>{c.title}</div>
