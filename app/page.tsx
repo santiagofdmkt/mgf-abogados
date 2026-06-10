@@ -2,6 +2,7 @@
 import Link from 'next/link'
 import { useState, type ReactNode } from 'react'
 import CtaCotizador from '@/components/CtaCotizador'
+import { areas as areasData } from '@/lib/areas'
 
 const areas = [
   { slug: 'accidentes-trabajo',   title: 'Accidentes de Trabajo',        desc: 'Gestionamos su reclamo ante ART y empleadores. Trabajamos a porcentaje del resultado.',       icon: 'trabajo' },
@@ -26,6 +27,9 @@ const contactos = [
   { icon: 'phone', title: 'Teléfono',        info: '(011) 4374-1166 / 9177' },
   { icon: 'mail',  title: 'Email',           info: 'estudio@mgfabogados.com.ar' },
 ]
+
+// Imagen del hero (se usa en desktop y mobile). Cambiala acá una sola vez.
+const HERO_IMG = 'https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=1200&auto=format&fit=crop&q=80'
 
 // Wrapper SVG reutilizable
 function Svg({ children, size = 22 }: { children: ReactNode; size?: number }) {
@@ -112,6 +116,22 @@ export default function Home() {
         .hero-title { text-wrap: balance; }
         .btn-zoom { transition: filter 0.2s ease, box-shadow 0.2s ease, background 0.2s ease; }
         .btn-zoom:hover { filter: brightness(0.9); box-shadow: var(--shadow-md); }
+
+        /* Cards de Áreas con imagen de fondo traslúcida */
+        .area-card { position: relative; overflow: hidden; }
+        .area-card-bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+        .area-card-bg img {
+          width: 100%; height: 100%;
+          object-fit: cover; object-position: center;
+          opacity: 0.20; transition: opacity 0.3s ease;
+        }
+        .area-card:hover .area-card-bg img { opacity: 0.32; }
+        .area-card-bg::after {
+          content: ''; position: absolute; inset: 0;
+          background: linear-gradient(180deg, rgba(255,255,255,0.40) 0%, rgba(255,255,255,0.62) 100%);
+        }
+        .area-card-content { position: relative; z-index: 1; }
+
         .footer-social {
           display: inline-flex; align-items: center; gap: 0.45rem;
           color: rgba(255,255,255,0.55) !important;
@@ -266,7 +286,7 @@ export default function Home() {
           width: '45%', overflow: 'hidden', pointerEvents: 'none',
         }}>
           <img
-            src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=900&auto=format&fit=crop&q=80"
+            src={HERO_IMG}
             alt="Estudio jurídico"
             style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', opacity: 0.28 }}
           />
@@ -281,7 +301,7 @@ export default function Home() {
           position: 'absolute', inset: 0, pointerEvents: 'none', display: 'none',
         }}>
           <img
-            src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=900&auto=format&fit=crop&q=80"
+            src={HERO_IMG}
             alt="Estudio jurídico"
             style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', opacity: 0.07 }}
           />
@@ -290,7 +310,7 @@ export default function Home() {
         <div style={{ maxWidth: '1200px', margin: '0 auto', width: '100%', position: 'relative', zIndex: 1 }}>
           <div style={{ maxWidth: '620px' }}>
             <div className="label anim d1" style={{ color: '#7EB3FF', marginBottom: '1.2rem' }}>
-              Estudio Jurídico · Buenos Aires · Desde 1972
+              Estudio Jurídico • Buenos Aires • Desde 1972
             </div>
             <h1 className="anim d2 hero-title" style={{
               fontFamily: "'Playfair Display', serif",
@@ -403,46 +423,57 @@ export default function Home() {
           </div>
 
           <div className="areas-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '1rem' }}>
-            {areas.map(area => (
-              <Link key={area.slug} href={`/areas/${area.slug}`}
-                style={{
-                  background: 'rgba(148, 163, 184, 0.08)', padding: '1.5rem',
-                  borderRadius: '10px', textDecoration: 'none',
-                  border: '1px solid var(--border)',
-                  display: 'block', transition: 'all 0.2s ease',
-                  boxShadow: 'var(--shadow-sm)',
-                }}
-                onMouseEnter={e => {
-                  const el = e.currentTarget as HTMLElement
-                  el.style.boxShadow = 'var(--shadow-lg)'
-                  el.style.borderColor = 'var(--blue)'
-                  el.style.transform = 'translateY(-2px)'
-                }}
-                onMouseLeave={e => {
-                  const el = e.currentTarget as HTMLElement
-                  el.style.boxShadow = 'var(--shadow-sm)'
-                  el.style.borderColor = 'var(--border)'
-                  el.style.transform = 'translateY(0)'
-                }}
-              >
-                <div style={{
-                  width: '44px', height: '44px', borderRadius: '10px',
-                  background: 'var(--blue-pale)', display: 'flex', alignItems: 'center',
-                  justifyContent: 'center', color: 'var(--blue)', marginBottom: '0.9rem',
-                }}>
-                  <Icon name={area.icon} size={22} />
-                </div>
-                <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.1rem', fontWeight: 600, color: 'var(--navy)', marginBottom: '0.4rem' }}>
-                  {area.title}
-                </h3>
-                <p style={{ fontSize: '0.82rem', lineHeight: 1.6, color: 'var(--text-soft)', marginBottom: '0.8rem' }}>
-                  {area.desc}
-                </p>
-                <span style={{ fontSize: '0.73rem', fontWeight: 600, color: 'var(--blue-electric)', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
-                  Consultar →
-                </span>
-              </Link>
-            ))}
+            {areas.map(area => {
+              const heroImage = areasData.find(a => a.slug === area.slug)?.heroImage
+              return (
+                <Link key={area.slug} href={`/areas/${area.slug}`} className="area-card"
+                  style={{
+                    background: 'rgba(148, 163, 184, 0.08)', padding: '1.5rem',
+                    borderRadius: '10px', textDecoration: 'none',
+                    border: '1px solid var(--border)',
+                    display: 'block', transition: 'all 0.2s ease',
+                    boxShadow: 'var(--shadow-sm)',
+                  }}
+                  onMouseEnter={e => {
+                    const el = e.currentTarget as HTMLElement
+                    el.style.boxShadow = 'var(--shadow-lg)'
+                    el.style.borderColor = 'var(--blue)'
+                    el.style.transform = 'translateY(-2px)'
+                  }}
+                  onMouseLeave={e => {
+                    const el = e.currentTarget as HTMLElement
+                    el.style.boxShadow = 'var(--shadow-sm)'
+                    el.style.borderColor = 'var(--border)'
+                    el.style.transform = 'translateY(0)'
+                  }}
+                >
+                  {heroImage && (
+                    <div className="area-card-bg" aria-hidden="true">
+                      <img src={heroImage} alt="" />
+                    </div>
+                  )}
+
+                  <div className="area-card-content">
+                    <div style={{
+                      width: '44px', height: '44px', borderRadius: '10px',
+                      background: 'var(--blue-pale)', display: 'flex', alignItems: 'center',
+                      justifyContent: 'center', color: 'var(--blue)', marginBottom: '0.9rem',
+                    }}>
+                      <Icon name={area.icon} size={22} />
+                    </div>
+                    <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.1rem', fontWeight: 600, color: 'var(--navy)', marginBottom: '0.4rem' }}>
+                      {area.title}
+                    </h3>
+                    <p style={{ fontSize: '0.82rem', lineHeight: 1.6, color: 'var(--text-soft)', marginBottom: '0.8rem' }}>
+                      {area.desc}
+                    </p>
+                    <span style={{ fontSize: '0.73rem', fontWeight: 600, color: 'var(--blue-electric)', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+                      Consultar →
+                    </span>
+                  </div>
+                </Link>
+              )
+            })}
           </div>
         </div>
       </section>
@@ -683,7 +714,7 @@ export default function Home() {
             <div style={{ minWidth: '180px' }}>
               <div style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.1rem', color: '#fff', fontWeight: 600 }}>MGF ABOGADOS</div>
               <div style={{ fontSize: '0.62rem', color: 'rgba(255,255,255,0.4)', letterSpacing: '0.12em', textTransform: 'uppercase', marginTop: '3px', marginBottom: '1rem' }}>
-                Martín – Grisi – Franco · Desde 1972
+                Martín – Grisi – Franco • Desde 1972
               </div>
               <div style={{ fontSize: '0.78rem', color: 'rgba(255,255,255,0.5)', lineHeight: 1.6, display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
                 <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
