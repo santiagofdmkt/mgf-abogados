@@ -703,7 +703,7 @@ export default function Home() {
                 letterSpacing: '0.08em', textTransform: 'uppercase', fontWeight: 600,
                 marginTop: '0.3rem', display: 'block', borderRadius: '8px',
               }}>
-                Continuar consulta →
+                Enviar consulta →
               </Link>
             </div>
           </div>
