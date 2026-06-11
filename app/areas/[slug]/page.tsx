@@ -65,28 +65,13 @@ export default async function AreaPage(
           .area-nav-cta-full { display: none !important; }
           .area-section-pad { padding: 3rem 1.2rem !important; }
           .area-hero { padding: 6rem 1.2rem 3rem !important; }
-          .area-footer-inner { flex-direction: column !important; align-items: flex-start !important; gap: 1.5rem !important; }
         }
         @media (min-width: 769px) {
           .area-nav-cta-short { display: none !important; }
         }
         details.area-faq summary::-webkit-details-marker { display: none; }
-        .scroll-top-btn {
-          width: 42px; height: 42px; border-radius: 50%;
-          background: rgba(255,255,255,0.08);
-          border: 1px solid rgba(255,255,255,0.18);
-          color: rgba(255,255,255,0.7);
-          display: flex; align-items: center; justify-content: center;
-          cursor: pointer; flex-shrink: 0; text-decoration: none;
-          transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
-        }
-        .scroll-top-btn:hover {
-          background: var(--blue-electric);
-          border-color: var(--blue-electric);
-          color: #fff;
-        }
-        .scroll-top-btn:hover svg { transform: translateY(-2px); }
-        .scroll-top-btn svg { transition: transform 0.2s ease; }
+        .otra-card { transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease; }
+        .otra-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); border-color: var(--blue) !important; }
       `}</style>
 
       {/* NAV */}
@@ -170,7 +155,7 @@ export default async function AreaPage(
               background: 'var(--blue-electric)', color: '#fff', padding: '14px 32px', borderRadius: '6px',
               fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', textDecoration: 'none',
             }}>
-              Iniciar consulta gratuita →
+              Iniciar primer consulta →
             </Link>
             <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" style={{
               background: 'rgba(255,255,255,0.14)', color: '#fff', padding: '14px 32px', borderRadius: '6px',
@@ -183,17 +168,23 @@ export default async function AreaPage(
         </div>
       </section>
 
-      {/* SECCIONES de contenido */}
+      {/* INTRODUCCIÓN / SECCIONES — fondo gris + tarjeta blanca, texto algo mas chico */}
       {area.secciones.length > 0 && (
-        <section className="area-section-pad" style={{ padding: '4rem 2rem', background: 'var(--white)' }}>
-          <div style={{ maxWidth: '760px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+        <section className="area-section-pad" style={{ padding: '4rem 2rem', background: 'var(--gray-50)' }}>
+          <div style={{
+            maxWidth: '800px', margin: '0 auto',
+            background: 'var(--white)', border: '1px solid var(--border)',
+            borderRadius: '16px', padding: 'clamp(1.8rem, 4vw, 3rem)',
+            boxShadow: 'var(--shadow-md)',
+            display: 'flex', flexDirection: 'column', gap: '1.8rem',
+          }}>
             {area.secciones.map((s) => (
               <div key={s.titulo}>
-                <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.4rem, 3vw, 2rem)', color: 'var(--navy)', fontWeight: 600, marginBottom: '0.8rem' }}>
+                <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.25rem, 2.6vw, 1.7rem)', color: 'var(--navy)', fontWeight: 600, marginBottom: '0.7rem' }}>
                   {s.titulo}
                 </h2>
                 {s.parrafos.map((p, i) => (
-                  <p key={i} style={{ fontSize: '1.02rem', lineHeight: 1.8, color: 'var(--text-soft)', marginBottom: '0.8rem' }}>{p}</p>
+                  <p key={i} style={{ fontSize: '0.95rem', lineHeight: 1.75, color: 'var(--text-soft)', marginBottom: '0.7rem' }}>{p}</p>
                 ))}
               </div>
             ))}
@@ -201,9 +192,9 @@ export default async function AreaPage(
         </section>
       )}
 
-      {/* FAQ */}
+      {/* FAQ — fondo blanco con acordeones grises, para contrastar con la intro gris */}
       {area.faq.length > 0 && (
-        <section className="area-section-pad" style={{ padding: '4rem 2rem', background: 'var(--gray-50)' }}>
+        <section className="area-section-pad" style={{ padding: '4rem 2rem', background: 'var(--white)', borderTop: '1px solid var(--border)' }}>
           <div style={{ maxWidth: '760px', margin: '0 auto' }}>
             <div className="label" style={{ marginBottom: '0.4rem' }}>Preguntas frecuentes</div>
             <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.5rem, 3.5vw, 2.2rem)', color: 'var(--navy)', fontWeight: 600, marginBottom: '1.8rem' }}>
@@ -212,7 +203,7 @@ export default async function AreaPage(
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.7rem' }}>
               {area.faq.map((f) => (
                 <details key={f.q} className="area-faq" style={{
-                  background: 'var(--white)', border: '1px solid var(--border)', borderRadius: '10px',
+                  background: 'var(--gray-50)', border: '1px solid var(--border)', borderRadius: '10px',
                   padding: '1rem 1.3rem', boxShadow: 'var(--shadow-sm)',
                 }}>
                   <summary style={{
@@ -230,30 +221,18 @@ export default async function AreaPage(
         </section>
       )}
 
-      {/* CTA */}
-      <section style={{ background: 'linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%)', padding: '3.5rem 1.5rem', textAlign: 'center' }}>
-        <div style={{ maxWidth: '600px', margin: '0 auto' }}>
-          <div className="label" style={{ color: '#7EB3FF', marginBottom: '0.8rem' }}>Primera consulta sin cargo</div>
-          <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.6rem, 4vw, 2.4rem)', color: '#fff', fontWeight: 600, marginBottom: '0.8rem', lineHeight: 1.2 }}>
-            Contanos tu caso.<br />
-            <em style={{ color: '#7EB3FF' }}>Te respondemos hoy.</em>
-          </h2>
-          <Link href="/consulta" style={{
-            background: 'var(--blue-electric)', color: '#fff', padding: '14px 40px', borderRadius: '8px',
-            fontSize: '0.88rem', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', textDecoration: 'none', display: 'inline-block',
-          }}>
-            Iniciar consulta gratuita →
-          </Link>
+      {/* OTRAS ÁREAS — sobre gris con imagen translucida de fondo */}
+      <section className="area-section-pad" style={{ position: 'relative', overflow: 'hidden', padding: '4rem 2rem', background: 'var(--gray-50)', borderTop: '1px solid var(--border)' }}>
+        {/* Capa de imagen translucida */}
+        <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
+          <img src={area.heroImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', opacity: 0.22 }} />
+          <div style={{
+            position: 'absolute', inset: 0,
+            background: 'linear-gradient(180deg, rgba(247,248,250,0.55) 0%, rgba(247,248,250,0.72) 100%)',
+          }} />
         </div>
-      </section>
 
-      {/* OTRAS ÁREAS — cards como la home, sin descripción */}
-      <section className="area-section-pad" style={{ padding: '4rem 2rem', background: 'var(--gray-50)' }}>
-        <style>{`
-          .otra-card { transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease; }
-          .otra-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); border-color: var(--blue) !important; }
-        `}</style>
-        <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
+        <div style={{ position: 'relative', zIndex: 1, maxWidth: '1000px', margin: '0 auto' }}>
           <div style={{ marginBottom: '1.8rem' }}>
             <div className="label" style={{ marginBottom: '0.4rem' }}>Más especialidades</div>
             <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 600, color: 'var(--navy)' }}>
@@ -265,16 +244,16 @@ export default async function AreaPage(
             {otras.map((o) => (
               <Link key={o.slug} href={`/areas/${o.slug}`} className="otra-card" style={{
                 display: 'flex', alignItems: 'center', gap: '0.9rem',
-                background: 'var(--white)', borderRadius: '10px', padding: '1.1rem 1.2rem',
-                border: '1px solid var(--border)', boxShadow: 'var(--shadow-sm)',
+                background: 'var(--white)', borderRadius: '12px', padding: '1.2rem 1.3rem',
+                border: '1px solid var(--border)', boxShadow: 'var(--shadow-md)',
                 textDecoration: 'none',
               }}>
                 <div style={{
-                  width: '42px', height: '42px', borderRadius: '10px',
+                  width: '44px', height: '44px', borderRadius: '11px',
                   background: 'var(--blue-pale)', display: 'flex', alignItems: 'center',
                   justifyContent: 'center', color: 'var(--blue)', flexShrink: 0,
                 }}>
-                  <AreaIcon slug={o.slug} size={21} />
+                  <AreaIcon slug={o.slug} size={22} />
                 </div>
                 <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: '1rem', fontWeight: 600, color: 'var(--navy)', lineHeight: 1.25 }}>
                   {o.title}
@@ -285,60 +264,6 @@ export default async function AreaPage(
         </div>
       </section>
 
-      {/* FOOTER */}
-      <footer style={{ background: 'var(--navy)', padding: '2.5rem 1.5rem' }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-          <div className="area-footer-inner" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '2rem', marginBottom: '1.5rem' }}>
-            <div style={{ minWidth: '180px' }}>
-              <div style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.1rem', color: '#fff', fontWeight: 600 }}>MGF ABOGADOS</div>
-              <div style={{ fontSize: '0.62rem', color: 'rgba(255,255,255,0.4)', letterSpacing: '0.12em', textTransform: 'uppercase', marginTop: '3px', marginBottom: '1rem' }}>
-                Martín – Grisi – Franco · Desde 1972
-              </div>
-              <div style={{ fontSize: '0.78rem', color: 'rgba(255,255,255,0.5)', lineHeight: 1.6 }}>
-                <div>📍 Lavalle 1546, Piso 8° «F» — CABA</div>
-                <div>📍 Calle 8 N° 790, Piso 3° «E» — La Plata</div>
-                <div>📞 (011) 4374-1166 / 9177</div>
-              </div>
-            </div>
-            <div>
-              <div style={{ fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', marginBottom: '0.8rem' }}>
-                Servicios
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                {areas.map((a) => (
-                  <Link key={a.slug} href={`/areas/${a.slug}`} style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.55)', textDecoration: 'none' }}>
-                    {a.title}
-                  </Link>
-                ))}
-              </div>
-            </div>
-            <div>
-              <div style={{ fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', marginBottom: '0.8rem' }}>
-                Consultas
-              </div>
-              <Link href="/consulta" style={{
-                background: 'var(--blue-electric)', color: '#fff', padding: '11px 22px', borderRadius: '6px',
-                fontSize: '0.78rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', textDecoration: 'none', display: 'inline-block',
-                marginBottom: '0.8rem',
-              }}>
-                Consulta gratuita →
-              </Link>
-              <div style={{ display: 'flex', gap: '1rem', marginTop: '0.5rem' }}>
-                <a href="https://instagram.com/mgfabogados" target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.45)', textDecoration: 'none' }}>Instagram</a>
-                <a href="https://facebook.com/61553341857581" target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.45)', textDecoration: 'none' }}>Facebook</a>
-              </div>
-            </div>
-          </div>
-          <div style={{ paddingTop: '1.2rem', borderTop: '1px solid rgba(255,255,255,0.08)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
-            <p style={{ fontSize: '0.68rem', color: 'rgba(255,255,255,0.28)', margin: 0 }}>
-              © {new Date().getFullYear()} MGF Abogados. Todos los derechos reservados.
-            </p>
-            <a href="#top" className="scroll-top-btn" aria-label="Volver arriba" title="Volver arriba" style={{ marginRight: '25%' }}>
-              <Svg size={20}><line x1="12" y1="19" x2="12" y2="5" /><polyline points="5 12 12 5 19 12" /></Svg>
-            </a>
-          </div>
-        </div>
-      </footer>
     </main>
   )
 }
