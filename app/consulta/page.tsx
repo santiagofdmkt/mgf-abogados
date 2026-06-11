@@ -522,7 +522,7 @@ function ConsultaInner() {
   };
 
   return (
-    <main style={{ background: 'var(--gray-50)', minHeight: '100vh', fontFamily: 'var(--font-inter, Inter, sans-serif)' }}>
+    <main style={{ background: 'var(--gray-50)', fontFamily: 'var(--font-inter, Inter, sans-serif)' }}>
       <style>{styles}</style>
 
       <nav style={{ background: 'var(--navy)', padding: '16px 24px' }}>
@@ -533,7 +533,7 @@ function ConsultaInner() {
         </div>
       </nav>
 
-      <div style={{ maxWidth: 640, margin: '0 auto', padding: '32px 16px 64px' }}>
+      <div style={{ maxWidth: 640, margin: '0 auto', padding: '32px 16px 70px' }}>
         <div className="mgf-card">
 
           {/* PANTALLA DE ÉXITO */}
