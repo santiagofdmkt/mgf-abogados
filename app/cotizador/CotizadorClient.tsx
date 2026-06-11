@@ -364,7 +364,7 @@ export default function CotizadorClient() {
       )}
 
       <div style={{ textAlign: 'center', marginTop: 24 }}>
-        <Link href="/" style={{ fontSize: 13.5, color: '#64748b', textDecoration: 'none' }}>← Volver al inicio</Link>
+        <Link href="/" style={{ fontSize: 14, color: '#0f2747', fontWeight: 600, textDecoration: 'none' }}>← Volver al inicio</Link>
       </div>
     </section>
   );

@@ -7,7 +7,7 @@ export const metadata = {
 
 export default function CotizadorPage() {
   return (
-    <main style={{ minHeight: '100vh', background: '#f1f5f9', fontFamily: 'Inter, sans-serif' }}>
+    <main style={{ background: '#f1f5f9', fontFamily: 'Inter, sans-serif' }}>
       <section style={{ background: 'linear-gradient(135deg, #0f2747, #16345f)', color: '#fff', padding: '56px 20px 44px', textAlign: 'center' }}>
         <div style={{ maxWidth: 700, margin: '0 auto' }}>
           <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: 34, fontWeight: 700, margin: '0 0 14px', lineHeight: 1.2 }}>
@@ -20,6 +20,7 @@ export default function CotizadorPage() {
       </section>
       <div style={{ height: 32 }} />
       <CotizadorClient />
+      <div style={{ height: 60 }} />
     </main>
   );
 }
