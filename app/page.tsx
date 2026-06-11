@@ -75,8 +75,6 @@ function Icon({ name, size, strokeWidth }: { name: string; size?: number; stroke
       return <Svg size={size} strokeWidth={strokeWidth}><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="3.5" /><circle cx="17" cy="7" r="1" /></Svg>
     case 'facebook':
       return <Svg size={size} strokeWidth={strokeWidth}><path d="M14 8.5h2.5V5.5H14c-2 0-3 1.2-3 3.2V11H9v3h2v6h3v-6h2.3l.4-3H14V9c0-.4.2-.5.6-.5z" /></Svg>
-    case 'arrow-up':
-      return <Svg size={size} strokeWidth={strokeWidth}><line x1="12" y1="19" x2="12" y2="5" /><polyline points="5 12 12 5 19 12" /></Svg>
     default:
       return null
   }
@@ -165,14 +163,6 @@ export default function Home() {
           transform: translateY(-2px);
         }
 
-        .footer-social {
-          display: inline-flex; align-items: center; gap: 0.45rem;
-          color: rgba(255,255,255,0.55) !important;
-          transition: color 0.2s ease;
-        }
-        .footer-social:hover { color: var(--blue-electric) !important; }
-        .footer-social svg { transition: transform 0.2s ease; }
-        .footer-social:hover svg { transform: translateY(-1px); }
         @media (max-width: 768px) {
           .nav-links { display: none !important; }
           .hamburger { display: flex !important; }
@@ -188,11 +178,8 @@ export default function Home() {
           .equipo-center { grid-column: 1 / -1 !important; max-width: 50% !important; margin: 0 auto !important; }
           .equipo-img { aspect-ratio: 1/1 !important; }
           .contacto-inner { flex-direction: column !important; gap: 2rem !important; }
-          .footer-inner { flex-direction: column !important; align-items: flex-start !important; gap: 1.5rem !important; }
-          .footer-links { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 0.6rem 1.5rem !important; }
           .section-pad { padding: 3rem 1.2rem !important; }
           .hero-section { padding: 5rem 1.2rem 2rem !important; min-height: auto !important; }
-          .scroll-top-btn { margin-right: 0 !important; }
         }
         @media (min-width: 769px) {
           .hamburger { display: none !important; }
@@ -201,22 +188,6 @@ export default function Home() {
           .hero-img-mobile { display: none !important; }
           .stats-mobile-section { display: none !important; }
         }
-        .scroll-top-btn {
-          width: 42px; height: 42px; border-radius: 50%;
-          background: rgba(255,255,255,0.08);
-          border: 1px solid rgba(255,255,255,0.18);
-          color: rgba(255,255,255,0.7);
-          display: flex; align-items: center; justify-content: center;
-          cursor: pointer; flex-shrink: 0;
-          transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
-        }
-        .scroll-top-btn:hover {
-          background: var(--blue-electric);
-          border-color: var(--blue-electric);
-          color: #fff;
-        }
-        .scroll-top-btn:hover svg { transform: translateY(-2px); }
-        .scroll-top-btn svg { transition: transform 0.2s ease; }
       `}</style>
 
       {/* NAV */}
@@ -259,7 +230,7 @@ export default function Home() {
               borderRadius: '6px', fontSize: '0.8rem', fontWeight: 600,
               letterSpacing: '0.06em', textTransform: 'uppercase', textDecoration: 'none',
             }}>
-              Consulta gratuita
+              Consultá Online
             </Link>
           </div>
 
@@ -298,7 +269,7 @@ export default function Home() {
               letterSpacing: '0.06em', textTransform: 'uppercase', textDecoration: 'none',
               textAlign: 'center', marginTop: '0.8rem', display: 'block',
             }}>
-              Consulta gratuita →
+              Consultá online →
             </Link>
           </div>
         )}
@@ -738,81 +709,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* FOOTER */}
-      <footer style={{ background: 'var(--navy)', padding: '2.5rem 1.5rem' }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-          <div className="footer-inner" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '2rem', marginBottom: '1.5rem' }}>
-            <div style={{ minWidth: '180px' }}>
-              <div style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.1rem', color: '#fff', fontWeight: 600 }}>MGF ABOGADOS</div>
-              <div style={{ fontSize: '0.62rem', color: 'rgba(255,255,255,0.4)', letterSpacing: '0.12em', textTransform: 'uppercase', marginTop: '3px', marginBottom: '1rem' }}>
-                Martín – Grisi – Franco • Desde 1972
-              </div>
-              <div style={{ fontSize: '0.78rem', color: 'rgba(255,255,255,0.5)', lineHeight: 1.6, display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
-                <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                  <span style={{ color: 'var(--blue-electric)', display: 'flex', flexShrink: 0 }}><Icon name="pin" size={15} /></span>
-                  Lavalle 1546, Piso 8° «F» — CABA
-                </div>
-                <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                  <span style={{ color: 'var(--blue-electric)', display: 'flex', flexShrink: 0 }}><Icon name="pin" size={15} /></span>
-                  Calle 8 N° 790, Piso 3° «E» — La Plata
-                </div>
-                <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                  <span style={{ color: 'var(--blue-electric)', display: 'flex', flexShrink: 0 }}><Icon name="phone" size={15} /></span>
-                  (011) 4374-1166 / 9177
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <div style={{ fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', marginBottom: '0.8rem' }}>
-                Servicios
-              </div>
-              <div className="footer-links" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                {areas.map(a => (
-                  <Link key={a.slug} href={`/areas/${a.slug}`} style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.55)', textDecoration: 'none' }}>
-                    {a.title}
-                  </Link>
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <div style={{ fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', marginBottom: '0.8rem' }}>
-                Consultas
-              </div>
-              <Link href="/consulta" className="btn-zoom" style={{
-                background: 'var(--blue-electric)', color: '#fff',
-                padding: '11px 22px', borderRadius: '6px',
-                fontSize: '0.78rem', fontWeight: 600, letterSpacing: '0.06em',
-                textTransform: 'uppercase', textDecoration: 'none', display: 'inline-block',
-                marginBottom: '1.2rem',
-              }}>
-                Consulta gratuita →
-              </Link>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1.1rem', marginTop: '0.2rem' }}>
-                <a href="https://instagram.com/mgfabogados" target="_blank" rel="noopener noreferrer" className="footer-social" style={{ fontSize: '0.8rem', textDecoration: 'none' }}>
-                  <Icon name="instagram" size={16} /> Instagram
-                </a>
-                <span style={{ width: '1px', height: '14px', background: 'rgba(255,255,255,0.2)' }} />
-                <a href="https://facebook.com/61553341857581" target="_blank" rel="noopener noreferrer" className="footer-social" style={{ fontSize: '0.8rem', textDecoration: 'none' }}>
-                  <Icon name="facebook" size={16} /> Facebook
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <div style={{ paddingTop: '1.2rem', borderTop: '1px solid rgba(255,255,255,0.08)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
-            <p style={{ fontSize: '0.68rem', color: 'rgba(255,255,255,0.28)', margin: 0 }}>
-              © {new Date().getFullYear()} MGF Abogados. Todos los derechos reservados.
-            </p>
-            <button type="button" onClick={scrollToTop} className="scroll-top-btn" aria-label="Volver arriba" title="Volver arriba" style={{ marginRight: '25%' }}>
-              <Icon name="arrow-up" size={20} />
-            </button>
-          </div>
-        </div>
-      </footer>
-
+     
     </main>
   )
 }

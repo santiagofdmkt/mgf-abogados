@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import Footer from '@/components/Footer'
 
 export const metadata: Metadata = {
   title: 'MGF Abogados | Estudio Jurídico desde 1972',
@@ -22,7 +23,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body>{children}</body>
+      <body id="top">
+        {children}
+        <Footer />
+      </body>
     </html>
   )
 }
