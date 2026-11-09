@@ -7,7 +7,7 @@ export type Seccion = { titulo: string; parrafos: string[] }
 export type Dato = { icono: string; titulo: string; texto: string }
 export type Paso = { titulo: string; texto: string }
 export type Numero = { valor: string; etiqueta: string }
-export type Bloque<T> = { etiqueta: string; titulo: string; items: T[] }
+export type Bloque<T> = { etiqueta: string; titulo: string; descripcion?: string; items: T[] }
 
 export type Area = {
   slug: string
@@ -20,6 +20,7 @@ export type Area = {
   heroDescription: string
   secciones: Seccion[]
   faq: Faq[]
+  faqDescripcion?: string  // Texto introductorio de la franja de preguntas frecuentes
   chips?: string[]
   cubre?: Bloque<Dato>
   corresponde?: Bloque<Dato>
@@ -42,6 +43,7 @@ export const areas: Area[] = [
     cubre: {
       etiqueta: 'Cobertura',
       titulo: '¿Qué situaciones cubre tu ART?',
+      descripcion: 'La ART cubre los accidentes y las enfermedades que tienen relación con tu trabajo. Estas son las tres situaciones más comunes: ubicá cuál es la tuya.',
       items: [
         { icono: 'trabajo', titulo: 'Accidente en el trabajo', texto: 'Una lesión que ocurre por el trabajo o durante tu jornada.' },
         { icono: 'itinere', titulo: 'Accidente in itínere', texto: 'El que sufrís yendo o volviendo entre tu casa y tu trabajo.' },
@@ -51,6 +53,7 @@ export const areas: Area[] = [
     corresponde: {
       etiqueta: 'Tus derechos',
       titulo: '¿Qué te corresponde?',
+      descripcion: 'Estos son los derechos que la ley reconoce al trabajador que sufre un accidente. Si tu ART no los cumple, podemos reclamarlos por vos.',
       items: [
         { icono: 'medico', titulo: 'Atención médica', texto: 'Tratamiento y rehabilitación completos, a cargo de la ART.' },
         { icono: 'salario', titulo: 'Ingreso mensual', texto: 'Una prestación mientras dure tu licencia.' },
@@ -61,6 +64,7 @@ export const areas: Area[] = [
 
 
     secciones: [],
+    faqDescripcion: 'Las dudas que más nos plantean quienes sufrieron un accidente laboral, respondidas en pocas líneas.',
     faq: [
       { q: '¿Qué hago si tengo un accidente?', a: 'Avisá de inmediato a tu empleador para que haga la denuncia ante la ART. Si no la hace, podés hacerla vos mismo. Si el médico te indica reposo, no debés prestar tareas.' },
       { q: '¿Qué pasa si la ART rechaza mi caso?', a: 'Suele alegar que la lesión no tiene relación con el trabajo o que ya existía. El rechazo debe notificarse por escrito y muchas veces se puede cuestionar. Consultanos cuanto antes.' },
@@ -85,6 +89,7 @@ export const areas: Area[] = [
     cubre: {
       etiqueta: 'Casos',
       titulo: '¿En qué situaciones podemos ayudarte?',
+      descripcion: 'Un accidente de tránsito puede ocurrir de muchas formas: manejando, caminando o viajando como pasajero. Elegí la situación que más se parezca a la tuya.',
       items: [
         { icono: 'traslado', titulo: 'Conductor o acompañante', texto: 'Choques con lesiones o daños en tu auto o moto, aunque manejaras vos.' },
         { icono: 'itinere', titulo: 'Peatón o ciclista', texto: 'Atropellos y caídas causadas por un vehículo.' },
@@ -95,6 +100,7 @@ export const areas: Area[] = [
     corresponde: {
       etiqueta: 'Reclamo',
       titulo: '¿Qué podés reclamar?',
+      descripcion: 'Cuando otra persona causa el daño, tenés derecho a que se repare. Estos son los principales conceptos que incluye un reclamo por accidente de tránsito.',
       items: [
         { icono: 'medico', titulo: 'Lesiones físicas', texto: 'Tratamientos, estudios, medicamentos y rehabilitación.' },
         { icono: 'indemnizacion', titulo: 'Daño psicológico', texto: 'El estrés postraumático: miedo a circular, a manejar o a salir.' },
@@ -103,6 +109,7 @@ export const areas: Area[] = [
       ],
     },
     secciones: [],
+    faqDescripcion: 'Qué hacer en las primeras horas, cómo tratar con el seguro y cuánto tiempo hay para reclamar.',
     faq: [
       { q: '¿Qué hago después de un accidente?', a: 'Si hay lesiones, llamá al SAME y no te muevas. Si estás en condiciones, sacá fotos del lugar y de los vehículos, buscá testigos y pedí los datos del otro conductor.' },
       { q: '¿Qué datos tengo que pedir?', a: 'Nombre, DNI y domicilio, marca, modelo y patente del vehículo, cédula verde, registro de conducir y datos del seguro con número de póliza.' },
@@ -126,6 +133,7 @@ export const areas: Area[] = [
     cubre: {
       etiqueta: 'Tu situación',
       titulo: '¿Cuál es tu caso?',
+      descripcion: 'Los problemas laborales no siempre empiezan con un telegrama de despido. Estas son las situaciones por las que más nos consultan: ubicá la tuya.',
       items: [
         { icono: 'trabajo', titulo: 'Me despidieron sin causa', texto: 'Con o sin telegrama, incluso si fue solo de palabra.' },
         { icono: 'itinere', titulo: 'Trabajo en negro o mal registrado', texto: 'Sin registrar, con facturas obligadas o en una categoría que no es la tuya.' },
@@ -136,6 +144,7 @@ export const areas: Area[] = [
     corresponde: {
       etiqueta: 'Tus derechos',
       titulo: '¿Qué podés reclamar?',
+      descripcion: 'Según tu caso, podés tener derecho a una indemnización y a otros conceptos que tu empleador debe pagarte. Estos son los principales.',
       items: [
         { icono: 'indemnizacion', titulo: 'Indemnización por despido', texto: 'Se calcula según tu antigüedad y tu sueldo.' },
         { icono: 'salario', titulo: 'Preaviso e integración del mes', texto: 'Si no te avisaron con anticipación.' },
@@ -144,6 +153,7 @@ export const areas: Area[] = [
       ],
     },
     secciones: [],
+    faqDescripcion: 'Respuestas rápidas sobre telegramas, trabajo en negro, renuncias y plazos. Antes de firmar o aceptar algo, consultanos.',
     faq: [
       { q: '¿Qué hago si recibo un telegrama de despido?', a: 'Contactanos rápido. Los plazos para responder son muy cortos y un error puede perjudicar tu reclamo.' },
       { q: 'Me despidieron de palabra, ¿qué hago?', a: 'Por lo general conviene seguir yendo a trabajar y enviar un telegrama para que tu empleador aclare tu situación por escrito. Te asesoramos y lo redactamos.' },
@@ -168,6 +178,7 @@ export const areas: Area[] = [
     cubre: {
       etiqueta: 'Quiénes somos para vos',
       titulo: '¿Cuál es tu situación?',
+      descripcion: 'En un consorcio conviven propietarios, administradores y consejos, cada uno con intereses distintos. Contanos desde qué lugar nos consultás.',
       items: [
         { icono: 'trabajo', titulo: 'Soy propietario o vecino', texto: 'Expensas, asambleas, obras o conflictos con el consorcio o con otros vecinos.' },
         { icono: 'indemnizacion', titulo: 'Administro un consorcio', texto: 'Cobro de morosos, reglamento, asambleas y rendición de cuentas.' },
@@ -178,6 +189,7 @@ export const areas: Area[] = [
     corresponde: {
       etiqueta: 'Cómo te ayudamos',
       titulo: '¿En qué podemos acompañarte?',
+      descripcion: 'Trabajamos tanto con propietarios como con administraciones y consorcios, en los temas que más conflictos generan en la vida de un edificio.',
       items: [
         { icono: 'salario', titulo: 'Expensas', texto: 'Cobro, ejecución de deudas y discusión de liquidaciones.' },
         { icono: 'medico', titulo: 'Rendición de cuentas', texto: 'Control de la gestión del administrador y reclamo de información.' },
@@ -193,6 +205,7 @@ export const areas: Area[] = [
         ],
       },
     ],
+    faqDescripcion: 'Dudas frecuentes sobre expensas, asambleas, administradores y conjuntos inmobiliarios.',
     faq: [
       { q: '¿Cómo se cobran las expensas atrasadas?', a: 'El administrador puede emitir un certificado de deuda que, aprobado por el consejo de propietarios si existe, funciona como título ejecutivo para reclamar el pago por la vía judicial.' },
       { q: 'Mi inquilino no paga las expensas, ¿quién responde?', a: 'Pueden reclamarse al inquilino u ocupante, pero eso no libera al propietario, que sigue siendo responsable frente al consorcio.' },
@@ -217,6 +230,7 @@ export const areas: Area[] = [
     cubre: {
       etiqueta: 'Tu situación',
       titulo: '¿Cuál es tu caso?',
+      descripcion: 'Esta área reúne dos tipos de reclamo por tu salud: los daños causados por una mala atención médica y los problemas de cobertura con tu obra social o prepaga.',
       items: [
         { icono: 'medico', titulo: 'Error médico', texto: 'Diagnóstico, tratamiento o cirugía que te causó un daño.' },
         { icono: 'enfermedad', titulo: 'Falla en clínica u hospital', texto: 'Atención deficiente, infecciones o errores de la institución.' },
@@ -227,6 +241,7 @@ export const areas: Area[] = [
     corresponde: {
       etiqueta: 'Cómo te ayudamos',
       titulo: '¿Qué podemos reclamar?',
+      descripcion: 'Según tu caso, el reclamo puede ser una indemnización por el daño sufrido o una acción urgente para que te den la cobertura que necesitás.',
       items: [
         { icono: 'indemnizacion', titulo: 'Indemnización por daños', texto: 'Por el daño físico, psicológico y los gastos que tuviste.' },
         { icono: 'trabajo', titulo: 'Historia clínica y prueba', texto: 'Reunimos la documentación médica que sostiene tu reclamo.' },
@@ -242,6 +257,7 @@ export const areas: Area[] = [
         ],
       },
     ],
+    faqDescripcion: 'Respuestas sobre mala praxis, historia clínica, plazos, cuotas de prepagas y cobertura de tratamientos.',
     faq: [
       { q: '¿Qué es la mala praxis y cuándo existe?', a: 'Es el daño causado por un error o una negligencia de un profesional o de un centro de salud. Un mal resultado por sí solo no alcanza: hay que probar que hubo una falla y que ella causó el daño.' },
       { q: '¿Qué hago primero si creo que fue mala praxis?', a: 'Pedí tu historia clínica: es tuya y tenés derecho a recibir una copia. Conservá estudios, recetas, informes y comprobantes de gastos, y consultanos antes de firmar algo.' },
@@ -267,6 +283,7 @@ export const areas: Area[] = [
     cubre: {
       etiqueta: 'Tu situación',
       titulo: '¿Cuál es tu caso?',
+      descripcion: 'Cuando fallece un ser querido, la sucesión permite ordenar sus bienes y que los herederos puedan disponer de ellos. Ubicá cuál es tu situación.',
       items: [
         { icono: 'trabajo', titulo: 'Falleció un familiar', texto: 'Necesitás que te reconozcan como heredero y ordenar la sucesión.' },
         { icono: 'indemnizacion', titulo: 'Hay un testamento', texto: 'Hay que presentarlo, aprobarlo y cumplirlo respetando la ley.' },
@@ -277,6 +294,7 @@ export const areas: Area[] = [
     corresponde: {
       etiqueta: 'Cómo te ayudamos',
       titulo: '¿En qué podemos acompañarte?',
+      descripcion: 'Nos ocupamos de cada etapa de la sucesión: desde que se reconoce a los herederos hasta que los bienes se reparten y se inscriben.',
       items: [
         { icono: 'medico', titulo: 'Declaratoria de herederos', texto: 'Iniciamos y tramitamos la sucesión hasta obtener tu calidad de heredero.' },
         { icono: 'traslado', titulo: 'Inscripción de bienes', texto: 'Para que puedas transferir, vender o disponer de lo heredado.' },
@@ -292,6 +310,7 @@ export const areas: Area[] = [
         ],
       },
     ],
+    faqDescripcion: 'Quiénes heredan, qué es la declaratoria, cuánto tarda y qué impuestos hay, explicado en pocas líneas.',
     faq: [
       { q: '¿Cuándo hace falta hacer una sucesión?', a: 'Cuando la persona fallecida dejó bienes registrables, como un inmueble o un auto, o cuentas que hay que transferir. Se tramita ante el juzgado del último domicilio del fallecido.' },
       { q: '¿Qué es la declaratoria de herederos?', a: 'Es la resolución judicial que determina quiénes son los herederos. No reparte los bienes: eso se resuelve después, en la partición.' },
