@@ -580,100 +580,104 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CONTACTO */}
-      <section id="contacto" className="section-pad" style={{ padding: '3.5rem 2rem', background: 'var(--gray-50)' }}>
-        <div className="contacto-inner" style={{ maxWidth: '1100px', margin: '0 auto', display: 'flex', gap: '3rem', flexWrap: 'wrap', alignItems: 'stretch' }}>
+      {/* CONTACTO: panel unico con info a la izquierda y formulario a la derecha */}
+      <section id="contacto" className="section-pad" style={{ padding: '4rem 2rem', background: 'var(--gray-50)' }}>
+        <style>{`
+          .ct-panel { display: grid; grid-template-columns: 1fr 1.1fr; max-width: 1100px; margin: 0 auto; border-radius: 24px; overflow: hidden; background: var(--white); border: 1px solid var(--border); box-shadow: 0 28px 70px rgba(10,22,52,0.20); }
+          .ct-info { position: relative; overflow: hidden; background: linear-gradient(155deg, var(--navy) 0%, var(--blue) 100%); padding: 2.8rem 2.4rem; display: flex; flex-direction: column; }
+          .ct-info::before { content: ''; position: absolute; width: 320px; height: 320px; border-radius: 50%; right: -120px; top: -120px; background: rgba(255,255,255,0.07); }
+          .ct-info::after { content: ''; position: absolute; width: 220px; height: 220px; border-radius: 50%; left: -90px; bottom: -90px; background: rgba(255,255,255,0.06); }
+          .ct-info > * { position: relative; z-index: 1; }
+          .ct-item { display: flex; gap: 1rem; align-items: center; padding: 0.95rem 0; border-top: 1px solid rgba(255,255,255,0.16); }
+          .ct-item:last-child { border-bottom: 1px solid rgba(255,255,255,0.16); }
+          .ct-ico { width: 44px; height: 44px; border-radius: 50%; flex: none; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.25); color: #fff; }
+          .ct-form { padding: 2.8rem 2.4rem; }
+          .ct-label { display: block; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-soft); margin-bottom: 6px; }
+          .ct-input { width: 100%; border: 1.5px solid var(--border); border-radius: 12px; padding: 12px 14px; font-size: 0.92rem; outline: none; font-family: 'Inter', sans-serif; color: var(--text); background: var(--gray-50); transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease; }
+          .ct-input:hover { border-color: #cbd5e1; }
+          .ct-input:focus { border-color: var(--blue); background: var(--white); box-shadow: 0 0 0 4px var(--blue-pale); }
+          .ct-wa, .ct-send { transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease; }
+          .ct-wa:hover, .ct-send:hover { transform: scale(1.04); filter: brightness(1.05); }
+          .ct-send:hover { box-shadow: 0 14px 30px rgba(10,22,52,0.32); }
+          .ct-wa:active, .ct-send:active { transform: scale(0.98); }
+          @media (max-width: 860px) { .ct-panel { grid-template-columns: 1fr; } .ct-info, .ct-form { padding: 2rem 1.4rem; } }
+          @media (prefers-reduced-motion: reduce) { .ct-wa:hover, .ct-send:hover { transform: none; } }
+        `}</style>
 
-          {/* Columna info — ahora en tarjeta blanca para resaltar sobre el fondo gris */}
-          <div style={{
-            flex: '1', minWidth: '260px', display: 'flex', flexDirection: 'column',
-            background: 'var(--white)', border: '1px solid var(--border)',
-            borderRadius: '14px', padding: '2rem', boxShadow: 'var(--shadow-md)',
-          }}>
-            <div className="label" style={{ marginBottom: '0.4rem' }}>Contacto</div>
-            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.9rem', color: 'var(--navy)', fontWeight: 600, marginBottom: '0.6rem' }}>
+        <div className="ct-panel">
+
+          {/* Mitad izquierda: info de contacto */}
+          <div className="ct-info">
+            <div className="label" style={{ color: '#7EB3FF', marginBottom: '0.5rem' }}>Contacto</div>
+            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.7rem, 3vw, 2.1rem)', color: '#fff', fontWeight: 600, lineHeight: 1.15, marginBottom: '0.8rem' }}>
               Estamos para ayudarte
             </h2>
-            <p style={{ fontSize: '0.9rem', lineHeight: 1.7, color: 'var(--text-soft)', marginBottom: '1.6rem', maxWidth: '420px' }}>
+            <p style={{ fontSize: '0.95rem', lineHeight: 1.75, color: 'rgba(255,255,255,0.82)', marginBottom: '1.8rem', maxWidth: '420px' }}>
               Escribinos por el medio que prefieras. La primera consulta es sin cargo y te respondemos en el día.
             </p>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+            <div>
               {contactos.map(c => (
-                <div key={c.title} style={{
-                  display: 'flex', gap: '0.9rem', alignItems: 'center',
-                  background: 'var(--gray-50)', border: '1px solid var(--border)',
-                  borderRadius: '10px', padding: '0.9rem 1rem',
-                }}>
-                  <span style={{
-                    width: '38px', height: '38px', borderRadius: '9px',
-                    background: 'var(--blue-pale)', color: 'var(--blue)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-                  }}>
-                    <Icon name={c.icon} size={18} strokeWidth={1.3} />
+                <div key={c.title} className="ct-item">
+                  <span className="ct-ico">
+                    <Icon name={c.icon} size={20} strokeWidth={1.5} />
                   </span>
                   <div>
-                    <div style={{ fontSize: '0.68rem', fontWeight: 600, color: 'var(--text-muted)', letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: '2px' }}>{c.title}</div>
-                    <div style={{ fontSize: '0.88rem', color: 'var(--navy)', fontWeight: 500 }}>{c.info}</div>
+                    <div style={{ fontSize: '0.68rem', fontWeight: 600, color: '#7EB3FF', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '2px' }}>{c.title}</div>
+                    <div style={{ fontSize: '0.95rem', color: '#fff', fontWeight: 500 }}>{c.info}</div>
                   </div>
                 </div>
               ))}
             </div>
 
-            <a href="https://api.whatsapp.com/send?phone=5491140362772" target="_blank" rel="noopener noreferrer" className="btn-zoom" style={{
-              marginTop: '1.2rem', background: '#25D366', color: '#fff',
-              padding: '13px 22px', borderRadius: '8px',
-              fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.04em', textDecoration: 'none',
+            <a href="https://api.whatsapp.com/send?phone=5491140362772" target="_blank" rel="noopener noreferrer" className="ct-wa" style={{
+              marginTop: '1.6rem', background: '#25D366', color: '#fff',
+              padding: '14px 26px', borderRadius: '999px',
+              fontSize: '0.88rem', fontWeight: 600, letterSpacing: '0.04em', textDecoration: 'none',
               display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '0.6rem', alignSelf: 'flex-start',
+              boxShadow: '0 10px 24px rgba(0,0,0,0.25)',
             }}>
               <Icon name="whatsapp" size={18} /> Escribinos por WhatsApp
             </a>
           </div>
 
-          {/* Columna formulario */}
-          <div style={{
-            flex: '1', minWidth: '280px', maxWidth: '480px',
-            background: 'var(--white)', border: '1px solid var(--border)',
-            borderRadius: '14px', padding: '2rem',
-            boxShadow: 'var(--shadow-md)',
-          }}>
-            <div style={{ fontSize: '1.05rem', fontWeight: 600, color: 'var(--navy)', marginBottom: '0.3rem', fontFamily: "'Playfair Display', serif" }}>
-              Dejanos tu consulta
+          {/* Mitad derecha: formulario */}
+          <div className="ct-form">
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', marginBottom: '0.5rem' }}>
+              <span style={{
+                width: '42px', height: '42px', borderRadius: '12px', flexShrink: 0,
+                background: 'var(--blue-pale)', color: 'var(--blue)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+              }}>
+                <Icon name="consulta" size={22} strokeWidth={1.5} />
+              </span>
+              <div style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.5rem', fontWeight: 600, color: 'var(--navy)', lineHeight: 1.15 }}>
+                Dejanos tu consulta
+              </div>
             </div>
-            <p style={{ fontSize: '0.8rem', color: 'var(--text-soft)', marginBottom: '1.4rem' }}>
+            <p style={{ fontSize: '0.88rem', color: 'var(--text-soft)', marginBottom: '1.6rem', lineHeight: 1.6 }}>
               Completá tus datos y seguí con el formulario guiado.
             </p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.9rem' }}>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               {inputs.map(f => (
                 <div key={f.name}>
-                  <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--text-soft)', marginBottom: '4px' }}>
-                    {f.label}
-                  </label>
+                  <label className="ct-label">{f.label}</label>
                   <input
+                    className="ct-input"
                     type={f.type}
                     placeholder={f.placeholder}
                     value={form[f.name]}
                     onChange={e => setForm({ ...form, [f.name]: e.target.value })}
-                    style={{
-                      width: '100%', border: '1px solid var(--border)', borderRadius: '8px',
-                      padding: '11px 12px', fontSize: '0.9rem', outline: 'none',
-                      fontFamily: "'Inter', sans-serif", color: 'var(--text)', background: 'var(--gray-50)',
-                    }}
                   />
                 </div>
               ))}
               <div>
-                <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--text-soft)', marginBottom: '4px' }}>
-                  Tipo de consulta
-                </label>
+                <label className="ct-label">Tipo de consulta</label>
                 <select
+                  className="ct-input"
                   value={form.area}
                   onChange={e => setForm({ ...form, area: e.target.value })}
-                  style={{
-                    width: '100%', border: '1px solid var(--border)', borderRadius: '8px',
-                    padding: '11px 12px', fontSize: '0.9rem', outline: 'none',
-                    fontFamily: "'Inter', sans-serif", color: 'var(--text)', background: 'var(--gray-50)',
-                  }}
                 >
                   <option value="">Seleccioná un área</option>
                   {areas.map(a => <option key={a.slug} value={a.slug}>{a.title}</option>)}
@@ -681,30 +685,30 @@ export default function Home() {
                 </select>
               </div>
               <div>
-                <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--text-soft)', marginBottom: '4px' }}>
+                <label className="ct-label">
                   Contanos brevemente tu caso <span style={{ textTransform: 'none', fontWeight: 400, color: 'var(--text-muted)' }}>(opcional)</span>
                 </label>
                 <textarea
+                  className="ct-input"
                   value={form.mensaje}
                   onChange={e => setForm({ ...form, mensaje: e.target.value })}
                   placeholder="Escribí acá un breve resumen de tu situación..."
                   rows={4}
-                  style={{
-                    width: '100%', border: '1px solid var(--border)', borderRadius: '8px',
-                    padding: '11px 12px', fontSize: '0.9rem', outline: 'none',
-                    fontFamily: "'Inter', sans-serif", color: 'var(--text)', background: 'var(--gray-50)',
-                    resize: 'vertical', minHeight: '90px',
-                  }}
+                  style={{ resize: 'vertical', minHeight: '96px' }}
                 />
               </div>
-              <Link href={consultaHref()} className="btn-zoom" style={{
-                background: 'var(--blue)', color: '#fff', padding: '13px',
-                textAlign: 'center', textDecoration: 'none', fontSize: '0.82rem',
+              <Link href={consultaHref()} className="ct-send" style={{
+                background: 'linear-gradient(135deg, var(--blue) 0%, var(--blue-electric) 100%)', color: '#fff', padding: '15px',
+                textAlign: 'center', textDecoration: 'none', fontSize: '0.85rem',
                 letterSpacing: '0.08em', textTransform: 'uppercase', fontWeight: 600,
-                marginTop: '0.3rem', display: 'block', borderRadius: '8px',
+                marginTop: '0.4rem', display: 'block', borderRadius: '999px',
+                boxShadow: '0 10px 24px rgba(30,91,184,0.30)',
               }}>
                 Enviar consulta →
               </Link>
+              <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textAlign: 'center', lineHeight: 1.5 }}>
+                Es confidencial. Usamos tus datos solo para responder tu consulta.
+              </p>
             </div>
           </div>
         </div>
