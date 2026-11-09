@@ -113,10 +113,10 @@ export default function Footer() {
           </div>
 
           <div>
-            <div style={{ fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', marginBottom: '0.8rem' }}>
+            <div style={{ textAlign: 'center', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', marginBottom: '0.8rem' }}>
               Seguinos
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.7rem', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.7rem', flexWrap: 'wrap' }}>
               <a href="https://instagram.com/mgfabogados" target="_blank" rel="noopener noreferrer" className="footer-social" style={{ fontSize: '0.85rem', textDecoration: 'none' }}>
                 <Icon name="instagram" size={19} /> Instagram
               </a>
@@ -124,14 +124,14 @@ export default function Footer() {
                 <Icon name="facebook" size={19} /> Facebook
               </a>
             </div>
+            <p style={{ width: 0, minWidth: '100%', margin: '1rem 0 0', fontSize: '0.72rem', lineHeight: 1.5, color: 'rgba(255,255,255,0.45)', textAlign: 'center' }}>
+              © {new Date().getFullYear()} MGF Abogados. Todos los derechos reservados.
+            </p>
           </div>
         </div>
 
-        <div style={{ paddingTop: '1.2rem', borderTop: '1px solid rgba(255,255,255,0.08)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
-          <p style={{ fontSize: '0.68rem', color: 'rgba(255,255,255,0.28)', margin: 0 }}>
-            © {new Date().getFullYear()} MGF Abogados. Todos los derechos reservados.
-          </p>
-          <a href="#top" className="footer-scroll-top" aria-label="Volver arriba" title="Volver arriba" style={{ marginRight: '25%' }}>
+        <div style={{ paddingTop: '1.2rem', borderTop: '1px solid rgba(255,255,255,0.08)', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+          <a href="#top" className="footer-scroll-top" aria-label="Volver arriba" title="Volver arriba">
             <Icon name="arrow-up" size={20} />
           </a>
         </div>
