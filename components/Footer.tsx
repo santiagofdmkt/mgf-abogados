@@ -43,13 +43,16 @@ export default function Footer() {
         .footer-btn-zoom { transition: filter .2s ease, box-shadow .2s ease, background .2s ease; }
         .footer-btn-zoom:hover { filter: brightness(0.9); box-shadow: var(--shadow-md); }
         .footer-social {
-          display: inline-flex; align-items: center; gap: 0.45rem;
-          color: rgba(255,255,255,0.55) !important;
-          transition: color .2s ease;
+          display: inline-flex; align-items: center; gap: 0.55rem;
+          color: #fff !important; font-weight: 500;
+          background: rgba(255,255,255,0.12);
+          border: 1px solid rgba(255,255,255,0.3);
+          padding: 9px 16px; border-radius: 999px;
+          transition: background .2s ease, border-color .2s ease, transform .2s ease;
         }
-        .footer-social:hover { color: var(--blue-electric) !important; }
+        .footer-social:hover { background: var(--blue-electric); border-color: var(--blue-electric); transform: translateY(-2px); }
         .footer-social svg { transition: transform .2s ease; }
-        .footer-social:hover svg { transform: translateY(-1px); }
+        .footer-social:hover svg { transform: scale(1.1); }
         .footer-scroll-top {
           width: 42px; height: 42px; border-radius: 50%;
           background: rgba(255,255,255,0.08);
@@ -111,24 +114,14 @@ export default function Footer() {
 
           <div>
             <div style={{ fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', marginBottom: '0.8rem' }}>
-              Consultas
+              Seguinos
             </div>
-            <Link href="/consulta" className="footer-btn-zoom" style={{
-              background: 'var(--blue-electric)', color: '#fff',
-              padding: '11px 22px', borderRadius: 6,
-              fontSize: '0.78rem', fontWeight: 600, letterSpacing: '0.06em',
-              textTransform: 'uppercase', textDecoration: 'none', display: 'inline-block',
-              marginBottom: '1.2rem',
-            }}>
-              Iniciar primera consulta →
-            </Link>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1.1rem', marginTop: '0.2rem' }}>
-              <a href="https://instagram.com/mgfabogados" target="_blank" rel="noopener noreferrer" className="footer-social" style={{ fontSize: '0.8rem', textDecoration: 'none' }}>
-                <Icon name="instagram" size={16} /> Instagram
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.7rem', flexWrap: 'wrap' }}>
+              <a href="https://instagram.com/mgfabogados" target="_blank" rel="noopener noreferrer" className="footer-social" style={{ fontSize: '0.85rem', textDecoration: 'none' }}>
+                <Icon name="instagram" size={19} /> Instagram
               </a>
-              <span style={{ width: 1, height: 14, background: 'rgba(255,255,255,0.2)' }} />
-              <a href="https://facebook.com/61553341857581" target="_blank" rel="noopener noreferrer" className="footer-social" style={{ fontSize: '0.8rem', textDecoration: 'none' }}>
-                <Icon name="facebook" size={16} /> Facebook
+              <a href="https://facebook.com/61553341857581" target="_blank" rel="noopener noreferrer" className="footer-social" style={{ fontSize: '0.85rem', textDecoration: 'none' }}>
+                <Icon name="facebook" size={19} /> Facebook
               </a>
             </div>
           </div>
