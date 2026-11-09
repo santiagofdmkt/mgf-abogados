@@ -87,7 +87,7 @@ function Panel({ cubre, corresponde, faq, faqDescripcion }: { cubre?: Bloque<Dat
                 <div className="banda-num">{i + 1}</div>
                 <div>
                   <div className="label" style={{ marginBottom: '0.35rem', color: oscuro ? '#7EB3FF' : undefined }}>{b.etiqueta}</div>
-                  <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.3rem, 2.6vw, 1.7rem)', lineHeight: 1.2, color: oscuro ? '#fff' : 'var(--navy)', fontWeight: 600 }}>
+                  <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.15rem, 2.2vw, 1.4rem)', lineHeight: 1.2, color: oscuro ? '#fff' : 'var(--navy)', fontWeight: 600 }}>
                     {b.titulo}
                   </h2>
                 </div>
@@ -104,11 +104,11 @@ function Panel({ cubre, corresponde, faq, faqDescripcion }: { cubre?: Bloque<Dat
                   <div className={`datos-grid datos-${n}`}>
                     {b.datos.map((it) => (
                       <div key={it.titulo}>
-                        <div className="dato-ic"><Pict name={it.icono} size={26} /></div>
-                        <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.15rem', fontWeight: 600, color: oscuro ? '#fff' : 'var(--navy)', marginBottom: '0.4rem' }}>
+                        <div className="dato-ic"><Pict name={it.icono} size={22} /></div>
+                        <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.02rem', fontWeight: 600, color: oscuro ? '#fff' : 'var(--navy)', marginBottom: '0.35rem' }}>
                           {it.titulo}
                         </h3>
-                        <p style={{ fontSize: '0.95rem', lineHeight: 1.65, color: oscuro ? 'rgba(255,255,255,0.82)' : 'var(--text-soft)' }}>{it.texto}</p>
+                        <p style={{ fontSize: '0.88rem', lineHeight: 1.6, color: oscuro ? 'rgba(255,255,255,0.82)' : 'var(--text-soft)' }}>{it.texto}</p>
                       </div>
                     ))}
                   </div>
@@ -181,14 +181,14 @@ export default async function AreaPage(
         .banda:only-child::before { display: none; }
         .banda-oscuro::before { background: rgba(255,255,255,0.35); }
         .banda-blanco::before, .banda-celeste::before { background: rgba(30,91,184,0.35); }
-        .banda-desc { font-size: 1.02rem; line-height: 1.75; margin-bottom: 1.8rem; max-width: 760px; }
+        .banda-desc { font-size: 0.92rem; line-height: 1.7; margin-bottom: 1.6rem; max-width: 760px; }
         .datos-grid { display: grid; gap: 1.8rem 2rem; align-content: start; }
         .datos-1 { grid-template-columns: 1fr; }
         .datos-2 { grid-template-columns: repeat(2, 1fr); }
         .datos-3 { grid-template-columns: repeat(3, 1fr); }
         .datos-4 { grid-template-columns: repeat(2, 1fr); }
         .datos-5, .datos-6 { grid-template-columns: repeat(3, 1fr); }
-        .dato-ic { width: 54px; height: 54px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 0.9rem; }
+        .dato-ic { width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 0.9rem; }
         .banda-oscuro .dato-ic { background: rgba(255,255,255,0.16); color: #fff; }
         .banda-blanco .dato-ic { background: var(--blue-pale); color: var(--blue); }
         .banda-celeste .dato-ic { background: var(--white); color: var(--blue); }
@@ -196,10 +196,10 @@ export default async function AreaPage(
         .faq-item { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 1.05rem 1.3rem; transition: border-color 0.2s ease, box-shadow 0.2s ease; }
         .faq-item:hover { border-color: var(--blue); }
         .faq-item[open] { border-color: var(--blue); box-shadow: 0 6px 18px rgba(30,91,184,0.12); }
-        .faq-item summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 1rem; font-weight: 600; font-size: 1rem; color: var(--navy); }
+        .faq-item summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 1rem; font-weight: 600; font-size: 0.93rem; color: var(--navy); }
         .faq-mas { color: var(--blue-electric); font-size: 1.4rem; line-height: 1; flex: none; transition: transform 0.2s ease; }
         .faq-item[open] .faq-mas { transform: rotate(45deg); }
-        .faq-item p { margin-top: 0.8rem; font-size: 0.95rem; line-height: 1.7; color: var(--text-soft); }
+        .faq-item p { margin-top: 0.8rem; font-size: 0.88rem; line-height: 1.65; color: var(--text-soft); }
         @media (max-width: 960px) {
           .banda { grid-template-columns: 1fr; gap: 1.6rem; padding: 2.2rem 1.4rem; }
           .banda::before { display: none; }
@@ -305,7 +305,7 @@ export default async function AreaPage(
       {area.intro && (
         <section className="area-section-pad" style={{ padding: '3rem 2rem 0', background: 'var(--gray-50)' }}>
           <style>{`
-            .intro-card { display: grid; grid-template-columns: 250px 1fr; border-radius: 22px; overflow: hidden; background: var(--white); border: 1px solid var(--border); box-shadow: 0 24px 60px rgba(10,22,52,0.12); }
+            .intro-card { display: grid; grid-template-columns: 220px 1fr; border-radius: 22px; overflow: hidden; background: var(--white); border: 1px solid var(--border); box-shadow: 0 24px 60px rgba(10,22,52,0.12); }
             @media (max-width: 760px) { .intro-card { grid-template-columns: 1fr; } }
           `}</style>
           <div className="intro-card" style={{ maxWidth: ANCHO, margin: '0 auto' }}>
@@ -315,25 +315,25 @@ export default async function AreaPage(
               alignItems: 'center', justifyContent: 'center', textAlign: 'center', gap: '1rem',
             }}>
               <div style={{
-                width: '88px', height: '88px', borderRadius: '50%',
+                width: '72px', height: '72px', borderRadius: '50%',
                 background: 'rgba(255,255,255,0.14)', border: '1px solid rgba(255,255,255,0.28)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff',
               }}>
-                <AreaIcon slug={area.slug} size={42} />
+                <AreaIcon slug={area.slug} size={34} />
               </div>
               <div>
-                <div style={{ fontSize: '0.68rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 600, color: '#7EB3FF', marginBottom: '0.4rem' }}>
+                <div style={{ fontSize: '0.64rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 600, color: '#7EB3FF', marginBottom: '0.4rem' }}>
                   Esta área
                 </div>
-                <div style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.25rem', fontWeight: 600, lineHeight: 1.25, color: '#fff' }}>
+                <div style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.08rem', fontWeight: 600, lineHeight: 1.25, color: '#fff' }}>
                   {area.title}
                 </div>
               </div>
             </div>
-            <div style={{ padding: 'clamp(1.8rem, 4vw, 3rem)' }}>
+            <div style={{ padding: 'clamp(1.5rem, 3vw, 2.2rem)' }}>
               <div className="label" style={{ marginBottom: '0.5rem' }}>Qué hacemos por vos</div>
               <div style={{ width: '48px', height: '3px', borderRadius: '2px', background: 'var(--blue-electric)', marginBottom: '1.2rem' }} />
-              <p style={{ fontSize: 'clamp(1rem, 1.5vw, 1.1rem)', lineHeight: 1.85, color: 'var(--text-soft)' }}>
+              <p style={{ fontSize: 'clamp(0.9rem, 1.2vw, 0.98rem)', lineHeight: 1.7, color: 'var(--text-soft)' }}>
                 {area.intro}
               </p>
               {area.secciones.map((s) => (
@@ -341,11 +341,11 @@ export default async function AreaPage(
                   marginTop: '1.6rem', background: 'var(--blue-pale)', borderRadius: '14px',
                   borderLeft: '4px solid var(--blue-electric)', padding: '1.3rem 1.5rem',
                 }}>
-                  <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.2rem', color: 'var(--navy)', fontWeight: 600, marginBottom: '0.6rem' }}>
+                  <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.05rem', color: 'var(--navy)', fontWeight: 600, marginBottom: '0.5rem' }}>
                     {s.titulo}
                   </h2>
                   {s.parrafos.map((p, i) => (
-                    <p key={i} style={{ fontSize: '0.95rem', lineHeight: 1.75, color: 'var(--text-soft)', marginBottom: i < s.parrafos.length - 1 ? '0.6rem' : 0 }}>{p}</p>
+                    <p key={i} style={{ fontSize: '0.88rem', lineHeight: 1.7, color: 'var(--text-soft)', marginBottom: i < s.parrafos.length - 1 ? '0.6rem' : 0 }}>{p}</p>
                   ))}
                 </div>
               ))}
