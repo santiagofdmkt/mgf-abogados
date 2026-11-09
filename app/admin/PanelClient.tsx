@@ -139,10 +139,14 @@ export default function PanelClient({ consultas }: { consultas: Consulta[] }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ estado: nuevoEstado }),
       });
+      if (res.status === 401) {
+        window.location.href = '/admin/login';
+        return;
+      }
       if (!res.ok) throw new Error();
     } catch {
-      // Si falla, revierto y refresco
-      setItems(consultas);
+      // Si falla, vuelvo solo esa tarjeta a su columna anterior
+      setItems((prev) => prev.map((c) => (c.id === draggableId ? { ...c, estado: source.droppableId } : c)));
       alert('No se pudo mover la consulta. Reintentá.');
     }
   };
@@ -405,6 +409,10 @@ function ModalDetalle({ consulta, onClose, onSaved }: { consulta: Consulta; onCl
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ estado, prioridad, nota }),
       });
+      if (res.status === 401) {
+        window.location.href = '/admin/login';
+        return;
+      }
       if (!res.ok) throw new Error();
       onSaved({ ...consulta, estado, prioridad, nota });
     } catch {
