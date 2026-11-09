@@ -533,10 +533,27 @@ function ConsultaInner() {
     <main style={{ flex: 1, background: 'var(--gray-50)', fontFamily: 'var(--font-inter, Inter, sans-serif)' }}>
       <style>{styles}</style>
 
+      {/* NAV con boton volver al inicio, visible en todos los pasos */}
       <nav style={{ background: 'var(--navy)', padding: '16px 24px' }}>
-        <div style={{ maxWidth: 980, margin: '0 auto' }}>
+        <style>{`
+          .mgf-volver { transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease; }
+          .mgf-volver:hover { transform: scale(1.06); background: rgba(255,255,255,0.14); border-color: #fff; }
+          .mgf-volver:active { transform: scale(0.98); }
+          .mgf-volver-short { display: none; }
+          @media (max-width: 480px) { .mgf-volver-full { display: none; } .mgf-volver-short { display: inline; } }
+          @media (prefers-reduced-motion: reduce) { .mgf-volver:hover, .mgf-volver:active { transform: none; } }
+        `}</style>
+        <div style={{ maxWidth: 980, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
           <Link href="/" style={{ color: '#fff', fontFamily: 'var(--font-playfair, "Playfair Display", serif)', fontSize: 20, fontWeight: 500, textDecoration: 'none', cursor: 'pointer' }}>
             MGF Abogados
+          </Link>
+          <Link href="/" className="mgf-volver" style={{
+            color: '#fff', textDecoration: 'none', padding: '8px 18px', borderRadius: 999,
+            border: '1px solid rgba(255,255,255,0.4)', fontSize: 12, fontWeight: 600,
+            letterSpacing: '0.06em', textTransform: 'uppercase', whiteSpace: 'nowrap',
+          }}>
+            <span className="mgf-volver-full">← Volver al inicio</span>
+            <span className="mgf-volver-short">← Inicio</span>
           </Link>
         </div>
       </nav>
