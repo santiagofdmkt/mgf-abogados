@@ -103,7 +103,7 @@ function Panel({ cubre, corresponde, faq, faqDescripcion }: { cubre?: Bloque<Dat
                 {b.datos ? (
                   <div className={`datos-grid datos-${n}`}>
                     {b.datos.map((it) => (
-                      <div key={it.titulo}>
+                      <div key={it.titulo} className="dato-card">
                         <div className="dato-ic"><Pict name={it.icono} size={22} /></div>
                         <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.02rem', fontWeight: 600, color: oscuro ? '#fff' : 'var(--navy)', marginBottom: '0.35rem' }}>
                           {it.titulo}
@@ -182,7 +182,7 @@ export default async function AreaPage(
         .banda-oscuro::before { background: rgba(255,255,255,0.35); }
         .banda-blanco::before, .banda-celeste::before { background: rgba(30,91,184,0.35); }
         .banda-desc { font-size: 0.92rem; line-height: 1.7; margin-bottom: 1.6rem; max-width: 760px; }
-        .datos-grid { display: grid; gap: 1.8rem 2rem; align-content: start; }
+        .datos-grid { display: grid; gap: 1rem; align-content: start; }
         .datos-1 { grid-template-columns: 1fr; }
         .datos-2 { grid-template-columns: repeat(2, 1fr); }
         .datos-3 { grid-template-columns: repeat(3, 1fr); }
@@ -192,6 +192,12 @@ export default async function AreaPage(
         .banda-oscuro .dato-ic { background: rgba(255,255,255,0.16); color: #fff; }
         .banda-blanco .dato-ic { background: var(--blue-pale); color: var(--blue); }
         .banda-celeste .dato-ic { background: var(--white); color: var(--blue); }
+        .dato-card { padding: 1.3rem 1.4rem; border-radius: 14px; border: 1px solid transparent; transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease; }
+        .dato-card:hover { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(10,22,52,0.14); }
+        .banda-oscuro .dato-card { background: rgba(255,255,255,0.09); border-color: rgba(255,255,255,0.2); }
+        .banda-blanco .dato-card { background: var(--gray-50); border-color: var(--border); }
+        .banda-celeste .dato-card { background: var(--white); border-color: rgba(30,91,184,0.2); }
+        @media (prefers-reduced-motion: reduce) { .dato-card:hover { transform: none; } }
         .faq-lista { display: flex; flex-direction: column; gap: 0.7rem; max-width: 900px; }
         .faq-item { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 1.05rem 1.3rem; transition: border-color 0.2s ease, box-shadow 0.2s ease; }
         .faq-item:hover { border-color: var(--blue); }
