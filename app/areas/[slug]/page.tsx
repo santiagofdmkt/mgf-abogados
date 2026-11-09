@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import type { ReactNode } from 'react'
-import { areas } from '@/lib/areas'
+import { areas, type Bloque, type Dato } from '@/lib/areas'
 
 const WHATSAPP = 'https://api.whatsapp.com/send?phone=5491140362772'
 
@@ -35,6 +35,93 @@ function AreaIcon({ slug, size }: { slug: string; size?: number }) {
   }
 }
 
+// Pictogramas de las secciones visuales (linea fina, heredan el color)
+function Pict({ name, size = 24 }: { name: string; size?: number }) {
+  switch (name) {
+    case 'trabajo':
+      return <Svg size={size}><path d="M2 18h20" /><path d="M20 18v-2a8 8 0 0 0-16 0v2" /><path d="M9 7.5V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2.5" /></Svg>
+    case 'itinere':
+      return <Svg size={size}><circle cx="5" cy="19" r="2" /><circle cx="19" cy="7" r="2" /><path d="M7 19h7a3 3 0 0 0 0-6h-4a3 3 0 0 1 0-6h7" /></Svg>
+    case 'enfermedad':
+      return <Svg size={size}><path d="M3 12h4l2-5 4 10 2-5h6" /></Svg>
+    case 'medico':
+      return <Svg size={size}><path d="M10 3h4v7h7v4h-7v7h-4v-7H3v-4h7z" /></Svg>
+    case 'salario':
+      return <Svg size={size}><rect x="3" y="6" width="18" height="12" rx="2" /><circle cx="12" cy="12" r="2.5" /><path d="M6.5 9.5h.01M17.5 14.5h.01" /></Svg>
+    case 'indemnizacion':
+      return <Svg size={size}><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z" /><path d="M9 12l2 2 4-4" /></Svg>
+    case 'traslado':
+      return <Svg size={size}><rect x="3" y="8" width="12" height="8" rx="1" /><path d="M15 11h3l3 3v2h-6" /><circle cx="7" cy="18" r="1.6" /><circle cx="17" cy="18" r="1.6" /></Svg>
+    default:
+      return <Svg size={size}><circle cx="12" cy="12" r="9" /><path d="M12 8v4l2.5 2.5" /></Svg>
+  }
+}
+
+// Panel unico: cobertura, derechos y preguntas conectados en un solo bloque de franjas de color.
+// Solo muestra las franjas que el area tiene definidas (la numeracion se acomoda sola).
+type BandaPanel = { etiqueta: string; titulo: string; datos?: Dato[] }
+
+function Panel({ cubre, corresponde, faq }: { cubre?: Bloque<Dato>; corresponde?: Bloque<Dato>; faq: { q: string; a: string }[] }) {
+  const bandas: BandaPanel[] = []
+  if (cubre) bandas.push({ etiqueta: cubre.etiqueta, titulo: cubre.titulo, datos: cubre.items })
+  if (corresponde) bandas.push({ etiqueta: corresponde.etiqueta, titulo: corresponde.titulo, datos: corresponde.items })
+  if (faq.length > 0) bandas.push({ etiqueta: 'Preguntas frecuentes', titulo: 'Dudas habituales' })
+  if (bandas.length === 0) return null
+
+  const temas = ['oscuro', 'blanco', 'celeste']
+
+  return (
+    <section className="area-section-pad" style={{ padding: '4rem 2rem', background: 'var(--gray-50)', borderTop: '1px solid var(--border)' }}>
+      <div className="panel-unico" style={{ maxWidth: '1440px', margin: '0 auto' }}>
+        {bandas.map((b, i) => {
+          const tema = temas[i % 3]
+          const oscuro = tema === 'oscuro'
+          const n = b.datos ? b.datos.length : 0
+          return (
+            <div key={b.titulo} className={`banda banda-${tema}`}>
+              <div className="banda-cab">
+                <div className="banda-num">{i + 1}</div>
+                <div>
+                  <div className="label" style={{ marginBottom: '0.35rem', color: oscuro ? '#7EB3FF' : undefined }}>{b.etiqueta}</div>
+                  <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.3rem, 2.6vw, 1.7rem)', lineHeight: 1.2, color: oscuro ? '#fff' : 'var(--navy)', fontWeight: 600 }}>
+                    {b.titulo}
+                  </h2>
+                </div>
+              </div>
+
+              {b.datos ? (
+                <div className={`datos-grid datos-${n}`}>
+                  {b.datos.map((it) => (
+                    <div key={it.titulo}>
+                      <div className="dato-ic"><Pict name={it.icono} size={26} /></div>
+                      <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.15rem', fontWeight: 600, color: oscuro ? '#fff' : 'var(--navy)', marginBottom: '0.4rem' }}>
+                        {it.titulo}
+                      </h3>
+                      <p style={{ fontSize: '0.95rem', lineHeight: 1.65, color: oscuro ? 'rgba(255,255,255,0.82)' : 'var(--text-soft)' }}>{it.texto}</p>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="faq-lista">
+                  {faq.map((f) => (
+                    <details key={f.q} className="area-faq faq-item">
+                      <summary>
+                        <span>{f.q}</span>
+                        <span className="faq-mas">＋</span>
+                      </summary>
+                      <p>{f.a}</p>
+                    </details>
+                  ))}
+                </div>
+              )}
+            </div>
+          )
+        })}
+      </div>
+    </section>
+  )
+}
+
 export function generateStaticParams() {
   return areas.map((a) => ({ slug: a.slug }))
 }
@@ -55,7 +142,6 @@ export default async function AreaPage(
   const area = areas.find((a) => a.slug === slug)
   if (!area) notFound()
 
-  const otras = areas.filter((a) => a.slug !== area.slug)
 
   return (
     <main id="top" style={{ background: 'var(--white)', scrollBehavior: 'smooth' }}>
@@ -70,8 +156,50 @@ export default async function AreaPage(
           .area-nav-cta-short { display: none !important; }
         }
         details.area-faq summary::-webkit-details-marker { display: none; }
-        .otra-card { transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease; }
-        .otra-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); border-color: var(--blue) !important; }
+        .panel-unico { border-radius: 22px; overflow: hidden; border: 1px solid var(--border); box-shadow: 0 24px 60px rgba(10,22,52,0.18); }
+        .banda { position: relative; display: grid; grid-template-columns: 290px 1fr; gap: 3rem; padding: 3rem 2.5rem; }
+        .banda-oscuro { background: linear-gradient(150deg, var(--navy) 0%, var(--blue) 100%); }
+        .banda-blanco { background: var(--white); }
+        .banda-celeste { background: var(--blue-pale); }
+        .banda-cab { display: flex; gap: 1rem; align-items: flex-start; }
+        .banda-num { width: 44px; height: 44px; border-radius: 50%; flex: none; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-weight: 600; font-size: 1.1rem; position: relative; z-index: 2; background: var(--navy); color: #fff; }
+        .banda-oscuro .banda-num { background: #fff; color: var(--navy); }
+        .banda::before { content: ''; position: absolute; left: calc(2.5rem + 21px); top: 0; bottom: 0; width: 2px; z-index: 1; }
+        .banda:first-child::before { top: calc(3rem + 22px); }
+        .banda:last-child::before { bottom: auto; height: calc(3rem + 22px); }
+        .banda:only-child::before { display: none; }
+        .banda-oscuro::before { background: rgba(255,255,255,0.35); }
+        .banda-blanco::before, .banda-celeste::before { background: rgba(30,91,184,0.35); }
+        .datos-grid { display: grid; gap: 1.8rem 2rem; align-content: start; }
+        .datos-1 { grid-template-columns: 1fr; }
+        .datos-2 { grid-template-columns: repeat(2, 1fr); }
+        .datos-3 { grid-template-columns: repeat(3, 1fr); }
+        .datos-4 { grid-template-columns: repeat(2, 1fr); }
+        .datos-5, .datos-6 { grid-template-columns: repeat(3, 1fr); }
+        @media (min-width: 1500px) {
+          .datos-4 { grid-template-columns: repeat(4, 1fr); }
+        }
+        .dato-ic { width: 54px; height: 54px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 0.9rem; }
+        .banda-oscuro .dato-ic { background: rgba(255,255,255,0.16); color: #fff; }
+        .banda-blanco .dato-ic { background: var(--blue-pale); color: var(--blue); }
+        .banda-celeste .dato-ic { background: var(--white); color: var(--blue); }
+        .faq-lista { display: flex; flex-direction: column; gap: 0.7rem; max-width: 900px; }
+        .faq-item { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 1.05rem 1.3rem; transition: border-color 0.2s ease, box-shadow 0.2s ease; }
+        .faq-item:hover { border-color: var(--blue); }
+        .faq-item[open] { border-color: var(--blue); box-shadow: 0 6px 18px rgba(30,91,184,0.12); }
+        .faq-item summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 1rem; font-weight: 600; font-size: 1rem; color: var(--navy); }
+        .faq-mas { color: var(--blue-electric); font-size: 1.4rem; line-height: 1; flex: none; transition: transform 0.2s ease; }
+        .faq-item[open] .faq-mas { transform: rotate(45deg); }
+        .faq-item p { margin-top: 0.8rem; font-size: 0.95rem; line-height: 1.7; color: var(--text-soft); }
+        @media (max-width: 960px) {
+          .banda { grid-template-columns: 1fr; gap: 1.6rem; padding: 2.2rem 1.4rem; }
+          .banda::before { display: none; }
+        }
+        @media (max-width: 700px) {
+          .datos-grid { grid-template-columns: 1fr !important; }
+        }
+
+
       `}</style>
 
       {/* NAV */}
@@ -81,7 +209,7 @@ export default async function AreaPage(
         backdropFilter: 'blur(8px)',
       }}>
         <div style={{
-          maxWidth: '1200px', margin: '0 auto', padding: '0 1.5rem',
+          maxWidth: '1440px', margin: '0 auto', padding: '0 1.5rem',
           height: '64px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         }}>
           <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
@@ -123,7 +251,7 @@ export default async function AreaPage(
           }} />
         </div>
 
-        <div style={{ position: 'relative', zIndex: 1, maxWidth: '900px', margin: '0 auto' }}>
+        <div style={{ position: 'relative', zIndex: 1, maxWidth: '1440px', margin: '0 auto' }}>
           <div style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.55)', marginBottom: '1.5rem', letterSpacing: '0.04em' }}>
             <Link href="/" style={{ color: 'rgba(255,255,255,0.55)', textDecoration: 'none' }}>Inicio</Link>
             {' / '}
@@ -147,9 +275,22 @@ export default async function AreaPage(
           }}>
             {area.title}
           </h1>
-          <p style={{ fontSize: '1.05rem', lineHeight: 1.7, color: 'rgba(255,255,255,0.78)', maxWidth: '620px', marginBottom: '2rem' }}>
+          <p style={{ fontSize: '1.05rem', lineHeight: 1.7, color: 'rgba(255,255,255,0.78)', maxWidth: '620px', marginBottom: area.chips ? '1.2rem' : '2rem' }}>
             {area.heroDescription}
           </p>
+          {area.chips && area.chips.length > 0 && (
+            <div style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap', marginBottom: '2rem' }}>
+              {area.chips.map((c) => (
+                <span key={c} style={{
+                  background: 'rgba(255,255,255,0.10)', border: '1px solid rgba(255,255,255,0.22)',
+                  color: 'rgba(255,255,255,0.9)', padding: '6px 14px', borderRadius: '999px',
+                  fontSize: '0.75rem', fontWeight: 500, letterSpacing: '0.02em',
+                }}>
+                  <span style={{ color: '#7EB3FF', marginRight: '0.45rem' }}>✓</span>{c}
+                </span>
+              ))}
+            </div>
+          )}
           <div style={{ display: 'flex', gap: '0.8rem', flexWrap: 'wrap' }}>
             <Link href="/consulta" style={{
               background: 'var(--blue-electric)', color: '#fff', padding: '14px 32px', borderRadius: '6px',
@@ -168,11 +309,17 @@ export default async function AreaPage(
         </div>
       </section>
 
-      {/* INTRODUCCIÓN / SECCIONES — fondo gris + tarjeta blanca, texto algo mas chico */}
+      {/* BLOQUES VISUALES (opcionales por area) */}
+
+
+
+
+
+      {/* SECCIONES DE TEXTO (opcionales) */}
       {area.secciones.length > 0 && (
         <section className="area-section-pad" style={{ padding: '4rem 2rem', background: 'var(--gray-50)' }}>
           <div style={{
-            maxWidth: '800px', margin: '0 auto',
+            maxWidth: '1440px', margin: '0 auto',
             background: 'var(--white)', border: '1px solid var(--border)',
             borderRadius: '16px', padding: 'clamp(1.8rem, 4vw, 3rem)',
             boxShadow: 'var(--shadow-md)',
@@ -192,75 +339,30 @@ export default async function AreaPage(
         </section>
       )}
 
-      {/* FAQ — fondo blanco con acordeones grises, para contrastar con la intro gris */}
-      {area.faq.length > 0 && (
-        <section className="area-section-pad" style={{ padding: '4rem 2rem', background: 'var(--white)', borderTop: '1px solid var(--border)' }}>
-          <div style={{ maxWidth: '760px', margin: '0 auto' }}>
-            <div className="label" style={{ marginBottom: '0.4rem' }}>Preguntas frecuentes</div>
-            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.5rem, 3.5vw, 2.2rem)', color: 'var(--navy)', fontWeight: 600, marginBottom: '1.8rem' }}>
-              Dudas habituales
-            </h2>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.7rem' }}>
-              {area.faq.map((f) => (
-                <details key={f.q} className="area-faq" style={{
-                  background: 'var(--gray-50)', border: '1px solid var(--border)', borderRadius: '10px',
-                  padding: '1rem 1.3rem', boxShadow: 'var(--shadow-sm)',
-                }}>
-                  <summary style={{
-                    cursor: 'pointer', listStyle: 'none', fontWeight: 600, fontSize: '0.95rem',
-                    color: 'var(--navy)', display: 'flex', justifyContent: 'space-between', gap: '1rem',
-                  }}>
-                    {f.q}
-                    <span style={{ color: 'var(--blue-electric)' }}>＋</span>
-                  </summary>
-                  <p style={{ fontSize: '0.9rem', lineHeight: 1.7, color: 'var(--text-soft)', marginTop: '0.8rem' }}>{f.a}</p>
-                </details>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
+      {/* PANEL UNICO: cobertura, derechos y preguntas conectados */}
+      <Panel cubre={area.cubre} corresponde={area.corresponde} faq={area.faq} />
 
-      {/* OTRAS ÁREAS — sobre gris con imagen translucida de fondo */}
-      <section className="area-section-pad" style={{ position: 'relative', overflow: 'hidden', padding: '4rem 2rem', background: 'var(--gray-50)', borderTop: '1px solid var(--border)' }}>
-        {/* Capa de imagen translucida */}
-        <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
-          <img src={area.heroImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', opacity: 0.22 }} />
-          <div style={{
-            position: 'absolute', inset: 0,
-            background: 'linear-gradient(180deg, rgba(247,248,250,0.55) 0%, rgba(247,248,250,0.72) 100%)',
-          }} />
-        </div>
+      {/* BOTON FINAL: al terminar de leer, antes del pie */}
+      <div style={{ display: 'flex', justifyContent: 'center', padding: '0.5rem 1rem 3.5rem', background: 'var(--gray-50)' }}>
+        <Link href={`/consulta?area=${area.slug}`} style={{
+          background: 'var(--blue-electric)', color: '#fff', padding: '16px 38px', borderRadius: '999px',
+          fontSize: '0.88rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', textDecoration: 'none',
+          boxShadow: '0 10px 28px rgba(10,22,52,0.32)',
+        }}>
+          Iniciar primera consulta →
+        </Link>
+      </div>
 
-        <div style={{ position: 'relative', zIndex: 1, maxWidth: '1000px', margin: '0 auto' }}>
-          <div style={{ marginBottom: '1.8rem' }}>
-            <div className="label" style={{ marginBottom: '0.4rem' }}>Más especialidades</div>
-            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 600, color: 'var(--navy)' }}>
-              Otras áreas de práctica
-            </h2>
-          </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '1rem' }}>
-            {otras.map((o) => (
-              <Link key={o.slug} href={`/areas/${o.slug}`} className="otra-card" style={{
-                display: 'flex', alignItems: 'center', gap: '0.9rem',
-                background: 'var(--white)', borderRadius: '12px', padding: '1.2rem 1.3rem',
-                border: '1px solid var(--border)', boxShadow: 'var(--shadow-md)',
-                textDecoration: 'none',
-              }}>
-                <div style={{
-                  width: '44px', height: '44px', borderRadius: '11px',
-                  background: 'var(--blue-pale)', display: 'flex', alignItems: 'center',
-                  justifyContent: 'center', color: 'var(--blue)', flexShrink: 0,
-                }}>
-                  <AreaIcon slug={o.slug} size={22} />
-                </div>
-                <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: '1rem', fontWeight: 600, color: 'var(--navy)', lineHeight: 1.25 }}>
-                  {o.title}
-                </h3>
-              </Link>
-            ))}
-          </div>
+      {/* VOLVER AL INICIO */}
+      <section style={{ padding: '2.5rem 2rem', background: 'var(--gray-50)', borderTop: '1px solid var(--border)' }}>
+        <div style={{ maxWidth: '1440px', margin: '0 auto', textAlign: 'center' }}>
+          <Link href="/" style={{
+            display: 'inline-block', color: 'var(--navy)', border: '1px solid var(--border)', background: 'var(--white)',
+            padding: '12px 28px', borderRadius: '6px', fontSize: '0.82rem', fontWeight: 600,
+            letterSpacing: '0.06em', textTransform: 'uppercase', textDecoration: 'none',
+          }}>
+            ← Volver al inicio
+          </Link>
         </div>
       </section>
 

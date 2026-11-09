@@ -4,6 +4,10 @@
 
 export type Faq = { q: string; a: string }
 export type Seccion = { titulo: string; parrafos: string[] }
+export type Dato = { icono: string; titulo: string; texto: string }
+export type Paso = { titulo: string; texto: string }
+export type Numero = { valor: string; etiqueta: string }
+export type Bloque<T> = { etiqueta: string; titulo: string; items: T[] }
 
 export type Area = {
   slug: string
@@ -16,6 +20,11 @@ export type Area = {
   heroDescription: string
   secciones: Seccion[]
   faq: Faq[]
+  chips?: string[]
+  cubre?: Bloque<Dato>
+  corresponde?: Bloque<Dato>
+  camino?: Bloque<Paso>
+  numeros?: Numero[]
 }
 
 export const areas: Area[] = [
@@ -26,37 +35,39 @@ export const areas: Area[] = [
     icon: '🦺',
     heroImage: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=1400&q=80&auto=format&fit=crop',
     metaTitle: 'Abogados de Accidentes de Trabajo y ART | MGF Abogados',
-    metaDescription:
-      'Reclamos por accidentes laborales y enfermedades profesionales ante la ART. Primera consulta sin cargo. Trabajamos a porcentaje del resultado.',
+    metaDescription: 'Reclamos por accidentes laborales, accidentes in itínere y enfermedades profesionales ante la ART. Primera consulta sin cargo.',
     heroLabel: 'Derecho Laboral · ART',
-    heroDescription:
-      'Gestionamos tu reclamo ante la ART por accidentes laborales, accidentes in itínere y enfermedades profesionales. Cobrás lo que te corresponde, sin adelantar honorarios.',
-    secciones: [
-      {
-        titulo: '¿Qué es un accidente de trabajo?',
-        parrafos: [
-          'Es un hecho imprevisible en el que un trabajador sufre una lesión física, una enfermedad profesional o una afección psicológica, causada en el trabajo o por el trabajo. La cobertura también alcanza los trayectos de ida y vuelta entre tu domicilio y tu lugar de trabajo.',
-        ],
-      },
-      {
-        titulo: '¿Qué es una ART y por qué tengo una?',
-        parrafos: [
-          'Las Aseguradoras de Riesgos del Trabajo (ART) son compañías que tu empleador está obligado por ley a contratar para cubrirte ante un accidente laboral o una enfermedad profesional. Todos los meses tu empleador paga una suma destinada a proteger tu salud.',
-        ],
-      },
-    ],
+    heroDescription: 'Gestionamos tu reclamo ante la ART por accidentes laborales, accidentes in itínere y enfermedades profesionales.',
+    chips: ['Primera consulta sin cargo', 'Oficinas en CABA y La Plata', 'Trámite en Comisión Médica sin costo para vos'],
+    cubre: {
+      etiqueta: 'Cobertura',
+      titulo: '¿Qué situaciones cubre tu ART?',
+      items: [
+        { icono: 'trabajo', titulo: 'Accidente en el trabajo', texto: 'Una lesión que ocurre por el trabajo o durante tu jornada.' },
+        { icono: 'itinere', titulo: 'Accidente in itínere', texto: 'El que sufrís yendo o volviendo entre tu casa y tu trabajo.' },
+        { icono: 'enfermedad', titulo: 'Enfermedad profesional', texto: 'La que se origina por las condiciones de tu trabajo.' },
+      ],
+    },
+    corresponde: {
+      etiqueta: 'Tus derechos',
+      titulo: '¿Qué te corresponde?',
+      items: [
+        { icono: 'medico', titulo: 'Atención médica', texto: 'Tratamiento y rehabilitación completos, a cargo de la ART.' },
+        { icono: 'salario', titulo: 'Ingreso mensual', texto: 'Una prestación mientras dure tu licencia.' },
+        { icono: 'indemnizacion', titulo: 'Indemnización', texto: 'Si el accidente deja una secuela permanente.' },
+        { icono: 'traslado', titulo: 'Traslados y medicamentos', texto: 'Los que indique tu médico tratante.' },
+      ],
+    },
+
+
+    secciones: [],
     faq: [
-      { q: '¿Qué riesgos cubre mi ART?', a: 'La ART debe cubrirte ante tres situaciones: el accidente de trabajo (un hecho repentino durante tu jornada que te causa una lesión física o psíquica), el accidente in itínere (el que ocurre en el trayecto habitual entre tu casa y el trabajo) y la enfermedad profesional (la contraída como consecuencia directa del trabajo o de sus condiciones).' },
-      { q: '¿Qué hago si tengo un accidente o una enfermedad profesional?', a: 'Comunicate de inmediato con tu empleador para que haga la denuncia ante la ART. Si no la realiza, podés llamar vos mismo a la ART y denunciarlo. Desde ese momento quedás de licencia médica y no debés prestar tareas.' },
-      { q: '¿Qué atención debe brindarme la ART?', a: 'Una vez hecha la denuncia, la ART está obligada a recibirla y darte atención médica inmediata, realizar todo el tratamiento necesario (internación, medicación, cirugías, prótesis), cubrir tu rehabilitación completa y los traslados que indique el médico tratante. Pasados los primeros 10 días, abona tu salario básico hasta el alta. Si quedó una secuela, debe indemnizarte.' },
-      { q: '¿Qué pasa si la ART rechaza mi accidente?', a: 'Las ART suelen rechazar denuncias alegando que la lesión es inculpable (sin relación con el trabajo) o preexistente, para derivarte a tu obra social. El rechazo debe notificarte por Carta Documento a tu domicilio. Si esto ocurre, consultá cuanto antes: muchas veces el rechazo es improcedente.' },
-      { q: '¿Qué sucede cuando me dan el alta médica?', a: 'La ART debe evaluar si quedó alguna secuela. Hay tres posibilidades: alta sin incapacidad (te consideran recuperado), alta por afección inculpable o preexistente (te derivan a tu obra social), o alta con incapacidad (reconocen una secuela permanente y están obligados a indemnizarte). En los dos primeros casos, si seguís con dolores, consultá con un abogado de forma urgente.' },
-      { q: '¿Me pueden despedir si estoy en tratamiento por la ART?', a: 'Si te despiden mientras estás de licencia por ART, el empleador debe indemnizarte como un despido sin causa, con el riesgo adicional de una multa por despido discriminatorio. Además, tu tratamiento continúa aunque termine la relación laboral.' },
-      { q: '¿Cuánto me debe pagar la ART de indemnización?', a: 'El monto lo fija la Ley de Riesgos del Trabajo y se calcula con tres factores: tu edad al momento del hecho, el salario promedio que cobrabas y el porcentaje de incapacidad que te quedó como consecuencia del accidente. Ningún abogado serio puede prometerte un monto exacto de antemano.' },
-      { q: '¿En qué consiste el trámite para cobrar mi indemnización?', a: 'Tiene tres etapas. Primero, la consulta con tu abogado de confianza. Segundo, el reclamo administrativo ante la Comisión Médica de la Superintendencia de Riesgos del Trabajo, donde se determina la incapacidad y el monto. Tercero, si no hay acuerdo o el ofrecimiento es insuficiente, el juicio ante los tribunales competentes.' },
-      { q: '¿Cuánto tiempo lleva todo el trámite?', a: 'No hay forma de saberlo con certeza, y desconfiá de quien te prometa plazos exactos. Algunos casos se resuelven en 3 a 6 meses y otros pueden demorar entre 2 y 5 años. Lo importante es que la indemnización te corresponde y reclamarla es tu derecho.' },
-      { q: '¿Cuánto tiempo tengo para iniciar el reclamo?', a: 'Desde que te dan el alta médica tenés 2 años para iniciar el reclamo.' },
-      { q: 'Tengo miedo de que me despidan si reclamo, ¿es así?', a: 'No. El reclamo es exclusivamente contra la ART: a tu empleador nunca lo citamos ni le reclamamos nada. De hecho, es él quien paga el seguro todos los meses y le interesa que la ART cumpla. Si te despidieran, no sería por hacer este reclamo.' },
+      { q: '¿Qué hago si tengo un accidente?', a: 'Avisá de inmediato a tu empleador para que haga la denuncia ante la ART. Si no la hace, podés hacerla vos mismo. Si el médico te indica reposo, no debés prestar tareas.' },
+      { q: '¿Qué pasa si la ART rechaza mi caso?', a: 'Suele alegar que la lesión no tiene relación con el trabajo o que ya existía. El rechazo debe notificarse por escrito y muchas veces se puede cuestionar. Consultanos cuanto antes.' },
+      { q: '¿Qué pasa cuando me dan el alta?', a: 'La ART evalúa si quedó una secuela. Puede darte el alta sin incapacidad, derivarte a tu obra social o reconocerte una incapacidad e indemnizarte. Antes de firmar o aceptar algo, asesorate.' },
+      { q: '¿Cuánto me corresponde de indemnización?', a: 'Depende de tres factores: tu edad, tu salario y el porcentaje de incapacidad que determine la Comisión Médica. Por eso no se puede dar un monto exacto sin analizar tu caso.' },
+      { q: '¿Cuánto tarda y cuánto tiempo tengo para reclamar?', a: 'La Comisión Médica tiene un plazo de 60 días hábiles administrativos para expedirse. Si hay que ir a la justicia, el tiempo varía según cada caso. El plazo general para reclamar es de 2 años: conviene consultar cuanto antes.' },
+      { q: '¿Tengo que pagar para reclamar?', a: 'La primera consulta es sin cargo. Ante la Comisión Médica, la ley pone a cargo de la ART los honorarios del abogado y los gastos del trabajador. Te explicamos cómo funciona antes de empezar.' },
     ],
   },
 
