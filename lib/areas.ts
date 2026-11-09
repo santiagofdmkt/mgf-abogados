@@ -263,15 +263,45 @@ export const areas: Area[] = [
     metaDescription: 'Tramitamos sucesiones, testamentos y particiones hereditarias con rapidez y precisión. Reconocimiento de herederos y cobro de la herencia. Consulta sin cargo.',
     heroLabel: 'Sucesiones',
     heroDescription: 'Tramitamos sucesiones, testamentos y particiones hereditarias con la celeridad necesaria para que obtengas tu herencia y tu calidad de heredero.',
+    chips: ['Primera consulta sin cargo', 'Oficinas en CABA y La Plata', 'CABA, Provincia de Buenos Aires y todo el país'],
+    cubre: {
+      etiqueta: 'Tu situación',
+      titulo: '¿Cuál es tu caso?',
+      items: [
+        { icono: 'trabajo', titulo: 'Falleció un familiar', texto: 'Necesitás que te reconozcan como heredero y ordenar la sucesión.' },
+        { icono: 'indemnizacion', titulo: 'Hay un testamento', texto: 'Hay que presentarlo, aprobarlo y cumplirlo respetando la ley.' },
+        { icono: 'traslado', titulo: 'Tenés que transferir o vender bienes', texto: 'Inmuebles, autos o cuentas a nombre de la persona fallecida.' },
+        { icono: 'itinere', titulo: 'Hay conflicto entre herederos', texto: 'Partición, exclusiones o un testamento que afecta tu porción.' },
+      ],
+    },
+    corresponde: {
+      etiqueta: 'Cómo te ayudamos',
+      titulo: '¿En qué podemos acompañarte?',
+      items: [
+        { icono: 'medico', titulo: 'Declaratoria de herederos', texto: 'Iniciamos y tramitamos la sucesión hasta obtener tu calidad de heredero.' },
+        { icono: 'traslado', titulo: 'Inscripción de bienes', texto: 'Para que puedas transferir, vender o disponer de lo heredado.' },
+        { icono: 'salario', titulo: 'Partición de la herencia', texto: 'Por acuerdo entre herederos o, si hace falta, por vía judicial.' },
+        { icono: 'trabajo', titulo: 'Testamentos y legítima', texto: 'Asesoramiento y defensa de tu porción legítima.' },
+      ],
+    },
     secciones: [
       {
         titulo: 'Acompañamos en un momento difícil',
         parrafos: [
           'Cuando una persona fallece surgen muchas dudas sobre los derechos que tienen sus familiares, acreedores y deudores. Contamos con la experiencia y el conocimiento de las leyes que regulan estas situaciones para darte la tranquilidad de tener tu caso en buenas manos.',
-          'Trabajamos para que obtengas el reconocimiento de tu calidad de heredero y el cobro de tu herencia con la mayor celeridad posible. Tramitamos sucesiones, testamentos y particiones hereditarias en Capital Federal, la provincia de Buenos Aires y el resto del país.',
         ],
       },
     ],
-    faq: [],
+    faq: [
+      { q: '¿Cuándo hace falta hacer una sucesión?', a: 'Cuando la persona fallecida dejó bienes registrables, como un inmueble o un auto, o cuentas que hay que transferir. Se tramita ante el juzgado del último domicilio del fallecido.' },
+      { q: '¿Qué es la declaratoria de herederos?', a: 'Es la resolución judicial que determina quiénes son los herederos. No reparte los bienes: eso se resuelve después, en la partición.' },
+      { q: '¿Quiénes heredan si no hay testamento?', a: 'Heredan los descendientes, los ascendientes y el cónyuge, y si no hay ninguno, los parientes colaterales hasta el cuarto grado. Si no hay herederos, la herencia pasa al Estado. El reparto exacto depende de cada familia.' },
+      { q: '¿Puedo dejar mis bienes a quien quiera?', a: 'Solo en parte. La ley reserva una porción legítima para los hijos (2/3), los padres y el cónyuge (1/2). Lo que queda, la porción disponible, sí puede dejarse libremente.' },
+      { q: 'Dejó un testamento, ¿igual hay que hacer la sucesión?', a: 'Sí. El testamento se presenta en el juzgado y se lo aprueba para poder transferir los bienes. Si afecta la legítima, puede ser revisado.' },
+      { q: '¿Cuánto tarda una sucesión?', a: 'Depende de cada caso: de la documentación, de los bienes y de si los herederos están de acuerdo. Con todo en orden suele ser más ágil. Te lo decimos en la primera consulta.' },
+      { q: '¿Se paga impuesto a la herencia?', a: 'A nivel nacional no, pero la Provincia de Buenos Aires aplica el Impuesto a la Transmisión Gratuita de Bienes sobre los bienes ubicados allí. Depende del valor y del parentesco, y puede exigirse presentar la declaración jurada aunque no haya que pagar.' },
+      { q: 'No hay acuerdo entre herederos o me excluyeron, ¿qué puedo hacer?', a: 'Si no hay acuerdo, la partición puede resolverse judicialmente. Si un testamento o una donación afecta tu porción legítima, puede reclamarse. Consultanos con la documentación que tengas.' },
+      { q: '¿Cuánto cuesta la primera consulta?', a: 'La primera consulta es sin cargo. Te explicamos cómo trabajamos antes de empezar.' },
+    ],
   },
 ]
