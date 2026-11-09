@@ -9,7 +9,7 @@ const areas = [
   { slug: 'accidentes-transito',  title: 'Accidentes de Tránsito',       desc: 'Reclamamos indemnizaciones por lesiones y daños materiales ante aseguradoras y responsables.', icon: 'transito' },
   { slug: 'despidos',             title: 'Despidos e Indemnizaciones',    desc: 'Asesoramos en despidos sin causa, liquidaciones finales, acoso laboral y trabajo en negro.',   icon: 'despidos' },
   { slug: 'propiedad-horizontal', title: 'Propiedad Horizontal',          desc: 'Representamos consorcios, administradores y propietarios en conflictos y cobros de expensas.', icon: 'propiedad' },
-  { slug: 'derecho-salud',        title: 'Derecho a la Salud',            desc: 'Amparos contra obras sociales y prepagas para garantizar coberturas, tratamientos y medicamentos.', icon: 'salud' },
+  { slug: 'mala-praxis',          title: 'Mala praxis',                   desc: 'Reclamos por errores médicos, diagnósticos tardíos y fallas en la atención de clínicas, hospitales y profesionales.', icon: 'salud' },
   { slug: 'sucesiones',           title: 'Derecho Sucesorio',             desc: 'Tramitamos sucesiones, testamentos y particiones hereditarias con rapidez y precisión.',       icon: 'sucesiones' },
 ]
 
@@ -330,7 +330,7 @@ export default function Home() {
               fontSize: '1rem', lineHeight: 1.75,
               color: 'rgba(255,255,255,0.72)', maxWidth: '480px', marginBottom: '2rem',
             }}>
-              Accidentes de trabajo, despidos, sucesiones, propiedad horizontal y derecho a la salud.
+              Accidentes de trabajo, despidos, sucesiones, propiedad horizontal y mala praxis.
               Atendemos en Capital Federal y La Plata.{' '}
               <strong style={{ color: '#fff' }}>Primera consulta sin cargo.</strong>
             </p>

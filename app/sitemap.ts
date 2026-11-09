@@ -7,7 +7,7 @@ const areas = [
   'accidentes-transito',
   'despidos',
   'propiedad-horizontal',
-  'derecho-salud',
+  'mala-praxis',
   'sucesiones',
 ]
 

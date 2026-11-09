@@ -60,13 +60,14 @@ const areas: Record<string, Area> = {
       { id: 'juicio', t: '¿Hay un reclamo o juicio ya iniciado?', type: 'radio', o: ['Sí', 'No', 'No sé'] },
     ],
   },
-  'derecho-salud': {
-    label: 'Derecho a la salud / amparo',
+  'mala-praxis': {
+    label: 'Mala praxis / error médico',
     icon: 'salud',
     q: [
-      { id: 'cobertura', t: '¿Qué cobertura tenés?', type: 'radio', o: ['Obra social', 'Prepaga', 'PAMI', 'No tengo cobertura'] },
-      { id: 'rechazo', t: '¿Qué te rechazaron o demoran?', type: 'radio', o: ['Medicación', 'Cirugía / prestación', 'Discapacidad', 'Tratamiento prolongado', 'Afiliación / aumento'] },
-      { id: 'orden', t: '¿Tenés indicación médica u orden del profesional?', type: 'radio', o: ['Sí', 'No', 'La estoy gestionando'] },
+      { id: 'lugar', t: '¿Dónde ocurrió?', type: 'radio', o: ['Hospital público', 'Clínica o sanatorio privado', 'Consultorio particular', 'Otro'] },
+      { id: 'hecho', t: '¿Qué pasó?', type: 'radio', o: ['Error de diagnóstico o demora', 'Complicación en una cirugía', 'Error en un tratamiento o medicación', 'Atención de un parto', 'Otro'] },
+      { id: 'secuela', t: '¿Quedaron secuelas o falleció el paciente?', type: 'radio', o: ['Secuelas permanentes', 'Secuelas temporales', 'Falleció el paciente', 'Todavía no sé'] },
+      { id: 'cuando', t: '¿Cuándo ocurrió?', type: 'radio', o: ['Hace menos de 1 año', 'Entre 1 y 3 años', 'Hace más de 3 años'] },
       { id: 'urgente', t: '¿Es una situación urgente?', type: 'radio', o: ['Sí, muy urgente', 'Algo urgente', 'No es urgente'] },
     ],
   },
@@ -93,7 +94,7 @@ const order = [
   'accidentes-transito',
   'despidos',
   'propiedad-horizontal',
-  'derecho-salud',
+  'mala-praxis',
   'sucesiones',
   'otro',
 ];

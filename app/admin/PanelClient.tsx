@@ -11,6 +11,7 @@ const AREAS: Record<string, string> = {
   'despidos': 'Despido / laboral',
   'propiedad-horizontal': 'Propiedad horizontal',
   'derecho-salud': 'Derecho a la salud',
+  'mala-praxis': 'Mala praxis',
   'sucesiones': 'Sucesión / herencia',
   'otro': 'Otro / no estoy seguro',
 };

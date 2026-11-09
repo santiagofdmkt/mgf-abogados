@@ -26,7 +26,7 @@ function AreaIcon({ slug, size }: { slug: string; size?: number }) {
       return <Svg size={size}><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" /><path d="M14 3v5h5" /><path d="M9 13h6" /><path d="M9 17h4" /></Svg>
     case 'propiedad-horizontal':
       return <Svg size={size}><path d="M3 21h18" /><path d="M5 21V6a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v15" /><path d="M13 21V10a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v11" /><path d="M8 9h2M8 12.5h2M8 16h2M16 13h1.5M16 16.5h1.5" /></Svg>
-    case 'derecho-salud':
+    case 'mala-praxis':
       return <Svg size={size}><path d="M10 3h4v7h7v4h-7v7h-4v-7H3v-4h7z" /></Svg>
     case 'sucesiones':
       return <Svg size={size}><path d="M12 4v16" /><path d="M8 20h8" /><path d="M5 7h14" /><path d="M5 7l-2.5 5a2.8 2.8 0 0 0 5 0z" /><path d="M19 7l-2.5 5a2.8 2.8 0 0 0 5 0z" /></Svg>

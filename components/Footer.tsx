@@ -5,7 +5,7 @@ const footerAreas = [
   { slug: 'accidentes-transito', title: 'Accidentes de Tránsito' },
   { slug: 'despidos', title: 'Despidos e Indemnizaciones' },
   { slug: 'propiedad-horizontal', title: 'Propiedad Horizontal' },
-  { slug: 'derecho-salud', title: 'Derecho a la Salud' },
+  { slug: 'mala-praxis', title: 'Mala praxis' },
   { slug: 'sucesiones', title: 'Derecho Sucesorio' },
 ]
 
