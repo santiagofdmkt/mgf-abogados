@@ -1,20 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#0F2A5E"/>
-      <stop offset="1" stop-color="#1E5BB8"/>
-    </linearGradient>
-  </defs>
-  <rect width="512" height="512" rx="112" fill="url(#g)"/>
-  <g transform="translate(256 262) scale(1.06) translate(-256 -200)">
-    <g stroke="#7EB3FF" stroke-width="13" stroke-linecap="round" fill="none">
-      <path d="M96 104 L50 222 M96 104 L142 222 M416 104 L370 222 M416 104 L462 222"/>
-    </g>
-    <path d="M30 222 H162 A66 54 0 0 1 30 222 Z" fill="#fff"/>
-    <path d="M350 222 H482 A66 54 0 0 1 350 222 Z" fill="#fff"/>
-    <path d="M96 104 H416" stroke="#fff" stroke-width="26" stroke-linecap="round"/>
-    <path d="M256 110 V292" stroke="#fff" stroke-width="26" stroke-linecap="round"/>
-    <circle cx="256" cy="104" r="28" fill="#fff"/>
-    <rect x="178" y="282" width="156" height="26" rx="13" fill="#fff"/>
-  </g>
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0F2A5E"/><stop offset="1" stop-color="#1E5BB8"/></linearGradient></defs>
+<rect width="512" height="512" rx="112" fill="url(#g)"/>
+<path d="M96 110 L46 218 M96 110 L146 218 M416 110 L366 218 M416 110 L466 218" fill="none" stroke="#7EB3FF" stroke-width="7" stroke-linecap="round"/>
+<path d="M36 218 H156 A60 36 0 0 1 36 218 Z M356 218 H476 A60 36 0 0 1 356 218 Z" fill="#fff"/>
+<path d="M96 110 H416" stroke="#fff" stroke-width="16" stroke-linecap="round"/>
+<circle cx="96" cy="110" r="13" fill="#fff"/><circle cx="416" cy="110" r="13" fill="#fff"/>
+<path d="M256 120 V282" stroke="#fff" stroke-width="16"/>
+<circle cx="256" cy="110" r="20" fill="#fff"/>
+<rect x="196" y="282" width="120" height="16" rx="8" fill="#fff"/>
+<path d="M87 322 H425" stroke="#7EB3FF" stroke-width="5"/>
+<polygon fill="#fff" points="87,436 87,346 111,346 141,391 171,346 195,346 195,436 175,436 175,370 141,421 107,370 107,436"/>
+<path d="M303 372 A38 38 0 1 0 314 393 H280" fill="none" stroke="#fff" stroke-width="20"/>
+<rect x="361" y="346" width="20" height="90" fill="#fff"/><rect x="361" y="346" width="68" height="20" fill="#fff"/><rect x="361" y="382" width="52" height="20" fill="#fff"/>
 </svg>
