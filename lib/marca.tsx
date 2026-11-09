@@ -1,6 +1,7 @@
 // lib/marca.tsx
-// Identidad visual de MGF Abogados. Para cambiar colores o el isotipo, tocá SOLO este archivo
-// (y app/icon.svg, que es la copia estática del isotipo para el favicon).
+// Identidad visual de MGF Abogados (Martin · Grisi · Franco). Los tres socios con el mismo peso.
+// Isotipo: balanza de la justicia + monograma M G F (mismo tamaño y trazo para las tres letras).
+// Para cambiar colores o formas, tocá SOLO este archivo (y app/icon.svg, que es el favicon estatico).
 
 export const COLORES = {
   navy: '#0F2A5E',
@@ -9,8 +10,25 @@ export const COLORES = {
   celeste: '#7EB3FF',
 }
 
-// Isotipo: monograma "M" geometrico sobre cuadrado azul, con linea de acento debajo.
-// "radio" es el redondeo de las esquinas (en una grilla de 512). 0 = cuadrado puro.
+// Balanza de la justicia (grilla de 512)
+const BALANZA =
+  `<g stroke="${COLORES.celeste}" stroke-width="5" stroke-linecap="round" fill="none"><path d="M96 110 L46 218 M96 110 L146 218 M416 110 L366 218 M416 110 L466 218"/></g>` +
+  '<path d="M36 218 H156 A60 36 0 0 1 36 218 Z" fill="#fff"/>' +
+  '<path d="M356 218 H476 A60 36 0 0 1 356 218 Z" fill="#fff"/>' +
+  '<path d="M96 110 H416" stroke="#fff" stroke-width="14" stroke-linecap="round"/>' +
+  '<circle cx="96" cy="110" r="11" fill="#fff"/><circle cx="416" cy="110" r="11" fill="#fff"/>' +
+  '<path d="M256 120 V282" stroke="#fff" stroke-width="14" stroke-linecap="round"/>' +
+  '<circle cx="256" cy="110" r="18" fill="#fff"/>' +
+  '<rect x="196" y="282" width="120" height="14" rx="7" fill="#fff"/>'
+
+// Monograma M G F: tres letras de la misma altura y el mismo trazo, ninguna destaca
+const LETRAS =
+  `<path d="M87 316 H425" stroke="${COLORES.celeste}" stroke-width="4" stroke-linecap="round"/>` +
+  '<polygon fill="#fff" points="87,424 87,334 109,334 139,379 169,334 191,334 191,424 173,424 173,354 139,405 105,354 105,424"/>' +
+  '<path d="M301.5 358.5 A36 36 0 1 0 312 379 H278" fill="none" stroke="#fff" stroke-width="18"/>' +
+  '<rect x="361" y="334" width="18" height="90" fill="#fff"/><rect x="361" y="334" width="64" height="18" fill="#fff"/><rect x="361" y="370" width="50" height="18" fill="#fff"/>'
+
+// Isotipo completo: cuadrado azul con balanza + M G F. "radio" = redondeo de esquinas (0 = cuadrado).
 export function isotipoSvg(radio = 112) {
   return (
     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">' +
@@ -18,10 +36,15 @@ export function isotipoSvg(radio = 112) {
     `<stop offset="0" stop-color="${COLORES.navy}"/><stop offset="1" stop-color="${COLORES.azul}"/>` +
     '</linearGradient></defs>' +
     `<rect width="512" height="512" rx="${radio}" fill="url(#g)"/>` +
-    '<polygon points="130,336 130,128 188,128 256,232 324,128 382,128 382,336 330,336 330,187 256,300 182,187 182,336" fill="#ffffff"/>' +
-    `<rect x="130" y="376" width="252" height="14" rx="7" fill="${COLORES.celeste}"/>` +
+    BALANZA +
+    LETRAS +
     '</svg>'
   )
+}
+
+// Solo el dibujo (balanza + M G F), sin fondo, recortado justo. Para ponerlo sobre fondos propios.
+export function arteSvg() {
+  return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="28 84 456 348">' + BALANZA + LETRAS + '</svg>'
 }
 
 // El isotipo como imagen, para usarlo dentro de las imagenes que genera Next (ImageResponse)
@@ -29,6 +52,14 @@ export function IconoMGF({ size = 512, radio = 112 }: { size?: number; radio?: n
   const src = 'data:image/svg+xml;utf8,' + encodeURIComponent(isotipoSvg(radio))
   // eslint-disable-next-line @next/next/no-img-element
   return <img src={src} width={size} height={size} alt="" />
+}
+
+// Solo el dibujo sin fondo, como imagen. El alto se calcula solo (proporcion 456 x 348).
+export function ArteMGF({ width = 456 }: { width?: number }) {
+  const src = 'data:image/svg+xml;utf8,' + encodeURIComponent(arteSvg())
+  const height = Math.round((width * 348) / 456)
+  // eslint-disable-next-line @next/next/no-img-element
+  return <img src={src} width={width} height={height} alt="" />
 }
 
 // Caracteres que usan las imagenes (se bajan solo esos de Google Fonts)

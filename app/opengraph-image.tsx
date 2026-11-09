@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og'
 import { COLORES, IconoMGF, cargarFuentes } from '@/lib/marca'
 
-export const alt = 'MGF Abogados | Estudio Jurídico desde 1972'
+export const alt = 'MGF Abogados | Martin · Grisi · Franco | Estudio Jurídico desde 1972'
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
@@ -21,7 +21,7 @@ export default async function Image() {
         <div style={{ position: 'absolute', top: -220, right: -160, width: 640, height: 640, borderRadius: 320, background: 'rgba(255,255,255,0.06)', display: 'flex' }} />
         <div style={{ position: 'absolute', bottom: -200, left: -140, width: 460, height: 460, borderRadius: 230, background: 'rgba(255,255,255,0.05)', display: 'flex' }} />
 
-        {/* Isotipo grande a la derecha */}
+        {/* Isotipo grande a la derecha: balanza + M G F */}
         <div style={{ position: 'absolute', right: 80, top: 145, display: 'flex' }}>
           <IconoMGF size={340} />
         </div>
@@ -42,8 +42,11 @@ export default async function Image() {
             <div style={{ display: 'flex', fontFamily: 'Playfair Display', fontWeight: 600, fontSize: 100, lineHeight: 1.05, color: '#ffffff' }}>
               MGF Abogados
             </div>
-            <div style={{ display: 'flex', width: 90, height: 6, borderRadius: 3, background: COLORES.azulElectrico, marginTop: 26 }} />
-            <div style={{ display: 'flex', maxWidth: 640, marginTop: 24, fontSize: 27, fontWeight: 600, lineHeight: 1.5, color: 'rgba(255,255,255,0.85)' }}>
+            <div style={{ display: 'flex', width: 90, height: 6, borderRadius: 3, background: COLORES.azulElectrico, marginTop: 24 }} />
+            <div style={{ display: 'flex', marginTop: 22, fontSize: 32, fontWeight: 600, letterSpacing: 6, color: '#ffffff' }}>
+              MARTIN · GRISI · FRANCO
+            </div>
+            <div style={{ display: 'flex', maxWidth: 640, marginTop: 20, fontSize: 25, fontWeight: 600, lineHeight: 1.5, color: 'rgba(255,255,255,0.8)' }}>
               Accidentes de trabajo · Accidentes de tránsito · Despidos · Propiedad Horizontal · Mala praxis · Sucesiones
             </div>
           </div>

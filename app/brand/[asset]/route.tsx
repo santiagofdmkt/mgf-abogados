@@ -1,5 +1,5 @@
 import { ImageResponse } from 'next/og'
-import { COLORES, IconoMGF, cargarFuentes } from '@/lib/marca'
+import { COLORES, ArteMGF, IconoMGF, cargarFuentes } from '@/lib/marca'
 
 // Imagenes de marca descargables:
 //   /brand/google -> logo cuadrado 720x720 para Google Business Profile
@@ -22,15 +22,12 @@ export async function GET(
             background: `linear-gradient(155deg, ${COLORES.navy} 0%, ${COLORES.azul} 100%)`,
           }}
         >
-          <div style={{ display: 'flex', fontFamily: 'Playfair Display', fontWeight: 600, fontSize: 210, lineHeight: 1, letterSpacing: 6, color: '#ffffff' }}>
-            MGF
+          <ArteMGF width={400} />
+          <div style={{ display: 'flex', fontFamily: 'Inter', fontWeight: 600, fontSize: 27, letterSpacing: 6, color: COLORES.celeste, marginTop: 22 }}>
+            MARTIN · GRISI · FRANCO
           </div>
-          <div style={{ display: 'flex', width: 300, height: 8, borderRadius: 4, background: COLORES.celeste, marginTop: 22 }} />
-          <div style={{ display: 'flex', fontFamily: 'Inter', fontWeight: 600, fontSize: 48, letterSpacing: 18, color: COLORES.celeste, marginTop: 26 }}>
+          <div style={{ display: 'flex', fontFamily: 'Playfair Display', fontWeight: 600, fontSize: 48, letterSpacing: 14, color: '#ffffff', marginTop: 22 }}>
             ABOGADOS
-          </div>
-          <div style={{ display: 'flex', fontFamily: 'Inter', fontWeight: 600, fontSize: 24, letterSpacing: 8, color: 'rgba(255,255,255,0.7)', marginTop: 22 }}>
-            DESDE 1972
           </div>
         </div>
       ),
@@ -50,7 +47,7 @@ export async function GET(
             <div style={{ display: 'flex', alignItems: 'center', marginTop: 14 }}>
               <div style={{ display: 'flex', width: 90, height: 6, borderRadius: 3, background: COLORES.azulElectrico }} />
               <div style={{ display: 'flex', marginLeft: 22, fontFamily: 'Inter', fontWeight: 600, fontSize: 40, letterSpacing: 14, color: COLORES.azul }}>
-                DESDE 1972
+                MARTIN · GRISI · FRANCO
               </div>
             </div>
           </div>
