@@ -62,13 +62,14 @@ function Pict({ name, size = 24 }: { name: string; size?: number }) {
 
 // Panel unico: cobertura, derechos y preguntas conectados en un solo bloque de franjas de color.
 // Solo muestra las franjas que el area tiene definidas (la numeracion se acomoda sola).
-type BandaPanel = { etiqueta: string; titulo: string; datos?: Dato[] }
+// Cada franja puede abrir con una descripcion corta de lo que trata ese segmento.
+type BandaPanel = { etiqueta: string; titulo: string; descripcion?: string; datos?: Dato[] }
 
-function Panel({ cubre, corresponde, faq }: { cubre?: Bloque<Dato>; corresponde?: Bloque<Dato>; faq: { q: string; a: string }[] }) {
+function Panel({ cubre, corresponde, faq, faqDescripcion }: { cubre?: Bloque<Dato>; corresponde?: Bloque<Dato>; faq: { q: string; a: string }[]; faqDescripcion?: string }) {
   const bandas: BandaPanel[] = []
-  if (cubre) bandas.push({ etiqueta: cubre.etiqueta, titulo: cubre.titulo, datos: cubre.items })
-  if (corresponde) bandas.push({ etiqueta: corresponde.etiqueta, titulo: corresponde.titulo, datos: corresponde.items })
-  if (faq.length > 0) bandas.push({ etiqueta: 'Preguntas frecuentes', titulo: 'Dudas habituales' })
+  if (cubre) bandas.push({ etiqueta: cubre.etiqueta, titulo: cubre.titulo, descripcion: cubre.descripcion, datos: cubre.items })
+  if (corresponde) bandas.push({ etiqueta: corresponde.etiqueta, titulo: corresponde.titulo, descripcion: corresponde.descripcion, datos: corresponde.items })
+  if (faq.length > 0) bandas.push({ etiqueta: 'Preguntas frecuentes', titulo: 'Dudas habituales', descripcion: faqDescripcion })
   if (bandas.length === 0) return null
 
   const temas = ['oscuro', 'blanco', 'celeste']
@@ -92,31 +93,39 @@ function Panel({ cubre, corresponde, faq }: { cubre?: Bloque<Dato>; corresponde?
                 </div>
               </div>
 
-              {b.datos ? (
-                <div className={`datos-grid datos-${n}`}>
-                  {b.datos.map((it) => (
-                    <div key={it.titulo}>
-                      <div className="dato-ic"><Pict name={it.icono} size={26} /></div>
-                      <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.15rem', fontWeight: 600, color: oscuro ? '#fff' : 'var(--navy)', marginBottom: '0.4rem' }}>
-                        {it.titulo}
-                      </h3>
-                      <p style={{ fontSize: '0.95rem', lineHeight: 1.65, color: oscuro ? 'rgba(255,255,255,0.82)' : 'var(--text-soft)' }}>{it.texto}</p>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="faq-lista">
-                  {faq.map((f) => (
-                    <details key={f.q} className="area-faq faq-item">
-                      <summary>
-                        <span>{f.q}</span>
-                        <span className="faq-mas">＋</span>
-                      </summary>
-                      <p>{f.a}</p>
-                    </details>
-                  ))}
-                </div>
-              )}
+              <div>
+                {b.descripcion && (
+                  <p className="banda-desc" style={{ color: oscuro ? 'rgba(255,255,255,0.9)' : 'var(--text-soft)' }}>
+                    {b.descripcion}
+                  </p>
+                )}
+
+                {b.datos ? (
+                  <div className={`datos-grid datos-${n}`}>
+                    {b.datos.map((it) => (
+                      <div key={it.titulo}>
+                        <div className="dato-ic"><Pict name={it.icono} size={26} /></div>
+                        <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.15rem', fontWeight: 600, color: oscuro ? '#fff' : 'var(--navy)', marginBottom: '0.4rem' }}>
+                          {it.titulo}
+                        </h3>
+                        <p style={{ fontSize: '0.95rem', lineHeight: 1.65, color: oscuro ? 'rgba(255,255,255,0.82)' : 'var(--text-soft)' }}>{it.texto}</p>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="faq-lista">
+                    {faq.map((f) => (
+                      <details key={f.q} className="area-faq faq-item">
+                        <summary>
+                          <span>{f.q}</span>
+                          <span className="faq-mas">＋</span>
+                        </summary>
+                        <p>{f.a}</p>
+                      </details>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           )
         })}
@@ -172,6 +181,7 @@ export default async function AreaPage(
         .banda:only-child::before { display: none; }
         .banda-oscuro::before { background: rgba(255,255,255,0.35); }
         .banda-blanco::before, .banda-celeste::before { background: rgba(30,91,184,0.35); }
+        .banda-desc { font-size: 1.02rem; line-height: 1.75; margin-bottom: 1.8rem; max-width: 760px; }
         .datos-grid { display: grid; gap: 1.8rem 2rem; align-content: start; }
         .datos-1 { grid-template-columns: 1fr; }
         .datos-2 { grid-template-columns: repeat(2, 1fr); }
@@ -316,10 +326,17 @@ export default async function AreaPage(
       )}
 
       {/* PANEL UNICO: cobertura, derechos y preguntas conectados */}
-      <Panel cubre={area.cubre} corresponde={area.corresponde} faq={area.faq} />
+      <Panel cubre={area.cubre} corresponde={area.corresponde} faq={area.faq} faqDescripcion={area.faqDescripcion} />
 
-      {/* BOTONES FINALES: al terminar de leer, antes del pie */}
-      <div style={{ display: 'flex', justifyContent: 'center', gap: '0.9rem', flexWrap: 'wrap', padding: '0.5rem 1rem 3.5rem', background: 'var(--gray-50)' }}>
+      {/* BOTONES FINALES: volver, consulta y WhatsApp en una sola fila */}
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.9rem', flexWrap: 'wrap', padding: '0.5rem 1rem 3.5rem', background: 'var(--gray-50)' }}>
+        <Link href="/" style={{
+          background: 'var(--white)', color: 'var(--navy)', padding: '16px 30px', borderRadius: '999px',
+          border: '1.5px solid var(--border)',
+          fontSize: '0.88rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', textDecoration: 'none',
+        }}>
+          ← Volver al inicio
+        </Link>
         <Link href={`/consulta?area=${area.slug}`} style={{
           background: 'var(--blue-electric)', color: '#fff', padding: '16px 38px', borderRadius: '999px',
           border: '1.5px solid var(--blue-electric)',
@@ -336,19 +353,6 @@ export default async function AreaPage(
           WhatsApp
         </a>
       </div>
-
-      {/* VOLVER AL INICIO */}
-      <section style={{ padding: '2.5rem 2rem', background: 'var(--gray-50)', borderTop: '1px solid var(--border)' }}>
-        <div style={{ maxWidth: ANCHO, margin: '0 auto', textAlign: 'center' }}>
-          <Link href="/" style={{
-            display: 'inline-block', color: 'var(--navy)', border: '1px solid var(--border)', background: 'var(--white)',
-            padding: '12px 28px', borderRadius: '6px', fontSize: '0.82rem', fontWeight: 600,
-            letterSpacing: '0.06em', textTransform: 'uppercase', textDecoration: 'none',
-          }}>
-            ← Volver al inicio
-          </Link>
-        </div>
-      </section>
 
     </main>
   )
