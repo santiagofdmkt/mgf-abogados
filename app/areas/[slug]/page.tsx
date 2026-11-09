@@ -75,7 +75,7 @@ function Panel({ cubre, corresponde, faq, faqDescripcion }: { cubre?: Bloque<Dat
   const temas = ['oscuro', 'blanco', 'celeste']
 
   return (
-    <section className="area-section-pad" style={{ padding: '4rem 2rem', background: 'var(--gray-50)', borderTop: '1px solid var(--border)' }}>
+    <section className="area-section-pad" style={{ padding: '2.5rem 2rem 4rem', background: 'var(--gray-50)' }}>
       <div className="panel-unico" style={{ maxWidth: ANCHO, margin: '0 auto' }}>
         {bandas.map((b, i) => {
           const tema = temas[i % 3]
@@ -301,26 +301,55 @@ export default async function AreaPage(
         </div>
       </section>
 
-      {/* SECCIONES DE TEXTO (opcionales) */}
-      {area.secciones.length > 0 && (
-        <section className="area-section-pad" style={{ padding: '4rem 2rem', background: 'var(--gray-50)' }}>
-          <div style={{
-            maxWidth: ANCHO, margin: '0 auto',
-            background: 'var(--white)', border: '1px solid var(--border)',
-            borderRadius: '16px', padding: 'clamp(1.8rem, 4vw, 3rem)',
-            boxShadow: 'var(--shadow-md)',
-            display: 'flex', flexDirection: 'column', gap: '1.8rem',
-          }}>
-            {area.secciones.map((s) => (
-              <div key={s.titulo}>
-                <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.25rem, 2.6vw, 1.7rem)', color: 'var(--navy)', fontWeight: 600, marginBottom: '0.7rem' }}>
-                  {s.titulo}
-                </h2>
-                {s.parrafos.map((p, i) => (
-                  <p key={i} style={{ fontSize: '0.95rem', lineHeight: 1.75, color: 'var(--text-soft)', marginBottom: '0.7rem' }}>{p}</p>
-                ))}
+      {/* INTRO DEL AREA: tarjeta unica con intro y equipo, debajo del hero */}
+      {area.intro && (
+        <section className="area-section-pad" style={{ padding: '3rem 2rem 0', background: 'var(--gray-50)' }}>
+          <style>{`
+            .intro-card { display: grid; grid-template-columns: 250px 1fr; border-radius: 22px; overflow: hidden; background: var(--white); border: 1px solid var(--border); box-shadow: 0 24px 60px rgba(10,22,52,0.12); }
+            @media (max-width: 760px) { .intro-card { grid-template-columns: 1fr; } }
+          `}</style>
+          <div className="intro-card" style={{ maxWidth: ANCHO, margin: '0 auto' }}>
+            <div style={{
+              background: 'linear-gradient(150deg, var(--navy) 0%, var(--blue) 100%)',
+              padding: '2.2rem 1.5rem', display: 'flex', flexDirection: 'column',
+              alignItems: 'center', justifyContent: 'center', textAlign: 'center', gap: '1rem',
+            }}>
+              <div style={{
+                width: '88px', height: '88px', borderRadius: '50%',
+                background: 'rgba(255,255,255,0.14)', border: '1px solid rgba(255,255,255,0.28)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff',
+              }}>
+                <AreaIcon slug={area.slug} size={42} />
               </div>
-            ))}
+              <div>
+                <div style={{ fontSize: '0.68rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 600, color: '#7EB3FF', marginBottom: '0.4rem' }}>
+                  Esta área
+                </div>
+                <div style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.25rem', fontWeight: 600, lineHeight: 1.25, color: '#fff' }}>
+                  {area.title}
+                </div>
+              </div>
+            </div>
+            <div style={{ padding: 'clamp(1.8rem, 4vw, 3rem)' }}>
+              <div className="label" style={{ marginBottom: '0.5rem' }}>Qué hacemos por vos</div>
+              <div style={{ width: '48px', height: '3px', borderRadius: '2px', background: 'var(--blue-electric)', marginBottom: '1.2rem' }} />
+              <p style={{ fontSize: 'clamp(1rem, 1.5vw, 1.1rem)', lineHeight: 1.85, color: 'var(--text-soft)' }}>
+                {area.intro}
+              </p>
+              {area.secciones.map((s) => (
+                <div key={s.titulo} style={{
+                  marginTop: '1.6rem', background: 'var(--blue-pale)', borderRadius: '14px',
+                  borderLeft: '4px solid var(--blue-electric)', padding: '1.3rem 1.5rem',
+                }}>
+                  <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.2rem', color: 'var(--navy)', fontWeight: 600, marginBottom: '0.6rem' }}>
+                    {s.titulo}
+                  </h2>
+                  {s.parrafos.map((p, i) => (
+                    <p key={i} style={{ fontSize: '0.95rem', lineHeight: 1.75, color: 'var(--text-soft)', marginBottom: i < s.parrafos.length - 1 ? '0.6rem' : 0 }}>{p}</p>
+                  ))}
+                </div>
+              ))}
+            </div>
           </div>
         </section>
       )}
@@ -328,16 +357,25 @@ export default async function AreaPage(
       {/* PANEL UNICO: cobertura, derechos y preguntas conectados */}
       <Panel cubre={area.cubre} corresponde={area.corresponde} faq={area.faq} faqDescripcion={area.faqDescripcion} />
 
-      {/* BOTONES FINALES: volver, consulta y WhatsApp en una sola fila */}
+      {/* BOTONES FINALES: volver, consulta y WhatsApp en una sola fila, con efecto zoom en los 3 botones */}
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.9rem', flexWrap: 'wrap', padding: '0.5rem 1rem 3.5rem', background: 'var(--gray-50)' }}>
-        <Link href="/" style={{
+        <style>{`
+          .btn-final { transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s ease; }
+          .btn-final:hover { transform: scale(1.07); }
+          .btn-final:active { transform: scale(0.98); }
+          .btn-final-volver:hover { border-color: var(--navy) !important; }
+          .btn-final-primary:hover { box-shadow: 0 14px 34px rgba(10,22,52,0.42) !important; }
+          .btn-final-wa:hover { background: var(--navy) !important; color: #fff !important; }
+          @media (prefers-reduced-motion: reduce) { .btn-final:hover, .btn-final:active { transform: none; } }
+        `}</style>
+        <Link href="/" className="btn-final btn-final-volver" style={{
           background: 'var(--white)', color: 'var(--navy)', padding: '16px 30px', borderRadius: '999px',
           border: '1.5px solid var(--border)',
           fontSize: '0.88rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', textDecoration: 'none',
         }}>
           ← Volver al inicio
         </Link>
-        <Link href={`/consulta?area=${area.slug}`} style={{
+        <Link href={`/consulta?area=${area.slug}`} className="btn-final btn-final-primary" style={{
           background: 'var(--blue-electric)', color: '#fff', padding: '16px 38px', borderRadius: '999px',
           border: '1.5px solid var(--blue-electric)',
           fontSize: '0.88rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', textDecoration: 'none',
@@ -345,7 +383,7 @@ export default async function AreaPage(
         }}>
           Iniciar primera consulta →
         </Link>
-        <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" style={{
+        <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" className="btn-final btn-final-wa" style={{
           background: 'var(--white)', color: 'var(--navy)', padding: '16px 38px', borderRadius: '999px',
           border: '1.5px solid var(--navy)',
           fontSize: '0.88rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', textDecoration: 'none',

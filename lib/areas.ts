@@ -18,9 +18,10 @@ export type Area = {
   metaDescription: string
   heroLabel: string
   heroDescription: string
+  intro?: string           // Texto de 5 o 6 renglones que abre la pagina, debajo del hero
   secciones: Seccion[]
   faq: Faq[]
-  faqDescripcion?: string  // Texto introductorio de la franja de preguntas frecuentes
+  faqDescripcion?: string  // (sin uso por ahora)
   chips?: string[]
   cubre?: Bloque<Dato>
   corresponde?: Bloque<Dato>
@@ -39,11 +40,11 @@ export const areas: Area[] = [
     metaDescription: 'Reclamos por accidentes laborales, accidentes in itínere y enfermedades profesionales ante la ART. Primera consulta sin cargo.',
     heroLabel: 'Derecho Laboral · ART',
     heroDescription: 'Gestionamos tu reclamo ante la ART por accidentes laborales, accidentes in itínere y enfermedades profesionales.',
+    intro: 'Si te lastimaste trabajando, yendo o volviendo del trabajo, o si tu trabajo te enfermó, la ley obliga a tu ART a hacerse cargo: tu atención médica, tu ingreso mientras no podés trabajar y, si quedan secuelas, una indemnización. En la práctica no siempre lo cumple: rechaza el caso, te da el alta antes de tiempo o te ofrece menos de lo que corresponde. Ahí entramos nosotros. Revisamos tu situación, hacemos el trámite ante la Comisión Médica y, si hace falta, vamos a la justicia, explicándote cada paso en palabras simples para que sepas siempre dónde está tu caso.',
     chips: ['Primera consulta sin cargo', 'Oficinas en CABA y La Plata', 'Trámite en Comisión Médica sin costo para vos'],
     cubre: {
       etiqueta: 'Cobertura',
       titulo: '¿Qué situaciones cubre tu ART?',
-      descripcion: 'La ART cubre los accidentes y las enfermedades que tienen relación con tu trabajo. Estas son las tres situaciones más comunes: ubicá cuál es la tuya.',
       items: [
         { icono: 'trabajo', titulo: 'Accidente en el trabajo', texto: 'Una lesión que ocurre por el trabajo o durante tu jornada.' },
         { icono: 'itinere', titulo: 'Accidente in itínere', texto: 'El que sufrís yendo o volviendo entre tu casa y tu trabajo.' },
@@ -53,7 +54,6 @@ export const areas: Area[] = [
     corresponde: {
       etiqueta: 'Tus derechos',
       titulo: '¿Qué te corresponde?',
-      descripcion: 'Estos son los derechos que la ley reconoce al trabajador que sufre un accidente. Si tu ART no los cumple, podemos reclamarlos por vos.',
       items: [
         { icono: 'medico', titulo: 'Atención médica', texto: 'Tratamiento y rehabilitación completos, a cargo de la ART.' },
         { icono: 'salario', titulo: 'Ingreso mensual', texto: 'Una prestación mientras dure tu licencia.' },
@@ -64,7 +64,6 @@ export const areas: Area[] = [
 
 
     secciones: [],
-    faqDescripcion: 'Las dudas que más nos plantean quienes sufrieron un accidente laboral, respondidas en pocas líneas.',
     faq: [
       { q: '¿Qué hago si tengo un accidente?', a: 'Avisá de inmediato a tu empleador para que haga la denuncia ante la ART. Si no la hace, podés hacerla vos mismo. Si el médico te indica reposo, no debés prestar tareas.' },
       { q: '¿Qué pasa si la ART rechaza mi caso?', a: 'Suele alegar que la lesión no tiene relación con el trabajo o que ya existía. El rechazo debe notificarse por escrito y muchas veces se puede cuestionar. Consultanos cuanto antes.' },
@@ -85,11 +84,11 @@ export const areas: Area[] = [
     metaDescription: 'Indemnización por lesiones y daños materiales en accidentes de tránsito ante aseguradoras y responsables. Consulta sin cargo.',
     heroLabel: 'Daños · Seguros',
     heroDescription: 'Reclamamos indemnizaciones por lesiones y daños materiales ante aseguradoras y responsables. Todo daño debe ser reparado.',
+    intro: 'Un accidente de tránsito te cambia los planes de un día para el otro: lesiones, estudios, días sin trabajar, el vehículo roto y, muchas veces, el miedo a volver a la calle. Cuando otra persona es responsable, la ley dice que el daño tiene que repararse, y eso es lo que reclamamos por vos. Nos encargamos de juntar la prueba, de hablar con las aseguradoras y de calcular cuánto te corresponde, para que no tengas que negociar solo con quien tiene un equipo entero detrás. Si hace falta ir a juicio, también lo hacemos. Contanos qué pasó y lo vemos juntos.',
     chips: ['Primera consulta sin cargo', 'Oficinas en CABA y La Plata', 'Reclamo ante la aseguradora del responsable'],
     cubre: {
       etiqueta: 'Casos',
       titulo: '¿En qué situaciones podemos ayudarte?',
-      descripcion: 'Un accidente de tránsito puede ocurrir de muchas formas: manejando, caminando o viajando como pasajero. Elegí la situación que más se parezca a la tuya.',
       items: [
         { icono: 'traslado', titulo: 'Conductor o acompañante', texto: 'Choques con lesiones o daños en tu auto o moto, aunque manejaras vos.' },
         { icono: 'itinere', titulo: 'Peatón o ciclista', texto: 'Atropellos y caídas causadas por un vehículo.' },
@@ -100,7 +99,6 @@ export const areas: Area[] = [
     corresponde: {
       etiqueta: 'Reclamo',
       titulo: '¿Qué podés reclamar?',
-      descripcion: 'Cuando otra persona causa el daño, tenés derecho a que se repare. Estos son los principales conceptos que incluye un reclamo por accidente de tránsito.',
       items: [
         { icono: 'medico', titulo: 'Lesiones físicas', texto: 'Tratamientos, estudios, medicamentos y rehabilitación.' },
         { icono: 'indemnizacion', titulo: 'Daño psicológico', texto: 'El estrés postraumático: miedo a circular, a manejar o a salir.' },
@@ -109,7 +107,6 @@ export const areas: Area[] = [
       ],
     },
     secciones: [],
-    faqDescripcion: 'Qué hacer en las primeras horas, cómo tratar con el seguro y cuánto tiempo hay para reclamar.',
     faq: [
       { q: '¿Qué hago después de un accidente?', a: 'Si hay lesiones, llamá al SAME y no te muevas. Si estás en condiciones, sacá fotos del lugar y de los vehículos, buscá testigos y pedí los datos del otro conductor.' },
       { q: '¿Qué datos tengo que pedir?', a: 'Nombre, DNI y domicilio, marca, modelo y patente del vehículo, cédula verde, registro de conducir y datos del seguro con número de póliza.' },
@@ -129,11 +126,11 @@ export const areas: Area[] = [
     metaDescription: 'Despidos sin causa, despido de palabra, trabajo en negro, acoso laboral y diferencias salariales. Calculamos tu indemnización. Consulta sin cargo.',
     heroLabel: 'Derecho Laboral',
     heroDescription: 'Te asesoramos antes de que firmes o aceptes nada. El pago de una indemnización justa es tu derecho: calculamos lo que te corresponde sin cargo.',
+    intro: 'Un despido, un trabajo en negro o una presión para que renuncies te dejan con muchas dudas y poco tiempo para decidir. Lo primero que te recomendamos es no firmar ni aceptar nada sin consultarnos: lo que firmes hoy puede costarte dinero mañana. En esta área revisamos tu situación, calculamos cuánto te corresponde de indemnización y de liquidación final, y te decimos qué camino conviene, desde mandar un telegrama hasta iniciar un reclamo en la justicia. Todo explicado en simple y desde la primera consulta, que no tiene costo, para que sepas dónde estás parado.',
     chips: ['Primera consulta sin cargo', 'Cálculo de tu indemnización sin cargo', 'Oficinas en CABA y La Plata'],
     cubre: {
       etiqueta: 'Tu situación',
       titulo: '¿Cuál es tu caso?',
-      descripcion: 'Los problemas laborales no siempre empiezan con un telegrama de despido. Estas son las situaciones por las que más nos consultan: ubicá la tuya.',
       items: [
         { icono: 'trabajo', titulo: 'Me despidieron sin causa', texto: 'Con o sin telegrama, incluso si fue solo de palabra.' },
         { icono: 'itinere', titulo: 'Trabajo en negro o mal registrado', texto: 'Sin registrar, con facturas obligadas o en una categoría que no es la tuya.' },
@@ -144,7 +141,6 @@ export const areas: Area[] = [
     corresponde: {
       etiqueta: 'Tus derechos',
       titulo: '¿Qué podés reclamar?',
-      descripcion: 'Según tu caso, podés tener derecho a una indemnización y a otros conceptos que tu empleador debe pagarte. Estos son los principales.',
       items: [
         { icono: 'indemnizacion', titulo: 'Indemnización por despido', texto: 'Se calcula según tu antigüedad y tu sueldo.' },
         { icono: 'salario', titulo: 'Preaviso e integración del mes', texto: 'Si no te avisaron con anticipación.' },
@@ -153,7 +149,6 @@ export const areas: Area[] = [
       ],
     },
     secciones: [],
-    faqDescripcion: 'Respuestas rápidas sobre telegramas, trabajo en negro, renuncias y plazos. Antes de firmar o aceptar algo, consultanos.',
     faq: [
       { q: '¿Qué hago si recibo un telegrama de despido?', a: 'Contactanos rápido. Los plazos para responder son muy cortos y un error puede perjudicar tu reclamo.' },
       { q: 'Me despidieron de palabra, ¿qué hago?', a: 'Por lo general conviene seguir yendo a trabajar y enviar un telegrama para que tu empleador aclare tu situación por escrito. Te asesoramos y lo redactamos.' },
@@ -174,11 +169,11 @@ export const areas: Area[] = [
     metaDescription: 'Asesoramiento integral en propiedad horizontal: consorcios, expensas, asambleas, conflictos con encargados y rendición de cuentas. Consulta sin cargo.',
     heroLabel: 'Consorcios · Expensas',
     heroDescription: 'Asesoramos a administraciones, consorcios y propietarios en todas las cuestiones de propiedad horizontal, conjuntos inmobiliarios y clubes de campo.',
+    intro: 'Los edificios y los barrios cerrados funcionan con reglas propias, y cuando algo falla, ya sea por expensas impagas, una asamblea discutida o un administrador que no rinde cuentas, el conflicto afecta a todos. Acompañamos a propietarios, administradores y consejos para que cada tema se resuelva de la mejor manera: primero buscando un acuerdo y, si no hay otra salida, por la vía judicial. Revisamos reglamentos y liquidaciones, cobramos deudas, impugnamos decisiones y asesoramos en el día a día del consorcio, con el respaldo de un departamento especializado en la materia.',
     chips: ['Primera consulta sin cargo', 'Departamento especializado en Propiedad Horizontal', 'Propietarios y administraciones'],
     cubre: {
       etiqueta: 'Quiénes somos para vos',
       titulo: '¿Cuál es tu situación?',
-      descripcion: 'En un consorcio conviven propietarios, administradores y consejos, cada uno con intereses distintos. Contanos desde qué lugar nos consultás.',
       items: [
         { icono: 'trabajo', titulo: 'Soy propietario o vecino', texto: 'Expensas, asambleas, obras o conflictos con el consorcio o con otros vecinos.' },
         { icono: 'indemnizacion', titulo: 'Administro un consorcio', texto: 'Cobro de morosos, reglamento, asambleas y rendición de cuentas.' },
@@ -189,7 +184,6 @@ export const areas: Area[] = [
     corresponde: {
       etiqueta: 'Cómo te ayudamos',
       titulo: '¿En qué podemos acompañarte?',
-      descripcion: 'Trabajamos tanto con propietarios como con administraciones y consorcios, en los temas que más conflictos generan en la vida de un edificio.',
       items: [
         { icono: 'salario', titulo: 'Expensas', texto: 'Cobro, ejecución de deudas y discusión de liquidaciones.' },
         { icono: 'medico', titulo: 'Rendición de cuentas', texto: 'Control de la gestión del administrador y reclamo de información.' },
@@ -205,7 +199,6 @@ export const areas: Area[] = [
         ],
       },
     ],
-    faqDescripcion: 'Dudas frecuentes sobre expensas, asambleas, administradores y conjuntos inmobiliarios.',
     faq: [
       { q: '¿Cómo se cobran las expensas atrasadas?', a: 'El administrador puede emitir un certificado de deuda que, aprobado por el consejo de propietarios si existe, funciona como título ejecutivo para reclamar el pago por la vía judicial.' },
       { q: 'Mi inquilino no paga las expensas, ¿quién responde?', a: 'Pueden reclamarse al inquilino u ocupante, pero eso no libera al propietario, que sigue siendo responsable frente al consorcio.' },
@@ -226,11 +219,11 @@ export const areas: Area[] = [
     metaDescription: 'Mala praxis médica y amparos de salud: reclamos por errores médicos y por cobertura ante obras sociales y prepagas. Primera consulta sin cargo.',
     heroLabel: 'Responsabilidad médica · Salud',
     heroDescription: 'Reclamamos indemnizaciones por errores médicos y hacemos valer tu derecho a la cobertura de salud frente a obras sociales y prepagas. Evaluamos tu caso en la primera consulta, sin cargo.',
+    intro: 'Cuando algo sale mal con tu salud, necesitás respuestas y alguien que te acompañe. En esta área reclamamos por dos tipos de situaciones: los daños causados por un error médico o una falla de una clínica u hospital, y los problemas con tu obra social o prepaga cuando te niegan un tratamiento, un medicamento o una cirugía, o te dan de baja o te aumentan la cuota. Revisamos tu historia clínica y tu documentación, te decimos con claridad si hay un reclamo posible y, si es urgente, pedimos a la justicia que ordene la cobertura cuanto antes. La primera consulta es sin cargo.',
     chips: ['Primera consulta sin cargo', 'Departamento de Derecho a la Salud', 'Oficinas en CABA y La Plata'],
     cubre: {
       etiqueta: 'Tu situación',
       titulo: '¿Cuál es tu caso?',
-      descripcion: 'Esta área reúne dos tipos de reclamo por tu salud: los daños causados por una mala atención médica y los problemas de cobertura con tu obra social o prepaga.',
       items: [
         { icono: 'medico', titulo: 'Error médico', texto: 'Diagnóstico, tratamiento o cirugía que te causó un daño.' },
         { icono: 'enfermedad', titulo: 'Falla en clínica u hospital', texto: 'Atención deficiente, infecciones o errores de la institución.' },
@@ -241,7 +234,6 @@ export const areas: Area[] = [
     corresponde: {
       etiqueta: 'Cómo te ayudamos',
       titulo: '¿Qué podemos reclamar?',
-      descripcion: 'Según tu caso, el reclamo puede ser una indemnización por el daño sufrido o una acción urgente para que te den la cobertura que necesitás.',
       items: [
         { icono: 'indemnizacion', titulo: 'Indemnización por daños', texto: 'Por el daño físico, psicológico y los gastos que tuviste.' },
         { icono: 'trabajo', titulo: 'Historia clínica y prueba', texto: 'Reunimos la documentación médica que sostiene tu reclamo.' },
@@ -257,7 +249,6 @@ export const areas: Area[] = [
         ],
       },
     ],
-    faqDescripcion: 'Respuestas sobre mala praxis, historia clínica, plazos, cuotas de prepagas y cobertura de tratamientos.',
     faq: [
       { q: '¿Qué es la mala praxis y cuándo existe?', a: 'Es el daño causado por un error o una negligencia de un profesional o de un centro de salud. Un mal resultado por sí solo no alcanza: hay que probar que hubo una falla y que ella causó el daño.' },
       { q: '¿Qué hago primero si creo que fue mala praxis?', a: 'Pedí tu historia clínica: es tuya y tenés derecho a recibir una copia. Conservá estudios, recetas, informes y comprobantes de gastos, y consultanos antes de firmar algo.' },
@@ -279,11 +270,11 @@ export const areas: Area[] = [
     metaDescription: 'Tramitamos sucesiones, testamentos y particiones hereditarias con rapidez y precisión. Reconocimiento de herederos y cobro de la herencia. Consulta sin cargo.',
     heroLabel: 'Sucesiones',
     heroDescription: 'Tramitamos sucesiones, testamentos y particiones hereditarias con la celeridad necesaria para que obtengas tu herencia y tu calidad de heredero.',
+    intro: 'Perder a un ser querido ya es bastante difícil como para sumarle trámites que no se entienden. Una sucesión es el proceso por el cual la Justicia reconoce quiénes son los herederos y se pueden transferir, vender o repartir los bienes que dejó la persona fallecida. Nos ocupamos de todo: iniciamos el trámite, reunimos la documentación, inscribimos los bienes y, si hay testamento o desacuerdos entre herederos, te asesoramos para defender lo que te corresponde. Trabajamos en CABA, en Provincia de Buenos Aires y en todo el país, para que puedas ocuparte de lo importante mientras nosotros hacemos el resto.',
     chips: ['Primera consulta sin cargo', 'Oficinas en CABA y La Plata', 'CABA, Provincia de Buenos Aires y todo el país'],
     cubre: {
       etiqueta: 'Tu situación',
       titulo: '¿Cuál es tu caso?',
-      descripcion: 'Cuando fallece un ser querido, la sucesión permite ordenar sus bienes y que los herederos puedan disponer de ellos. Ubicá cuál es tu situación.',
       items: [
         { icono: 'trabajo', titulo: 'Falleció un familiar', texto: 'Necesitás que te reconozcan como heredero y ordenar la sucesión.' },
         { icono: 'indemnizacion', titulo: 'Hay un testamento', texto: 'Hay que presentarlo, aprobarlo y cumplirlo respetando la ley.' },
@@ -294,7 +285,6 @@ export const areas: Area[] = [
     corresponde: {
       etiqueta: 'Cómo te ayudamos',
       titulo: '¿En qué podemos acompañarte?',
-      descripcion: 'Nos ocupamos de cada etapa de la sucesión: desde que se reconoce a los herederos hasta que los bienes se reparten y se inscriben.',
       items: [
         { icono: 'medico', titulo: 'Declaratoria de herederos', texto: 'Iniciamos y tramitamos la sucesión hasta obtener tu calidad de heredero.' },
         { icono: 'traslado', titulo: 'Inscripción de bienes', texto: 'Para que puedas transferir, vender o disponer de lo heredado.' },
@@ -310,7 +300,6 @@ export const areas: Area[] = [
         ],
       },
     ],
-    faqDescripcion: 'Quiénes heredan, qué es la declaratoria, cuánto tarda y qué impuestos hay, explicado en pocas líneas.',
     faq: [
       { q: '¿Cuándo hace falta hacer una sucesión?', a: 'Cuando la persona fallecida dejó bienes registrables, como un inmueble o un auto, o cuentas que hay que transferir. Se tramita ante el juzgado del último domicilio del fallecido.' },
       { q: '¿Qué es la declaratoria de herederos?', a: 'Es la resolución judicial que determina quiénes son los herederos. No reparte los bienes: eso se resuelve después, en la partición.' },

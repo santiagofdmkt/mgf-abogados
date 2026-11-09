@@ -3,6 +3,7 @@
 import { useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import { areas as areasData } from '@/lib/areas';
 
 type Question = {
   id: string;
@@ -522,8 +523,14 @@ function ConsultaInner() {
     setContact((prev) => ({ ...prev, telefono: soloDigitos }));
   };
 
+  // Datos del area elegida, para el hero. Sin area (o "otro") se muestra un hero generico.
+  const info = area ? areasData.find((a) => a.slug === area) : undefined;
+  const heroImg = info
+    ? info.heroImage
+    : 'https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=1400&q=80&auto=format&fit=crop';
+
   return (
-    <main style={{ background: 'var(--gray-50)', fontFamily: 'var(--font-inter, Inter, sans-serif)' }}>
+    <main style={{ flex: 1, background: 'var(--gray-50)', fontFamily: 'var(--font-inter, Inter, sans-serif)' }}>
       <style>{styles}</style>
 
       <nav style={{ background: 'var(--navy)', padding: '16px 24px' }}>
@@ -534,7 +541,62 @@ function ConsultaInner() {
         </div>
       </nav>
 
-      <div style={{ maxWidth: 640, margin: '0 auto', padding: '32px 16px 70px' }}>
+      {/* HERO de la consulta: presenta el area elegida */}
+      <section style={{ position: 'relative', overflow: 'hidden', background: 'var(--navy)', padding: '4.5rem 1.5rem 8rem', textAlign: 'center' }}>
+        <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
+          <img src={heroImg} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }} />
+          <div style={{
+            position: 'absolute', inset: 0,
+            background: 'linear-gradient(120deg, rgba(10,22,52,0.96) 0%, rgba(10,22,52,0.88) 45%, rgba(30,64,175,0.55) 100%)',
+          }} />
+        </div>
+
+        <div style={{ position: 'relative', zIndex: 1, maxWidth: 760, margin: '0 auto' }}>
+          <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.55)', marginBottom: 22, letterSpacing: '0.04em' }}>
+            <Link href="/" style={{ color: 'rgba(255,255,255,0.55)', textDecoration: 'none' }}>Inicio</Link>
+            {' / '}
+            <span style={{ color: '#7EB3FF' }}>Consulta{info ? ' · ' + info.title : ''}</span>
+          </div>
+
+          {area && areas[area] && (
+            <div style={{
+              width: 76, height: 76, borderRadius: '50%', margin: '0 auto 20px',
+              background: 'rgba(255,255,255,0.14)', border: '1px solid rgba(255,255,255,0.28)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff',
+            }}>
+              <Icon name={areas[area].icon} size={34} />
+            </div>
+          )}
+
+          <div style={{ fontSize: 12, fontWeight: 600, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#7EB3FF', marginBottom: 12 }}>
+            {info ? info.heroLabel : 'Primera consulta sin cargo'}
+          </div>
+          <h1 style={{
+            fontFamily: 'var(--font-playfair, "Playfair Display", serif)', fontSize: 'clamp(2rem, 5vw, 3.2rem)',
+            fontWeight: 600, lineHeight: 1.12, color: '#fff', marginBottom: 16,
+          }}>
+            {info ? info.title : 'Iniciá tu consulta'}
+          </h1>
+          <p style={{ fontSize: 16.5, lineHeight: 1.7, color: 'rgba(255,255,255,0.8)', maxWidth: 620, margin: '0 auto 22px' }}>
+            {info
+              ? info.heroDescription
+              : 'Contanos tu caso en 4 pasos simples. Es confidencial y un abogado especializado te contacta a la brevedad.'}
+          </p>
+          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', justifyContent: 'center' }}>
+            {['Primera consulta sin cargo', 'Es confidencial', 'Respuesta a la brevedad'].map((c) => (
+              <span key={c} style={{
+                background: 'rgba(255,255,255,0.10)', border: '1px solid rgba(255,255,255,0.22)',
+                color: 'rgba(255,255,255,0.9)', padding: '6px 14px', borderRadius: 999,
+                fontSize: 12, fontWeight: 500, letterSpacing: '0.02em',
+              }}>
+                <span style={{ color: '#7EB3FF', marginRight: 7 }}>✓</span>{c}
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <div style={{ maxWidth: 640, margin: '-5rem auto 0', padding: '0 16px 70px', position: 'relative', zIndex: 2 }}>
         <div className="mgf-card">
 
           {/* PANTALLA DE ÉXITO */}
@@ -557,13 +619,7 @@ function ConsultaInner() {
             <>
               {/* Header */}
               <div style={{ background: 'linear-gradient(135deg, var(--navy) 0%, var(--navy-light, #16345f) 100%)', padding: '26px 26px 22px', color: '#fff' }}>
-                <div style={{ fontFamily: 'var(--font-playfair, "Playfair Display", serif)', fontSize: 24, fontWeight: 500, lineHeight: 1.2 }}>
-                  Iniciá tu consulta
-                </div>
-                <div style={{ fontSize: 13.5, color: '#aac3e6', marginTop: 5 }}>
-                  Contanos tu caso. Es confidencial y la primera consulta es gratis.
-                </div>
-                <div style={{ marginTop: 18 }}>
+                <div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#aac3e6', marginBottom: 8, letterSpacing: '0.02em' }}>
                     <span>Paso {step} de 4</span>
                     <span style={{ fontWeight: 500 }}>{steps[step - 1]}</span>

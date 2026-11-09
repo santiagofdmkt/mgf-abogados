@@ -22,7 +22,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body id="top">
+      <body id="top" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
         {children}
         <Footer />
       </body>
