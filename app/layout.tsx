@@ -3,7 +3,8 @@ import './globals.css'
 import Footer from '@/components/Footer'
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://mgfabogados.com.ar'),
+  // TEMPORAL: volver a https://mgfabogados.com.ar cuando el DNS apunte a Vercel
+  metadataBase: new URL('https://mgf-abogados.vercel.app'),
   title: 'MGF Abogados | Estudio Jurídico desde 1972',
   description: 'Más de 50 años de experiencia en accidentes de trabajo, despidos, tránsito, sucesiones y más. Oficinas en CABA y La Plata. Primera consulta sin cargo.',
   openGraph: {
