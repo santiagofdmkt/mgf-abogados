@@ -164,23 +164,45 @@ export const areas: Area[] = [
     metaDescription: 'Asesoramiento integral en propiedad horizontal: consorcios, expensas, asambleas, conflictos con encargados y rendición de cuentas. Consulta sin cargo.',
     heroLabel: 'Consorcios · Expensas',
     heroDescription: 'Asesoramos a administraciones, consorcios y propietarios en todas las cuestiones de propiedad horizontal, conjuntos inmobiliarios y clubes de campo.',
+    chips: ['Primera consulta sin cargo', 'Departamento especializado en Propiedad Horizontal', 'Propietarios y administraciones'],
+    cubre: {
+      etiqueta: 'Quiénes somos para vos',
+      titulo: '¿Cuál es tu situación?',
+      items: [
+        { icono: 'trabajo', titulo: 'Soy propietario o vecino', texto: 'Expensas, asambleas, obras o conflictos con el consorcio o con otros vecinos.' },
+        { icono: 'indemnizacion', titulo: 'Administro un consorcio', texto: 'Cobro de morosos, reglamento, asambleas y rendición de cuentas.' },
+        { icono: 'itinere', titulo: 'Integro el consejo de propietarios', texto: 'Control de la administración y aprobación de certificados de deuda.' },
+        { icono: 'traslado', titulo: 'Vivo en un club de campo o barrio cerrado', texto: 'Los conjuntos inmobiliarios tienen su propio régimen.' },
+      ],
+    },
+    corresponde: {
+      etiqueta: 'Cómo te ayudamos',
+      titulo: '¿En qué podemos acompañarte?',
+      items: [
+        { icono: 'salario', titulo: 'Expensas', texto: 'Cobro, ejecución de deudas y discusión de liquidaciones.' },
+        { icono: 'medico', titulo: 'Rendición de cuentas', texto: 'Control de la gestión del administrador y reclamo de información.' },
+        { icono: 'trabajo', titulo: 'Asambleas y reglamento', texto: 'Convocatorias, decisiones, impugnaciones y reformas del reglamento.' },
+        { icono: 'enfermedad', titulo: 'Conflictos del consorcio', texto: 'Con encargados, con vecinos o con la administración.' },
+      ],
+    },
     secciones: [
       {
         titulo: 'Un equipo especializado en la materia',
         parrafos: [
           'En Martín · Grisi · Franco creamos una alianza con el Dr. Federico Chiesa para el departamento de Derechos Reales y Propiedad Horizontal. El Dr. Chiesa es reconocido entre sus pares por su conocimiento en la materia y por la redacción de libros y artículos sobre propiedad horizontal, conjuntos inmobiliarios y clubes de campo.',
-          'Tenemos el orgullo de ser uno de los pocos estudios del país capaz de resolver cualquier cuestión en materia de propiedad horizontal, con la experiencia de haber asesorado durante años a administraciones de consorcios en Capital Federal y la provincia de Buenos Aires.',
-        ],
-      },
-      {
-        titulo: '¿Qué abarca la propiedad horizontal?',
-        parrafos: [
-          'La mayor parte de la población —sobre todo en la Ciudad de Buenos Aires— vive dentro del sistema de propiedad horizontal: edificios con vecinos y reglas que deben cumplirse, administraciones que deben garantizar ese cumplimiento, y la dinámica diaria de expensas, asambleas y decisiones del consorcio.',
-          'Acompañamos en el cobro y la discusión de expensas, los conflictos con encargados de edificios, la rendición de cuentas de las administraciones y, en general, todas las problemáticas que conlleva un sistema tan complejo. Trabajamos tanto para administraciones y consorcios como para propietarios.',
         ],
       },
     ],
-    faq: [],
+    faq: [
+      { q: '¿Cómo se cobran las expensas atrasadas?', a: 'El administrador puede emitir un certificado de deuda que, aprobado por el consejo de propietarios si existe, funciona como título ejecutivo para reclamar el pago por la vía judicial.' },
+      { q: 'Mi inquilino no paga las expensas, ¿quién responde?', a: 'Pueden reclamarse al inquilino u ocupante, pero eso no libera al propietario, que sigue siendo responsable frente al consorcio.' },
+      { q: 'Creo que las expensas están mal liquidadas, ¿qué puedo hacer?', a: 'Tenés derecho a pedir información y a que el administrador rinda cuentas de su gestión. Revisamos las liquidaciones y te decimos qué reclamar.' },
+      { q: '¿Qué hago si no estoy de acuerdo con lo que se decidió en la asamblea?', a: 'Si la decisión es contraria a la ley o al reglamento, se puede impugnar judicialmente. Hay un plazo corto para hacerlo: consultanos cuanto antes.' },
+      { q: 'En CABA, ¿el administrador tiene que estar inscripto?', a: 'Sí. Quien administra consorcios en forma onerosa debe estar inscripto en el Registro Público de Administradores (Ley 941) y puede ser sancionado si incumple sus obligaciones.' },
+      { q: 'Soy administrador, ¿pueden ayudarme con propietarios morosos?', a: 'Sí. Trabajamos tanto con administraciones y consorcios como con propietarios. Analizamos cada caso para ver cómo corresponde actuar.' },
+      { q: '¿Los barrios cerrados y clubes de campo tienen otro régimen?', a: 'Se rigen por las normas de propiedad horizontal con modificaciones particulares para los conjuntos inmobiliarios. Analizamos tu caso según el reglamento.' },
+      { q: '¿Cuánto cuesta la primera consulta?', a: 'La primera consulta es sin cargo. Te explicamos cómo trabajamos antes de empezar.' },
+    ],
   },
   {
     slug: 'mala-praxis',
@@ -188,11 +210,49 @@ export const areas: Area[] = [
     icon: '⚕️',
     heroImage: 'https://images.unsplash.com/photo-1505664194779-8beaceb93744?w=1400&q=80&auto=format&fit=crop',
     metaTitle: 'Abogados de Mala Praxis Médica | MGF Abogados',
-    metaDescription: 'Reclamos por mala praxis médica: errores de diagnóstico, tratamientos y cirugías, y fallas en clínicas y hospitales. Primera consulta sin cargo.',
-    heroLabel: 'Responsabilidad médica',
-    heroDescription: 'Reclamamos indemnizaciones por errores médicos y fallas en la atención de profesionales, clínicas y hospitales. Evaluamos tu caso en la primera consulta, sin cargo.',
-    secciones: [],
-    faq: [],
+    metaDescription: 'Mala praxis médica y amparos de salud: reclamos por errores médicos y por cobertura ante obras sociales y prepagas. Primera consulta sin cargo.',
+    heroLabel: 'Responsabilidad médica · Salud',
+    heroDescription: 'Reclamamos indemnizaciones por errores médicos y hacemos valer tu derecho a la cobertura de salud frente a obras sociales y prepagas. Evaluamos tu caso en la primera consulta, sin cargo.',
+    chips: ['Primera consulta sin cargo', 'Departamento de Derecho a la Salud', 'Oficinas en CABA y La Plata'],
+    cubre: {
+      etiqueta: 'Tu situación',
+      titulo: '¿Cuál es tu caso?',
+      items: [
+        { icono: 'medico', titulo: 'Error médico', texto: 'Diagnóstico, tratamiento o cirugía que te causó un daño.' },
+        { icono: 'enfermedad', titulo: 'Falla en clínica u hospital', texto: 'Atención deficiente, infecciones o errores de la institución.' },
+        { icono: 'itinere', titulo: 'Me niegan una cobertura', texto: 'Tu obra social o prepaga rechaza un tratamiento, medicamento o cirugía.' },
+        { icono: 'traslado', titulo: 'Cuota, baja o continuidad', texto: 'Aumentos, desafiliación por falta de pago o problemas al jubilarte.' },
+      ],
+    },
+    corresponde: {
+      etiqueta: 'Cómo te ayudamos',
+      titulo: '¿Qué podemos reclamar?',
+      items: [
+        { icono: 'indemnizacion', titulo: 'Indemnización por daños', texto: 'Por el daño físico, psicológico y los gastos que tuviste.' },
+        { icono: 'trabajo', titulo: 'Historia clínica y prueba', texto: 'Reunimos la documentación médica que sostiene tu reclamo.' },
+        { icono: 'medico', titulo: 'Amparo de salud', texto: 'Una acción urgente para que te den la cobertura que necesitás.' },
+        { icono: 'salario', titulo: 'Cuota y continuidad', texto: 'Revisión de aumentos y defensa frente a bajas indebidas.' },
+      ],
+    },
+    secciones: [
+      {
+        titulo: 'Un equipo especializado en la materia',
+        parrafos: [
+          'En Martín · Grisi · Franco creamos una alianza con la Dra. Verónica N. Carrizo para el departamento de Derecho a la Salud. Abogada especialista en derecho a la salud, egresada de la UBA.',
+        ],
+      },
+    ],
+    faq: [
+      { q: '¿Qué es la mala praxis y cuándo existe?', a: 'Es el daño causado por un error o una negligencia de un profesional o de un centro de salud. Un mal resultado por sí solo no alcanza: hay que probar que hubo una falla y que ella causó el daño.' },
+      { q: '¿Qué hago primero si creo que fue mala praxis?', a: 'Pedí tu historia clínica: es tuya y tenés derecho a recibir una copia. Conservá estudios, recetas, informes y comprobantes de gastos, y consultanos antes de firmar algo.' },
+      { q: '¿Responde también la clínica o el hospital?', a: 'Sí, el establecimiento puede responder junto con el profesional. Analizamos en cada caso quién tuvo responsabilidad.' },
+      { q: '¿Cuánto tiempo tengo para reclamar?', a: 'En general 3 años. Igual conviene consultar cuanto antes, porque la documentación médica es clave y se pierde con el tiempo.' },
+      { q: 'Mi obra social o prepaga me niega un tratamiento, ¿qué puedo hacer?', a: 'Se puede iniciar un amparo de salud con una medida cautelar para que un juez ordene la cobertura en forma urgente. Si te dieron una negativa por escrito, guardala.' },
+      { q: 'Me aumentaron la cuota, ¿es legal?', a: 'Las prepagas pueden fijar sus cuotas, pero los aumentos no pueden ser abusivos, y la ley protege especialmente a los mayores de 65 con más de 10 años de antigüedad. Revisamos tu caso y qué corresponde reclamar.' },
+      { q: 'Me dieron de baja por falta de pago, ¿es válido?', a: 'La baja tiene que cumplir requisitos legales, como una intimación previa. Muchas bajas no los cumplen y se pueden dejar sin efecto.' },
+      { q: 'Tengo una discapacidad o un familiar con discapacidad, ¿qué cobertura corresponde?', a: 'La ley obliga a las obras sociales a cubrir las prestaciones básicas de forma integral, incluidas terapias, medicamentos y, cuando corresponde, hogar o centro de día. Si te cubren menos, consultanos.' },
+      { q: 'Fertilización, diabetes o salud mental: ¿puedo reclamar la cobertura?', a: 'Hay normas que garantizan la cobertura de muchos de estos tratamientos, y a veces las empresas los limitan con interpretaciones restrictivas. Si te negaron uno, contanos tu caso.' },
+    ],
   },
   {
     slug: 'sucesiones',
