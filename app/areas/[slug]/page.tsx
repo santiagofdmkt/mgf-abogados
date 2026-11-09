@@ -72,7 +72,7 @@ function Panel({ cubre, corresponde, faq }: { cubre?: Bloque<Dato>; corresponde?
 
   return (
     <section className="area-section-pad" style={{ padding: '4rem 2rem', background: 'var(--gray-50)', borderTop: '1px solid var(--border)' }}>
-      <div className="panel-unico" style={{ maxWidth: '1440px', margin: '0 auto' }}>
+      <div className="panel-unico" style={{ maxWidth: '1280px', margin: '0 auto' }}>
         {bandas.map((b, i) => {
           const tema = temas[i % 3]
           const oscuro = tema === 'oscuro'
@@ -176,9 +176,6 @@ export default async function AreaPage(
         .datos-3 { grid-template-columns: repeat(3, 1fr); }
         .datos-4 { grid-template-columns: repeat(2, 1fr); }
         .datos-5, .datos-6 { grid-template-columns: repeat(3, 1fr); }
-        @media (min-width: 1500px) {
-          .datos-4 { grid-template-columns: repeat(4, 1fr); }
-        }
         .dato-ic { width: 54px; height: 54px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 0.9rem; }
         .banda-oscuro .dato-ic { background: rgba(255,255,255,0.16); color: #fff; }
         .banda-blanco .dato-ic { background: var(--blue-pale); color: var(--blue); }
@@ -209,7 +206,7 @@ export default async function AreaPage(
         backdropFilter: 'blur(8px)',
       }}>
         <div style={{
-          maxWidth: '1440px', margin: '0 auto', padding: '0 1.5rem',
+          maxWidth: '1280px', margin: '0 auto', padding: '0 1.5rem',
           height: '64px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         }}>
           <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
@@ -251,7 +248,7 @@ export default async function AreaPage(
           }} />
         </div>
 
-        <div style={{ position: 'relative', zIndex: 1, maxWidth: '1440px', margin: '0 auto' }}>
+        <div style={{ position: 'relative', zIndex: 1, maxWidth: '1280px', margin: '0 auto' }}>
           <div style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.55)', marginBottom: '1.5rem', letterSpacing: '0.04em' }}>
             <Link href="/" style={{ color: 'rgba(255,255,255,0.55)', textDecoration: 'none' }}>Inicio</Link>
             {' / '}
@@ -319,7 +316,7 @@ export default async function AreaPage(
       {area.secciones.length > 0 && (
         <section className="area-section-pad" style={{ padding: '4rem 2rem', background: 'var(--gray-50)' }}>
           <div style={{
-            maxWidth: '1440px', margin: '0 auto',
+            maxWidth: '1280px', margin: '0 auto',
             background: 'var(--white)', border: '1px solid var(--border)',
             borderRadius: '16px', padding: 'clamp(1.8rem, 4vw, 3rem)',
             boxShadow: 'var(--shadow-md)',
@@ -355,7 +352,7 @@ export default async function AreaPage(
 
       {/* VOLVER AL INICIO */}
       <section style={{ padding: '2.5rem 2rem', background: 'var(--gray-50)', borderTop: '1px solid var(--border)' }}>
-        <div style={{ maxWidth: '1440px', margin: '0 auto', textAlign: 'center' }}>
+        <div style={{ maxWidth: '1280px', margin: '0 auto', textAlign: 'center' }}>
           <Link href="/" style={{
             display: 'inline-block', color: 'var(--navy)', border: '1px solid var(--border)', background: 'var(--white)',
             padding: '12px 28px', borderRadius: '6px', fontSize: '0.82rem', fontWeight: 600,
