@@ -6,6 +6,9 @@ import { areas, type Bloque, type Dato } from '@/lib/areas'
 
 const WHATSAPP = 'https://api.whatsapp.com/send?phone=5491140362772'
 
+// Ancho unico de todo el contenido de la pagina. Para cambiarlo, tocar solo este numero.
+const ANCHO = '1150px'
+
 // Wrapper SVG reutilizable (mismo set que la home)
 function Svg({ children, size = 22 }: { children: ReactNode; size?: number }) {
   return (
@@ -72,7 +75,7 @@ function Panel({ cubre, corresponde, faq }: { cubre?: Bloque<Dato>; corresponde?
 
   return (
     <section className="area-section-pad" style={{ padding: '4rem 2rem', background: 'var(--gray-50)', borderTop: '1px solid var(--border)' }}>
-      <div className="panel-unico" style={{ maxWidth: '1280px', margin: '0 auto' }}>
+      <div className="panel-unico" style={{ maxWidth: ANCHO, margin: '0 auto' }}>
         {bandas.map((b, i) => {
           const tema = temas[i % 3]
           const oscuro = tema === 'oscuro'
@@ -142,7 +145,6 @@ export default async function AreaPage(
   const area = areas.find((a) => a.slug === slug)
   if (!area) notFound()
 
-
   return (
     <main id="top" style={{ background: 'var(--white)', scrollBehavior: 'smooth' }}>
       <style>{`
@@ -157,7 +159,7 @@ export default async function AreaPage(
         }
         details.area-faq summary::-webkit-details-marker { display: none; }
         .panel-unico { border-radius: 22px; overflow: hidden; border: 1px solid var(--border); box-shadow: 0 24px 60px rgba(10,22,52,0.18); }
-        .banda { position: relative; display: grid; grid-template-columns: 290px 1fr; gap: 3rem; padding: 3rem 2.5rem; }
+        .banda { position: relative; display: grid; grid-template-columns: 270px 1fr; gap: 3rem; padding: 3rem 2.5rem; }
         .banda-oscuro { background: linear-gradient(150deg, var(--navy) 0%, var(--blue) 100%); }
         .banda-blanco { background: var(--white); }
         .banda-celeste { background: var(--blue-pale); }
@@ -195,8 +197,6 @@ export default async function AreaPage(
         @media (max-width: 700px) {
           .datos-grid { grid-template-columns: 1fr !important; }
         }
-
-
       `}</style>
 
       {/* NAV */}
@@ -206,7 +206,7 @@ export default async function AreaPage(
         backdropFilter: 'blur(8px)',
       }}>
         <div style={{
-          maxWidth: '1280px', margin: '0 auto', padding: '0 1.5rem',
+          maxWidth: ANCHO, margin: '0 auto', padding: '0 1.5rem',
           height: '64px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         }}>
           <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
@@ -224,7 +224,7 @@ export default async function AreaPage(
             <Link href="/#areas" style={{ fontSize: '0.82rem', fontWeight: 500, color: 'var(--text-soft)', textDecoration: 'none' }}>
               ← Áreas
             </Link>
-            <Link href="/consulta" style={{
+            <Link href={`/consulta?area=${area.slug}`} style={{
               background: 'var(--blue)', color: '#fff', padding: '10px 22px', borderRadius: '6px',
               fontSize: '0.8rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', textDecoration: 'none',
             }}>
@@ -248,7 +248,7 @@ export default async function AreaPage(
           }} />
         </div>
 
-        <div style={{ position: 'relative', zIndex: 1, maxWidth: '1280px', margin: '0 auto' }}>
+        <div style={{ position: 'relative', zIndex: 1, maxWidth: ANCHO, margin: '0 auto' }}>
           <div style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.55)', marginBottom: '1.5rem', letterSpacing: '0.04em' }}>
             <Link href="/" style={{ color: 'rgba(255,255,255,0.55)', textDecoration: 'none' }}>Inicio</Link>
             {' / '}
@@ -272,11 +272,11 @@ export default async function AreaPage(
           }}>
             {area.title}
           </h1>
-          <p style={{ fontSize: '1.05rem', lineHeight: 1.7, color: 'rgba(255,255,255,0.78)', maxWidth: '620px', marginBottom: area.chips ? '1.2rem' : '2rem' }}>
+          <p style={{ fontSize: '1.05rem', lineHeight: 1.7, color: 'rgba(255,255,255,0.78)', maxWidth: '620px', marginBottom: area.chips ? '1.2rem' : '0' }}>
             {area.heroDescription}
           </p>
           {area.chips && area.chips.length > 0 && (
-            <div style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap', marginBottom: '2rem' }}>
+            <div style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap' }}>
               {area.chips.map((c) => (
                 <span key={c} style={{
                   background: 'rgba(255,255,255,0.10)', border: '1px solid rgba(255,255,255,0.22)',
@@ -288,35 +288,14 @@ export default async function AreaPage(
               ))}
             </div>
           )}
-          <div style={{ display: 'flex', gap: '0.8rem', flexWrap: 'wrap' }}>
-            <Link href="/consulta" style={{
-              background: 'var(--blue-electric)', color: '#fff', padding: '14px 32px', borderRadius: '6px',
-              fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', textDecoration: 'none',
-            }}>
-              Iniciar primera consulta →
-            </Link>
-            <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" style={{
-              background: 'rgba(255,255,255,0.14)', color: '#fff', padding: '14px 32px', borderRadius: '6px',
-              fontSize: '0.85rem', fontWeight: 500, letterSpacing: '0.06em', textTransform: 'uppercase', textDecoration: 'none',
-              border: '1px solid rgba(255,255,255,0.28)',
-            }}>
-              WhatsApp
-            </a>
-          </div>
         </div>
       </section>
-
-      {/* BLOQUES VISUALES (opcionales por area) */}
-
-
-
-
 
       {/* SECCIONES DE TEXTO (opcionales) */}
       {area.secciones.length > 0 && (
         <section className="area-section-pad" style={{ padding: '4rem 2rem', background: 'var(--gray-50)' }}>
           <div style={{
-            maxWidth: '1280px', margin: '0 auto',
+            maxWidth: ANCHO, margin: '0 auto',
             background: 'var(--white)', border: '1px solid var(--border)',
             borderRadius: '16px', padding: 'clamp(1.8rem, 4vw, 3rem)',
             boxShadow: 'var(--shadow-md)',
@@ -339,20 +318,28 @@ export default async function AreaPage(
       {/* PANEL UNICO: cobertura, derechos y preguntas conectados */}
       <Panel cubre={area.cubre} corresponde={area.corresponde} faq={area.faq} />
 
-      {/* BOTON FINAL: al terminar de leer, antes del pie */}
-      <div style={{ display: 'flex', justifyContent: 'center', padding: '0.5rem 1rem 3.5rem', background: 'var(--gray-50)' }}>
+      {/* BOTONES FINALES: al terminar de leer, antes del pie */}
+      <div style={{ display: 'flex', justifyContent: 'center', gap: '0.9rem', flexWrap: 'wrap', padding: '0.5rem 1rem 3.5rem', background: 'var(--gray-50)' }}>
         <Link href={`/consulta?area=${area.slug}`} style={{
           background: 'var(--blue-electric)', color: '#fff', padding: '16px 38px', borderRadius: '999px',
+          border: '1.5px solid var(--blue-electric)',
           fontSize: '0.88rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', textDecoration: 'none',
           boxShadow: '0 10px 28px rgba(10,22,52,0.32)',
         }}>
           Iniciar primera consulta →
         </Link>
+        <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" style={{
+          background: 'var(--white)', color: 'var(--navy)', padding: '16px 38px', borderRadius: '999px',
+          border: '1.5px solid var(--navy)',
+          fontSize: '0.88rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', textDecoration: 'none',
+        }}>
+          WhatsApp
+        </a>
       </div>
 
       {/* VOLVER AL INICIO */}
       <section style={{ padding: '2.5rem 2rem', background: 'var(--gray-50)', borderTop: '1px solid var(--border)' }}>
-        <div style={{ maxWidth: '1280px', margin: '0 auto', textAlign: 'center' }}>
+        <div style={{ maxWidth: ANCHO, margin: '0 auto', textAlign: 'center' }}>
           <Link href="/" style={{
             display: 'inline-block', color: 'var(--navy)', border: '1px solid var(--border)', background: 'var(--white)',
             padding: '12px 28px', borderRadius: '6px', fontSize: '0.82rem', fontWeight: 600,
