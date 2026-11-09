@@ -230,7 +230,7 @@ export default function Home() {
               borderRadius: '6px', fontSize: '0.8rem', fontWeight: 600,
               letterSpacing: '0.06em', textTransform: 'uppercase', textDecoration: 'none',
             }}>
-              Consultá Online
+              Consultá online
             </Link>
           </div>
 
@@ -341,7 +341,7 @@ export default function Home() {
                 fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.06em',
                 textTransform: 'uppercase', textDecoration: 'none', display: 'inline-block',
               }}>
-                Iniciar primer consulta →
+                Iniciar primera consulta →
               </Link>
               <a className="wa-btn btn-zoom" href="https://api.whatsapp.com/send?phone=5491140362772" target="_blank" rel="noopener noreferrer"
                 style={{
@@ -498,7 +498,7 @@ export default function Home() {
             {[
               { icon: 'experiencia', title: 'Más de 50 años de experiencia', desc: 'Uno de los estudios con mayor trayectoria en derecho civil y laboral del AMBA. No aprendemos con sus casos.' },
               { icon: 'especialista', title: 'Abogado especializado en su área', desc: 'Cada caso lo atiende el profesional con experiencia específica. Sin rotar archivos, con foco en la resolución.' },
-              { icon: 'consulta', title: 'Primera consulta gratis', desc: 'Nuestro sistema de gestión nos permite conocer tu caso y darte una primer devolución online y rápida, brindándote la mejor opción según tu situación.' },
+              { icon: 'consulta', title: 'Primera consulta gratis', desc: 'Nuestro sistema de gestión nos permite conocer tu caso y darte una primera devolución online y rápida, brindándote la mejor opción según tu situación.' },
             ].map(item => (
               <div key={item.title} className="porque-card">
                 <div style={{ color: 'var(--blue)', marginBottom: '0.8rem', display: 'flex', justifyContent: 'center' }}>
@@ -575,7 +575,7 @@ export default function Home() {
             fontSize: '0.88rem', fontWeight: 700, letterSpacing: '0.06em',
             textTransform: 'uppercase', textDecoration: 'none', display: 'inline-block',
           }}>
-            Iniciar primer consulta →
+            Iniciar primera consulta →
           </Link>
         </div>
       </section>

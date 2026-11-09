@@ -155,7 +155,7 @@ export default async function AreaPage(
               background: 'var(--blue-electric)', color: '#fff', padding: '14px 32px', borderRadius: '6px',
               fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', textDecoration: 'none',
             }}>
-              Iniciar primer consulta →
+              Iniciar primera consulta →
             </Link>
             <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" style={{
               background: 'rgba(255,255,255,0.14)', color: '#fff', padding: '14px 32px', borderRadius: '6px',

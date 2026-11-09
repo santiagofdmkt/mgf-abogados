@@ -3,13 +3,12 @@ import './globals.css'
 import Footer from '@/components/Footer'
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://mgfabogados.com.ar'),
   title: 'MGF Abogados | Estudio Jurídico desde 1972',
-  description: 'Más de 50 años brindando soluciones legales en accidentes de trabajo, tránsito, despidos, propiedad horizontal, sucesiones y derecho a la salud. Capital Federal y La Plata.',
-  keywords: 'abogados Buenos Aires, estudio jurídico, accidentes de trabajo, despidos, sucesiones, propiedad horizontal, derecho a la salud',
+  description: 'Más de 50 años de experiencia en accidentes de trabajo, despidos, tránsito, sucesiones y más. Oficinas en CABA y La Plata. Primera consulta sin cargo.',
   openGraph: {
     title: 'MGF Abogados | Estudio Jurídico desde 1972',
-    description: 'Soluciones legales de alta calidad. Capital Federal y La Plata.',
-    url: 'https://mgfabogados.com.ar',
+    description: 'Estudio jurídico con oficinas en Capital Federal y La Plata. Primera consulta sin cargo.',
     siteName: 'MGF Abogados',
     locale: 'es_AR',
     type: 'website',

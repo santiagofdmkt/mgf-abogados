@@ -20,10 +20,16 @@ async function firmar(valor: string, secreto: string): Promise<string> {
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
-  const esAdmin = pathname.startsWith('/admin')
-  const esLogin = pathname === '/admin/login'
+  const esApiAdmin = pathname.startsWith('/api/admin')
+  const esPaginaAdmin = pathname.startsWith('/admin')
 
-  if (!esAdmin || esLogin) {
+  // Estas rutas tienen que ser públicas: la pantalla de login y los endpoints de login y logout
+  const esPublica =
+    pathname === '/admin/login' ||
+    pathname === '/api/admin/login' ||
+    pathname === '/api/admin/logout'
+
+  if ((!esApiAdmin && !esPaginaAdmin) || esPublica) {
     return NextResponse.next()
   }
 
@@ -40,6 +46,10 @@ export async function middleware(request: NextRequest) {
   }
 
   if (!valida) {
+    // Las llamadas a la API reciben un 401; las páginas se redirigen al login
+    if (esApiAdmin) {
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+    }
     const url = request.nextUrl.clone()
     url.pathname = '/admin/login'
     return NextResponse.redirect(url)
@@ -49,5 +59,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*'],
+  matcher: ['/admin/:path*', '/api/admin/:path*'],
 }

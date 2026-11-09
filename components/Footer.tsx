@@ -120,7 +120,7 @@ export default function Footer() {
               textTransform: 'uppercase', textDecoration: 'none', display: 'inline-block',
               marginBottom: '1.2rem',
             }}>
-              Iniciar primer consulta →
+              Iniciar primera consulta →
             </Link>
             <div style={{ display: 'flex', alignItems: 'center', gap: '1.1rem', marginTop: '0.2rem' }}>
               <a href="https://instagram.com/mgfabogados" target="_blank" rel="noopener noreferrer" className="footer-social" style={{ fontSize: '0.8rem', textDecoration: 'none' }}>

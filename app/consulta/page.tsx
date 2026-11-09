@@ -684,7 +684,7 @@ function ConsultaInner() {
                 {step === 4 && (
                   <>
                     <div style={{ fontSize: 15.5, fontWeight: 500, marginBottom: 6, color: 'var(--ink, #1e293b)' }}>Revisá tu consulta</div>
-                    <div style={{ fontSize: 13, color: '#64748b', marginBottom: 18 }}>Si está todo bien, enviá la consulta y el estudio te contactará.</div>
+                    <div style={{ fontSize: 13, color: '#64748b', marginBottom: 18 }}>Si está todo bien, enviá la consulta y el estudio te contactará. Usamos tus datos solo para responder esta consulta.</div>
                     <div style={{ background: 'var(--gray-50)', border: '1px solid var(--border)', borderRadius: 12, padding: '8px 16px' }}>
                       <SummaryRow label="Tema" value={area && areas[area] ? areas[area].label : '-'} strong />
                       {area &&

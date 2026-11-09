@@ -314,7 +314,7 @@ export default function CotizadorClient() {
             </div>
           ))}
 
-          <div style={{ marginTop: 16, fontSize: 12, color: '#94a3b8', lineHeight: 1.55 }}>
+          <div style={{ marginTop: 16, fontSize: 12, color: '#64748b', lineHeight: 1.55 }}>
             Esta es una <strong>estimación orientativa</strong> calculada según la Ley de Contrato de Trabajo (Ley 20.744) y sus
             reformas vigentes. No contempla el tope por convenio colectivo, agravantes ni particularidades de tu caso, y no constituye
             asesoramiento legal. El monto definitivo puede variar.
@@ -355,6 +355,9 @@ export default function CotizadorClient() {
                 </div>
               </div>
               {errorLead && <div style={{ color: '#b91c1c', fontSize: 13.5, marginTop: 14 }}>{errorLead}</div>}
+              <p style={{ fontSize: 12, color: '#64748b', lineHeight: 1.5, margin: '14px 0 0' }}>
+                Usamos tus datos solo para responder esta consulta.
+              </p>
               <button onClick={enviarLead} disabled={enviando} style={{ ...btnPrimario, opacity: enviando ? 0.7 : 1 }}>
                 {enviando ? 'Enviando…' : 'Quiero que revisen mi caso'}
               </button>

@@ -26,7 +26,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     }
 
     if (typeof body.nota === 'string') {
-      updates.nota = body.nota
+      updates.nota = body.nota.slice(0, 5000)
     }
 
     if (Object.keys(updates).length === 0) {
