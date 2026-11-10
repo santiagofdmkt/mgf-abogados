@@ -150,7 +150,7 @@ export default async function Image() {
             {/* Renglones decorativos (sin texto) */}
             <div style={{ display: 'flex', width: 200, height: 12, borderRadius: 6, background: BAR, marginBottom: 14 }} />
             <div style={{ display: 'flex', width: 150, height: 12, borderRadius: 6, background: BAR, marginBottom: 14 }} />
-            <div style={{ display: 'flex', width: 180, height: 12, borderRadius: 6, background: BAR }} />
+            <div style={{ display: 'flex', width: 100, height: 12, borderRadius: 6, background: BAR }} />
 
             {/* Sello: dos anillos y el texto */}
             <div
@@ -262,7 +262,7 @@ export default async function Image() {
               fontSize: 26,
             }}
           >
-            Primera consulta gratis
+            Primer consulta gratis
           </div>
         </div>
 
