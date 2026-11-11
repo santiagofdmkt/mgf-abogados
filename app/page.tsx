@@ -84,18 +84,66 @@ function Icon({ name, size, strokeWidth }: { name: string; size?: number; stroke
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false)
 
-  // Mini-formulario de contacto: ahora controlado. Lleva los datos al wizard /consulta por query params.
+  // Mini-formulario de contacto: envia directo a /api/consulta (mail al estudio) y muestra confirmacion.
   const [form, setForm] = useState({ nombre: '', telefono: '', email: '', area: '', mensaje: '' })
+  const [enviando, setEnviando] = useState(false)
+  const [enviado, setEnviado] = useState(false)
+  const [errorForm, setErrorForm] = useState('')
+  const [falloEnvio, setFalloEnvio] = useState(false)
 
-  const consultaHref = () => {
-    const p = new URLSearchParams()
-    if (form.nombre) p.set('nombre', form.nombre)
-    if (form.telefono) p.set('telefono', form.telefono)
-    if (form.email) p.set('email', form.email)
-    if (form.area) p.set('area', form.area)
-    if (form.mensaje) p.set('mensaje', form.mensaje)
-    const qs = p.toString()
-    return qs ? `/consulta?${qs}` : '/consulta'
+  const areaLabel = () => {
+    if (form.area === 'otro') return 'Otro / no estoy seguro'
+    return areas.find(a => a.slug === form.area)?.title || ''
+  }
+
+  // Resumen en texto plano: es lo que llega en el cuerpo del mail
+  const buildResumen = () => {
+    const L: string[] = []
+    L.push('Origen: formulario de la home')
+    if (form.area) L.push('Tema: ' + areaLabel())
+    if (form.mensaje.trim()) L.push('Detalle: ' + form.mensaje.trim())
+    return L.join('\n')
+  }
+
+  // Mismo resumen pero con nombre y telefono, para el mensaje de WhatsApp
+  const resumenWa = () => 'Nombre: ' + form.nombre.trim() + '\nTeléfono: ' + form.telefono.trim() + '\n' + buildResumen()
+
+  const enviarConsulta = async () => {
+    const digitos = form.telefono.replace(/\D/g, '')
+    if (!form.nombre.trim()) {
+      setFalloEnvio(false)
+      setErrorForm('Escribí tu nombre y apellido.')
+      return
+    }
+    if (digitos.length < 8) {
+      setFalloEnvio(false)
+      setErrorForm('Escribí un teléfono válido, con código de área.')
+      return
+    }
+    setErrorForm('')
+    setFalloEnvio(false)
+    setEnviando(true)
+    try {
+      const res = await fetch('/api/consulta', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nombre: form.nombre.trim(),
+          telefono: form.telefono.trim(),
+          email: form.email.trim(),
+          area: form.area,
+          mensaje: buildResumen(),
+        }),
+      })
+      if (!res.ok) throw new Error('Respuesta no OK del servidor')
+      setEnviado(true)
+    } catch (err) {
+      console.error('No se pudo enviar la consulta:', err)
+      setFalloEnvio(true)
+      setErrorForm('Hubo un problema al enviar la consulta. Revisá tu conexión y volvé a intentar.')
+    } finally {
+      setEnviando(false)
+    }
   }
 
   const scrollToTop = () => {
@@ -642,75 +690,123 @@ export default function Home() {
             </a>
           </div>
 
-          {/* Mitad derecha: formulario */}
+          {/* Mitad derecha: formulario (envia directo al mail del estudio) */}
           <div className="ct-form">
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', marginBottom: '0.5rem' }}>
-              <span style={{
-                width: '42px', height: '42px', borderRadius: '12px', flexShrink: 0,
-                background: 'var(--blue-pale)', color: 'var(--blue)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-              }}>
-                <Icon name="consulta" size={22} strokeWidth={1.5} />
-              </span>
-              <div style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.5rem', fontWeight: 600, color: 'var(--navy)', lineHeight: 1.15 }}>
-                Dejanos tu consulta
-              </div>
-            </div>
-            <p style={{ fontSize: '0.88rem', color: 'var(--text-soft)', marginBottom: '1.6rem', lineHeight: 1.6 }}>
-              Completá tus datos y seguí con el formulario guiado.
-            </p>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              {inputs.map(f => (
-                <div key={f.name}>
-                  <label className="ct-label">{f.label}</label>
-                  <input
-                    className="ct-input"
-                    type={f.type}
-                    placeholder={f.placeholder}
-                    value={form[f.name]}
-                    onChange={e => setForm({ ...form, [f.name]: e.target.value })}
-                  />
+            {enviado ? (
+              <div style={{ textAlign: 'center', padding: '2.5rem 0.5rem' }}>
+                <div style={{
+                  width: '64px', height: '64px', borderRadius: '50%', margin: '0 auto 1.1rem',
+                  background: '#dcfce7', color: '#16a34a', fontSize: '1.8rem', fontWeight: 700,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}>
+                  ✓
                 </div>
-              ))}
-              <div>
-                <label className="ct-label">Tipo de consulta</label>
-                <select
-                  className="ct-input"
-                  value={form.area}
-                  onChange={e => setForm({ ...form, area: e.target.value })}
+                <div style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.5rem', fontWeight: 600, color: 'var(--navy)', marginBottom: '0.6rem' }}>
+                  ¡Consulta enviada!
+                </div>
+                <p style={{ fontSize: '0.9rem', color: 'var(--text-soft)', lineHeight: 1.7, maxWidth: '360px', margin: '0 auto 1.6rem' }}>
+                  Recibimos tu consulta. Un abogado del estudio va a revisarla y te va a contactar a la brevedad. La primera consulta es sin cargo.
+                </p>
+                <a
+                  href={waLink('Hola, acabo de enviar una consulta desde la web.\n\n' + resumenWa())}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="ct-wa"
+                  style={{
+                    background: '#25D366', color: '#fff', padding: '14px 26px', borderRadius: '999px',
+                    fontSize: '0.88rem', fontWeight: 600, letterSpacing: '0.04em', textDecoration: 'none',
+                    display: 'inline-flex', alignItems: 'center', gap: '0.6rem',
+                    boxShadow: '0 10px 24px rgba(0,0,0,0.18)',
+                  }}
                 >
-                  <option value="">Seleccioná un área</option>
-                  {areas.map(a => <option key={a.slug} value={a.slug}>{a.title}</option>)}
-                  <option value="otro">Otro / no estoy seguro</option>
-                </select>
+                  <Icon name="whatsapp" size={18} /> Agilizar por WhatsApp
+                </a>
               </div>
-              <div>
-                <label className="ct-label">
-                  Contanos brevemente tu caso <span style={{ textTransform: 'none', fontWeight: 400, color: 'var(--text-muted)' }}>(opcional)</span>
-                </label>
-                <textarea
-                  className="ct-input"
-                  value={form.mensaje}
-                  onChange={e => setForm({ ...form, mensaje: e.target.value })}
-                  placeholder="Escribí acá un breve resumen de tu situación..."
-                  rows={4}
-                  style={{ resize: 'vertical', minHeight: '96px' }}
-                />
-              </div>
-              <Link href={consultaHref()} className="ct-send" style={{
-                background: 'linear-gradient(135deg, var(--blue) 0%, var(--blue-electric) 100%)', color: '#fff', padding: '15px',
-                textAlign: 'center', textDecoration: 'none', fontSize: '0.85rem',
-                letterSpacing: '0.08em', textTransform: 'uppercase', fontWeight: 600,
-                marginTop: '0.4rem', display: 'block', borderRadius: '999px',
-                boxShadow: '0 10px 24px rgba(30,91,184,0.30)',
-              }}>
-                Enviar consulta →
-              </Link>
-              <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textAlign: 'center', lineHeight: 1.5 }}>
-                Es confidencial. Usamos tus datos solo para responder tu consulta.
-              </p>
-            </div>
+            ) : (
+              <>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', marginBottom: '0.5rem' }}>
+                  <span style={{
+                    width: '42px', height: '42px', borderRadius: '12px', flexShrink: 0,
+                    background: 'var(--blue-pale)', color: 'var(--blue)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  }}>
+                    <Icon name="consulta" size={22} strokeWidth={1.5} />
+                  </span>
+                  <div style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.5rem', fontWeight: 600, color: 'var(--navy)', lineHeight: 1.15 }}>
+                    Dejanos tu consulta
+                  </div>
+                </div>
+                <p style={{ fontSize: '0.88rem', color: 'var(--text-soft)', marginBottom: '1.6rem', lineHeight: 1.6 }}>
+                  Completá tus datos y un abogado del estudio te contacta a la brevedad.
+                </p>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                  {inputs.map(f => (
+                    <div key={f.name}>
+                      <label className="ct-label">{f.label}</label>
+                      <input
+                        className="ct-input"
+                        type={f.type}
+                        placeholder={f.placeholder}
+                        value={form[f.name]}
+                        onChange={e => setForm({ ...form, [f.name]: e.target.value })}
+                      />
+                    </div>
+                  ))}
+                  <div>
+                    <label className="ct-label">Tipo de consulta</label>
+                    <select
+                      className="ct-input"
+                      value={form.area}
+                      onChange={e => setForm({ ...form, area: e.target.value })}
+                    >
+                      <option value="">Seleccioná un área</option>
+                      {areas.map(a => <option key={a.slug} value={a.slug}>{a.title}</option>)}
+                      <option value="otro">Otro / no estoy seguro</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="ct-label">
+                      Contanos brevemente tu caso <span style={{ textTransform: 'none', fontWeight: 400, color: 'var(--text-muted)' }}>(opcional)</span>
+                    </label>
+                    <textarea
+                      className="ct-input"
+                      value={form.mensaje}
+                      onChange={e => setForm({ ...form, mensaje: e.target.value })}
+                      placeholder="Escribí acá un breve resumen de tu situación..."
+                      rows={4}
+                      style={{ resize: 'vertical', minHeight: '96px' }}
+                    />
+                  </div>
+
+                  {errorForm && (
+                    <div style={{ padding: '11px 14px', background: '#fef2f2', border: '1px solid #fecaca', borderRadius: '10px', fontSize: '0.82rem', color: '#b91c1c', lineHeight: 1.5 }}>
+                      {errorForm}
+                      {falloEnvio && (
+                        <>
+                          {' '}Si sigue fallando, escribinos por{' '}
+                          <a href={waLink('Hola, quiero hacer una consulta.\n\n' + resumenWa())} target="_blank" rel="noopener noreferrer" style={{ color: '#b91c1c', fontWeight: 600 }}>WhatsApp</a>.
+                        </>
+                      )}
+                    </div>
+                  )}
+
+                  <button type="button" onClick={enviarConsulta} disabled={enviando} className="ct-send" style={{
+                    background: 'linear-gradient(135deg, var(--blue) 0%, var(--blue-electric) 100%)', color: '#fff', padding: '15px',
+                    textAlign: 'center', fontSize: '0.85rem', fontFamily: 'inherit',
+                    letterSpacing: '0.08em', textTransform: 'uppercase', fontWeight: 600,
+                    marginTop: '0.4rem', display: 'block', width: '100%', border: 'none', borderRadius: '999px',
+                    cursor: enviando ? 'default' : 'pointer', opacity: enviando ? 0.7 : 1,
+                    boxShadow: '0 10px 24px rgba(30,91,184,0.30)',
+                  }}>
+                    {enviando ? 'Enviando…' : 'Enviar consulta →'}
+                  </button>
+                  <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textAlign: 'center', lineHeight: 1.5 }}>
+                    Es confidencial. Usamos tus datos solo para responder tu consulta.
+                  </p>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </section>
