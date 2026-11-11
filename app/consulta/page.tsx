@@ -4,6 +4,7 @@ import { useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { areas as areasData } from '@/lib/areas';
+import { waLink } from '@/lib/contacto';
 
 type Question = {
   id: string;
@@ -628,9 +629,20 @@ function ConsultaInner() {
               <div style={{ fontSize: 14, color: '#64748b', lineHeight: 1.6, maxWidth: 380, margin: '0 auto 26px' }}>
                 Recibimos tu consulta. Un abogado del estudio va a revisarla y te va a contactar a la brevedad por el medio que elegiste. La primera consulta es sin cargo.
               </div>
-              <Link href="/" className="mgf-next" style={{ background: 'var(--navy)', textDecoration: 'none', display: 'inline-flex' }}>
-                Volver al inicio
-              </Link>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
+                <a
+                  href={waLink('Hola, acabo de enviar una consulta desde la web.\n\n' + buildResumen())}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mgf-next"
+                  style={{ background: '#25D366', textDecoration: 'none', display: 'inline-flex' }}
+                >
+                  Agilizar por WhatsApp
+                </a>
+                <Link href="/" className="mgf-next" style={{ background: 'var(--navy)', textDecoration: 'none', display: 'inline-flex' }}>
+                  Volver al inicio
+                </Link>
+              </div>
             </div>
           ) : (
             <>
@@ -772,7 +784,8 @@ function ConsultaInner() {
                     </div>
                     {errorEnvio && (
                       <div style={{ marginTop: 14, padding: '11px 14px', background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 10, fontSize: 13, color: '#b91c1c' }}>
-                        Hubo un problema al enviar la consulta. Revisá tu conexión y volvé a intentar.
+                        Hubo un problema al enviar la consulta. Revisá tu conexión y volvé a intentar. Si sigue fallando, escribinos por{' '}
+                        <a href={waLink('Hola, quiero hacer una consulta.\n\n' + buildResumen())} target="_blank" rel="noopener noreferrer" style={{ color: '#b91c1c', fontWeight: 600 }}>WhatsApp</a>.
                       </div>
                     )}
                   </>

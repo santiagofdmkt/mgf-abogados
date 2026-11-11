@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { useState, type ReactNode } from 'react'
 import CtaCotizador from '@/components/CtaCotizador'
 import { areas as areasData } from '@/lib/areas'
+import { waLink } from '@/lib/contacto'
 
 const areas = [
   { slug: 'accidentes-trabajo',   title: 'Accidentes de Trabajo',        desc: 'Gestionamos su reclamo ante la ART por accidentes laborales, in itínere y enfermedades profesionales.', icon: 'trabajo' },
@@ -343,7 +344,7 @@ export default function Home() {
               }}>
                 Iniciar primera consulta →
               </Link>
-              <a className="wa-btn btn-zoom" href="https://api.whatsapp.com/send?phone=5491140362772" target="_blank" rel="noopener noreferrer"
+              <a className="wa-btn btn-zoom" href={waLink()} target="_blank" rel="noopener noreferrer"
                 style={{
                   background: 'rgba(255,255,255,0.12)', color: '#fff',
                   padding: '14px 32px', borderRadius: '6px',
@@ -630,7 +631,7 @@ export default function Home() {
               ))}
             </div>
 
-            <a href="https://api.whatsapp.com/send?phone=5491140362772" target="_blank" rel="noopener noreferrer" className="ct-wa" style={{
+            <a href={waLink()} target="_blank" rel="noopener noreferrer" className="ct-wa" style={{
               marginTop: '1.6rem', background: '#25D366', color: '#fff',
               padding: '14px 26px', borderRadius: '999px',
               fontSize: '0.88rem', fontWeight: 600, letterSpacing: '0.04em', textDecoration: 'none',

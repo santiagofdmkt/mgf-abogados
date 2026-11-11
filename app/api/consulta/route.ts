@@ -1,62 +1,103 @@
 import { NextResponse } from 'next/server'
-import { supabaseAdmin } from '@/lib/supabaseAdmin'
+import { EMAIL_DESTINO } from '@/lib/contacto'
 
-// Áreas que entran con prioridad alta (más urgentes / rentables)
-const ALTA_PRIORIDAD = ['accidentes-trabajo', 'despidos', 'accidentes-transito']
+export const runtime = 'nodejs'
 
-// Largos máximos para que nadie pueda llenar la base con textos enormes
-const MAX = { nombre: 100, telefono: 40, email: 120, area: 50, mensaje: 3000 }
+const MAX = { nombre: 120, telefono: 30, email: 160, area: 80, mensaje: 6000 }
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-
-// Devuelve el texto limpio y recortado, o null si no es texto o está vacío
-function texto(valor: unknown, max: number): string | null {
-  if (typeof valor !== 'string') return null
-  const limpio = valor.trim()
-  if (!limpio) return null
-  return limpio.slice(0, max)
+function limpiar(valor: unknown, max: number): string {
+  if (typeof valor !== 'string') return ''
+  return valor.trim().slice(0, max)
 }
 
-export async function POST(request: Request) {
+function escaparHtml(texto: string): string {
+  return texto
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+}
+
+export async function POST(req: Request) {
+  let body: Record<string, unknown>
   try {
-    const body = await request.json()
+    body = await req.json()
+  } catch {
+    return NextResponse.json({ ok: false, error: 'Cuerpo invalido' }, { status: 400 })
+  }
 
-    const nombre = texto(body?.nombre, MAX.nombre)
-    const telefono = texto(body?.telefono, MAX.telefono)
-    const email = texto(body?.email, MAX.email)
-    const area = texto(body?.area, MAX.area)
-    const mensaje = texto(body?.mensaje, MAX.mensaje)
+  const nombre = limpiar(body.nombre, MAX.nombre)
+  const telefono = limpiar(body.telefono, MAX.telefono)
+  const email = limpiar(body.email, MAX.email)
+  const area = limpiar(body.area, MAX.area)
+  const mensaje = limpiar(body.mensaje, MAX.mensaje)
 
-    if (!nombre) {
-      return NextResponse.json({ error: 'El nombre es obligatorio' }, { status: 400 })
-    }
+  if (!nombre || telefono.replace(/\D/g, '').length < 8) {
+    return NextResponse.json({ ok: false, error: 'Faltan datos' }, { status: 400 })
+  }
 
-    // Un email mal escrito no bloquea el envío: se descarta si hay otro medio de contacto
-    const emailValido = email && EMAIL_RE.test(email) ? email : null
+  const apiKey = process.env.RESEND_API_KEY
+  const from = process.env.MAIL_FROM
+  if (!apiKey || !from) {
+    console.error('Falta RESEND_API_KEY o MAIL_FROM en las variables de entorno')
+    return NextResponse.json({ ok: false, error: 'Envio no configurado' }, { status: 500 })
+  }
+  const to = process.env.MAIL_TO || EMAIL_DESTINO
 
-    if (!telefono && !emailValido) {
-      return NextResponse.json({ error: 'Falta un teléfono o email de contacto' }, { status: 400 })
-    }
+  const nombreAsunto = nombre.replace(/[\r\n]+/g, ' ')
+  const asunto = `Nueva consulta web (${area || 'sin area'}) - ${nombreAsunto}`
 
-    const prioridad = area && ALTA_PRIORIDAD.includes(area) ? 'alta' : 'media'
+  const texto = [
+    'Nueva consulta desde la web',
+    '',
+    `Nombre: ${nombre}`,
+    `Telefono: ${telefono}`,
+    `Email: ${email || '(no informado)'}`,
+    '',
+    mensaje,
+  ].join('\n')
 
-    const { error } = await supabaseAdmin.from('consultas').insert({
-      nombre,
-      telefono,
-      email: emailValido,
-      area,
-      mensaje,
-      prioridad,
+  const html = `
+    <div style="font-family: Arial, sans-serif; font-size: 14px; color: #1e293b; max-width: 600px;">
+      <h2 style="color: #0f2747; margin: 0 0 16px;">Nueva consulta desde la web</h2>
+      <table style="border-collapse: collapse; margin-bottom: 16px;">
+        <tr><td style="padding: 4px 14px 4px 0; color: #64748b;">Nombre</td><td><strong>${escaparHtml(nombre)}</strong></td></tr>
+        <tr><td style="padding: 4px 14px 4px 0; color: #64748b;">Telefono</td><td><strong>${escaparHtml(telefono)}</strong></td></tr>
+        <tr><td style="padding: 4px 14px 4px 0; color: #64748b;">Email</td><td>${escaparHtml(email || '(no informado)')}</td></tr>
+      </table>
+      <div style="white-space: pre-wrap; background: #f1f5f9; border-radius: 8px; padding: 14px; line-height: 1.6;">${escaparHtml(mensaje)}</div>
+    </div>
+  `
+
+  const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+
+  try {
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from,
+        to: [to],
+        subject: asunto,
+        html,
+        text: texto,
+        ...(emailValido ? { reply_to: email } : {}),
+      }),
     })
 
-    if (error) {
-      console.error('Error guardando consulta:', error)
-      return NextResponse.json({ error: 'No se pudo guardar la consulta' }, { status: 500 })
+    if (!res.ok) {
+      const detalle = await res.text()
+      console.error('Resend rechazo el envio:', res.status, detalle)
+      return NextResponse.json({ ok: false, error: 'No se pudo enviar' }, { status: 502 })
     }
 
     return NextResponse.json({ ok: true })
   } catch (err) {
-    console.error('Error en /api/consulta:', err)
-    return NextResponse.json({ error: 'Error inesperado' }, { status: 500 })
+    console.error('Error llamando a Resend:', err)
+    return NextResponse.json({ ok: false, error: 'No se pudo enviar' }, { status: 502 })
   }
 }
