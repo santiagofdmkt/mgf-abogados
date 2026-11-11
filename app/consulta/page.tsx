@@ -562,7 +562,13 @@ function ConsultaInner() {
       {/* HERO de la consulta: presenta el area elegida */}
       <section style={{ position: 'relative', overflow: 'hidden', background: 'var(--navy)', padding: '4.5rem 1.5rem 8rem', textAlign: 'center' }}>
         <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
-          <img src={heroImg} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }} />
+          <img
+            src={heroImg}
+            alt=""
+            ref={(el) => { if (el && el.complete) el.style.opacity = '1'; }}
+            onLoad={(e) => { e.currentTarget.style.opacity = '1'; }}
+            style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', opacity: 0, transition: 'opacity .6s ease' }}
+          />
           <div style={{
             position: 'absolute', inset: 0,
             background: 'linear-gradient(120deg, rgba(10,22,52,0.96) 0%, rgba(10,22,52,0.88) 45%, rgba(30,64,175,0.55) 100%)',
@@ -830,9 +836,20 @@ function SummaryRow({ label, value, strong }: { label: string; value: string; st
   );
 }
 
+// Esqueleto que se ve mientras carga: misma barra y mismo azul que la pagina real,
+// asi no hay pantalla en blanco ni salto del footer.
+function ConsultaEsqueleto() {
+  return (
+    <main style={{ flex: 1, background: 'var(--gray-50)' }}>
+      <div style={{ background: 'var(--navy)', height: 57 }} />
+      <div style={{ background: 'var(--navy)', height: 400 }} />
+    </main>
+  );
+}
+
 export default function ConsultaPage() {
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<ConsultaEsqueleto />}>
       <ConsultaInner />
     </Suspense>
   );
